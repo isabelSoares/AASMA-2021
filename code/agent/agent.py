@@ -5,9 +5,9 @@ import random
 GREEN_COLOR = color.rgba(21,127,21)
 RED_COLOR = color.rgba(141,25,25)
 NORTH = 0
-SOUTH = 1
-WEST = 2
-EAST = 3
+EAST = 1
+SOUTH = 2
+WEST = 3
 DIRECTIONS = [Vec3(1,0,0), Vec3(0,0,-1), Vec3(-1,0,0), Vec3(0,0,1)]
 
 class Agent(Entity):
