@@ -32,10 +32,10 @@ class Agent(Entity):
     
     def jump(self):
         if False: # TODO if there is not a block ahead
-            print(self.name + ': FAILED to jumped forward - NO BLOCK')
+            print(self.name + ': FAILED to jump forward - NO BLOCK')
             return
         elif False: # TODO if there is more than one block ahed
-            print(self.name + ': FAILED to jumped forward - VERY HIGH')
+            print(self.name + ': FAILED to jump forward - VERY HIGH')
             return
         print(self.name + ': jumped forward')
         self.position += DIRECTIONS[self.direction]
