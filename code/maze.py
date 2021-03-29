@@ -7,7 +7,6 @@ from environment.World import World
 # Import agent
 from agent.agent import *
 
-
 # Call construction of World
 center, size = (0, 0, 0), (10, 5)
 world = World(center, size)
@@ -21,9 +20,11 @@ AGENT_GREEN = Agent(name = 'GREEN', model = 'cube', position = (0,1,0), color = 
 AGENT_RED = Agent(name = 'RED', model = 'cube', position = (2,1,0), color = RED_COLOR)
 
 def update():
-    sleep(0.1)
+    sleep(0.07)
     if held_keys['q']:
         print("teste")
+
+    # Just checking agent functions
     elif held_keys['d']: # rotate right
         AGENT_RED.rotate_right()
     elif held_keys['a']: # rotate left
@@ -32,5 +33,15 @@ def update():
         AGENT_RED.rotate_randomly()
     elif held_keys['w']: # move forward
         AGENT_RED.move()
+    
+    # Just checking world functions
+    elif held_keys['o']:
+        block = world.get_static_block(Vec3(3,0,0))
+        if block != None: block.color = color.rgba(38,213,147)
+    elif held_keys['p']:
+        positions = [Vec3(3,0,0), Vec3(3,1,-1)]
+        if world.get_static_block(positions[0]) != None: world.update_static_block(positions[0], positions[1])
+        else: world.update_static_block(positions[1], positions[0])
+
 
 app.run()
