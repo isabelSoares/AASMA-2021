@@ -20,8 +20,11 @@ map_info = load_map_from_json_file(sys.argv[1])
 setup_window()
 setup_camera(position = Vec3(50,50,50), look_at = map_info["center"])
 
+world = map_info['world']
+
 def update():
     sleep(0.07)
+    
     if held_keys['q']:
         print(map_info['agents']['RED'].position)
         print("teste")
@@ -34,9 +37,7 @@ def update():
     elif held_keys['s']: # rotate randomly
         map_info['agents']['RED'].rotate_randomly()
     elif held_keys['w']: # move forward
-        map_info['agents']['RED'].move()
-    elif held_keys['space']: #jump
-        map_info['agents']['RED'].jump()
+        map_info['agents']['RED'].move(world)
     
     # Just checking world functions
     elif held_keys['o']:
