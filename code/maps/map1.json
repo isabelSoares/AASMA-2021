@@ -5,8 +5,8 @@
     },
 
     "agents": [
-        {"name": "GREEN", "model": "cube", "position": [0, 1, 0], "color": [21,127,21], "direction": "North"},
-        {"name": "RED", "model": "cube", "position": [-2, 1, 1], "color": [141,25,25], "direction": "East"}
+        {"name": "GREEN", "model": "cube", "position": [0, 1, 0], "color": [21,127,21]},
+        {"name": "RED", "model": "cube", "position": [-2, 1, 1], "color": [141,25,25]}
     ],
 
     "map": {

@@ -2,14 +2,8 @@ from ursina import *
 from time import sleep
 import random
 
-NORTH = 0
-EAST = 1
-SOUTH = 2
-WEST = 3
-DIRECTIONS = [Vec3(1,0,0), Vec3(0,0,-1), Vec3(-1,0,0), Vec3(0,0,1)]
-
 class Agent(Entity):
-    def __init__(self, name = 'Unknown', model = 'cube', position = (0, 1, 0), color = color.rgba(0,0,0), direction = NORTH):
+    def __init__(self, name = 'Unknown', model = 'cube', position = (0, 1, 0), color = color.rgba(0,0,0)):
         super().__init__(
             name = 'Agent ' + name,
             model = model,
@@ -18,7 +12,6 @@ class Agent(Entity):
             scale = Vec3(1, 2, 1),
             origin = Vec3(0, -0.25, 0)
         )
-        self.direction = direction
     
     def move(self):
         if False: # TODO if there is a wall ahead
@@ -28,7 +21,7 @@ class Agent(Entity):
             print(self.name + ': FAILED to move forward - DOOR CLOSED')
             return
         print(self.name + ': moved forward')
-        self.position += DIRECTIONS[self.direction]
+        self.position += self.forward
     
     def jump(self):
         if False: # TODO if there is not a block ahead
@@ -38,22 +31,16 @@ class Agent(Entity):
             print(self.name + ': FAILED to jump forward - VERY HIGH')
             return
         print(self.name + ': jumped forward')
-        self.position += DIRECTIONS[self.direction]
-        self.position += Vec3(0,1,0)
+        self.position += self.forward
+        self.position += self.up
     
     def rotate_right(self):
         print(self.name + ': rotated to the right')
         self.rotation += Vec3(0, 90, 0)
-        self.direction += 1
-        if self.direction == 4:
-            self.direction = 0
     
     def rotate_left(self):
         print(self.name + ': rotated to the left')
         self.rotation -= Vec3(0, 90, 0)
-        self.direction -= 1
-        if self.direction == -1:
-            self.direction = 3
     
     def rotate_randomly(self):
         random.choice([self.rotate_right, self.rotate_left])()

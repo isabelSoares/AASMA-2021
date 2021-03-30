@@ -5,20 +5,12 @@ from ursina import color
 from environment.World import World, create_block_from_code
 from agent.agent import Agent
 
-# ============= DEFAULT DIRECTIONS =============
-NORTH = 0
-EAST = 1
-SOUTH = 2
-WEST = 3
-MAPPING_DIRECTIONS = {"North": NORTH, "East": EAST, "South": SOUTH, "West": WEST}
-
 # ============= DEFAULT WORLD VARIABLES =============
 DEFAULT_CENTER = (0,0,0)
 DEFAULT_FLOOR_SIZE = (10, 10)
 # ============= DEFAULT AGENTS VARIABLES =============
 DEFAULT_MODEL = "cube"
 DEFAULT_COLOR = [255, 255, 255]
-DEFAULT_DIRECTION = NORTH
 
 def load_map_from_json_file(json_file):
 
@@ -71,10 +63,7 @@ def load_single_agent(json_agent, return_object):
     agent_color = DEFAULT_COLOR
     if ("color" in json_agent): agent_color = color.rgba(json_agent["color"][0], json_agent["color"][1], json_agent["color"][2])
 
-    direction = DEFAULT_DIRECTION
-    if ("direction" in json_agent): direction = MAPPING_DIRECTIONS[json_agent["direction"]]
-
-    new_agent = Agent(name, model, position, agent_color, direction)
+    new_agent = Agent(name, model, position, agent_color)
     return_object["agents"][name] = new_agent
     return_object["world"].add_agent(position, new_agent)
 
