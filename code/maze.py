@@ -23,7 +23,7 @@ setup_camera(position = Vec3(50,50,50), look_at = map_info["center"])
 world = map_info['world']
 
 def update():
-    sleep(0.15)
+    sleep(0.2)
 
     if held_keys['q']:
         print(map_info['agents']['RED'].position)
@@ -38,7 +38,7 @@ def update():
         map_info['agents']['RED'].rotate_randomly()
     elif held_keys['w']: # move forward
         map_info['agents']['RED'].move(world)
-    
+
     # Just checking world functions
     elif held_keys['o']:
         block = map_info["world"].get_static_block(Vec3(3,0,0))

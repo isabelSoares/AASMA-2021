@@ -11,6 +11,7 @@ class World():
         self.static_map = {}
         self.agents_map = {}
         self.entities_map = {}
+        self.count = 0
 		
         # Create floor
         radius_x = math.ceil((size[0] - 1) / 2)
