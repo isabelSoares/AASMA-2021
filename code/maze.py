@@ -23,8 +23,8 @@ setup_camera(position = Vec3(50,50,50), look_at = map_info["center"])
 world = map_info['world']
 
 def update():
-    sleep(0.07)
-    
+    sleep(0.15)
+
     if held_keys['q']:
         print(map_info['agents']['RED'].position)
         print("teste")

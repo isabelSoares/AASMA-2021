@@ -14,27 +14,29 @@ class Agent(Entity):
             origin = Vec3(0, -0.25, 0)
         )
     
+    def Forward(self):
+        return round(Vec3(self.forward))
+    
     def move(self, world):
         if not self.canMove(world):
             return
         print(self.name + ': moved forward')
-        world.update_agent(self.position, self.position + self.forward)
-        self.position += self.forward
+        world.update_agent(self.position, self.position + self.Forward())
+        self.animate_position(self.position+self.Forward(), curve=curve.linear, duration=.2)
     
     def jump(self, world):
         print(self.name + ': jumped forward')
-        world.update_agent(self.position, self.position + self.forward + Vec3(0, 1, 0))
-        print(self.position)
-        self.position += self.forward + Vec3(0, 1, 0)
-        print(self.position)
+        world.update_agent(self.position, self.position + self.Forward() + Vec3(0, 1, 0))
+        self.animate_position(self.position + self.Forward(), curve=curve.linear, duration=.2)
+        self.animate_position(self.position + Vec3(0, 1, 0), curve=curve.linear, duration=.08)
     
     def rotate_right(self):
         print(self.name + ': rotated to the right')
-        self.rotation += Vec3(0, 90, 0)
+        self.animate_rotation(self.rotation + Vec3(0, 90, 0), curve=curve.linear, duration=.2)
     
     def rotate_left(self):
         print(self.name + ': rotated to the left')
-        self.rotation -= Vec3(0, 90, 0)
+        self.animate_rotation(self.rotation - Vec3(0, 90, 0), curve=curve.linear, duration=.2)
     
     def rotate_randomly(self):
         random.choice([self.rotate_right, self.rotate_left])()
@@ -60,7 +62,8 @@ class Agent(Entity):
         return True
 
     def blocksAhead(self, world):
-        next_position = round(Vec3(self.position + self.forward - Vec3(0, 1, 0)))
+        print(self.Forward())
+        next_position = self.position + self.Forward() - Vec3(0, 1, 0)
         count = -1
         while next_position in world.static_map:
             count += 1
@@ -68,12 +71,12 @@ class Agent(Entity):
         return count
     
     def entityAhead(self, world):
-        next_position = round(Vec3(self.position + self.forward))
+        next_position = Vec3(self.position + self.Forward())
         if next_position in world.entities_map:
             return type(world.entities_map[next_position].__name__)
         else:
             return None
     
     def agentAhead(self, world):
-        next_position = Vec3(self.position + self.forward)
+        next_position = Vec3(self.position + self.Forward())
         return next_position in world.agents_map
