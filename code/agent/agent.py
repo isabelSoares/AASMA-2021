@@ -14,6 +14,9 @@ class Agent(Entity):
             origin = Vec3(0, -0.25, 0)
         )
     
+    def decision(self, world):
+        random.choice([self.move, self.rotate_right, self.rotate_left])(world)
+    
     def Forward(self):
         return round(Vec3(self.forward))
     
@@ -30,11 +33,11 @@ class Agent(Entity):
         self.animate_position(self.position + self.Forward(), curve=curve.linear, duration=.2)
         self.animate_position(self.position + Vec3(0, 1, 0), curve=curve.linear, duration=.08)
     
-    def rotate_right(self):
+    def rotate_right(self, world):
         print(self.name + ': rotated to the right')
         self.animate_rotation(self.rotation + Vec3(0, 90, 0), curve=curve.linear, duration=.2)
     
-    def rotate_left(self):
+    def rotate_left(self, world):
         print(self.name + ': rotated to the left')
         self.animate_rotation(self.rotation - Vec3(0, 90, 0), curve=curve.linear, duration=.2)
     

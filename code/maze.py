@@ -21,29 +21,38 @@ setup_window()
 setup_camera(position = Vec3(50,50,50), look_at = map_info["center"])
 
 world = map_info['world']
+agents = map_info['agents'].values()
 
+t = 0
 def update():
-    sleep(0.2)
+    global t
+    t += time.dt
+    if t > 1:
+        t = 0
+        for agent in agents:
+            agent.decision(world)
 
-    if held_keys['q']:
+def input(key):
+
+    if key == 'q':
         print(map_info['agents']['RED'].position)
         print("teste")
 
     # Just checking agent functions
-    elif held_keys['d']: # rotate right
+    elif key == 'd': # rotate right
         map_info['agents']['RED'].rotate_right()
-    elif held_keys['a']: # rotate left
+    elif key == 'a': # rotate left
         map_info['agents']['RED'].rotate_left()
-    elif held_keys['s']: # rotate randomly
+    elif key == 's': # rotate randomly
         map_info['agents']['RED'].rotate_randomly()
-    elif held_keys['w']: # move forward
+    elif key == 'w': # move forward
         map_info['agents']['RED'].move(world)
 
     # Just checking world functions
-    elif held_keys['o']:
+    elif key == 'o':
         block = map_info["world"].get_static_block(Vec3(3,0,0))
         if block != None: block.color = color.rgba(38,213,147)
-    elif held_keys['p']:
+    elif key == 'p':
         positions = [Vec3(3,0,0), Vec3(3,1,-1)]
         if map_info["world"].get_static_block(positions[0]) != None: map_info["world"].update_static_block(positions[0], positions[1])
         else: map_info["world"].update_static_block(positions[1], positions[0])
