@@ -2,8 +2,6 @@ from ursina import *
 from time import sleep
 import random
 
-GREEN_COLOR = color.rgba(21,127,21)
-RED_COLOR = color.rgba(141,25,25)
 NORTH = 0
 EAST = 1
 SOUTH = 2
@@ -16,7 +14,9 @@ class Agent(Entity):
             name = 'Agent ' + name,
             model = model,
             position = Vec3(position),
-            color = color
+            color = color,
+            scale = Vec3(1, 2, 1),
+            origin = Vec3(0, -0.25, 0)
         )
         self.direction = direction
     

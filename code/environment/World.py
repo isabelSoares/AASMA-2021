@@ -1,5 +1,6 @@
 from ursina import Vec3, color
 from environment.blocks.FloorBlock import FloorBlock
+from environment.blocks.WallBlock import WallBlock
 
 import math
 
@@ -8,6 +9,7 @@ class World():
 
         # Initializing variables
         self.static_map = {}
+        self.agents_map = {}
         self.entities_map = {}
 		
         # Create floor
@@ -38,6 +40,20 @@ class World():
         block.position = updated_position
         self.delete_static_block(current_position)
 
+    def get_agent(self, position):
+        if position in self.agents_map: return self.agents_map[position]
+        else: return None
+
+    def add_agent(self, position, agent):
+        self.agents_map[position] = agent
+
+    def update_agent(self, current_position, updated_position):
+        if current_position not in self.agents_map: return
+
+        agent = self.get_agent(current_position)
+        self.add_agent(updated_position, agent)
+        self.delete_agent(current_position)
+    
     def get_entity(self, position):
         if position in self.entities_map: return self.entities_map[position]
         else: return None
@@ -61,5 +77,12 @@ class World():
     def create_floor(self, from_position, to_position):
         for x in range(from_position[0], to_position[0] + 1, 1):
             for y in range(from_position[1], to_position[1] + 1, 1):
-                block = FloorBlock(position = (x, 0, y))
+                block = create_block_from_code("Floor", (x, 0, y))
                 self.static_map[Vec3(x, 0, y)] = block
+
+def create_block_from_code(code, position):
+
+    # Manual Switch (sadly)
+    if code == "Floor": return FloorBlock(position = position)
+    elif code == "Wall": return WallBlock(position = position)
+    
