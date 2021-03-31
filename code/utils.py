@@ -9,7 +9,6 @@ from agent.agent import Agent
 DEFAULT_CENTER = (0,0,0)
 DEFAULT_FLOOR_SIZE = (10, 10)
 # ============= DEFAULT AGENTS VARIABLES =============
-DEFAULT_MODEL = "cube"
 DEFAULT_COLOR = [255, 255, 255]
 
 def load_map_from_json_file(json_file):
@@ -54,16 +53,13 @@ def load_single_agent(json_agent, return_object):
     if "name" not in json_agent: sys.exit("Every agent should have at least a name and position")
     name = json_agent["name"]
 
-    model = DEFAULT_MODEL
-    if ("model" in json_agent): model = json_agent["model"]
-
     if "position" not in json_agent: sys.exit("Every agent should have at least a name and position")
     position = tuple(json_agent["position"])
 
     agent_color = DEFAULT_COLOR
     if ("color" in json_agent): agent_color = color.rgba(json_agent["color"][0], json_agent["color"][1], json_agent["color"][2])
 
-    new_agent = Agent(name, model, position, agent_color)
+    new_agent = Agent(name = name, position = position, color = agent_color)
     return_object["agents"][name] = new_agent
     return_object["world"].add_agent(position, new_agent)
 

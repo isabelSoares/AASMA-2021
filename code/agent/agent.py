@@ -3,15 +3,17 @@ from time import sleep
 import random
 from math import isclose
 
+char_texture = load_texture('textures/Char.png')
+
 class Agent(Entity):
-    def __init__(self, name = 'Unknown', model = 'cube', position = (0, 1, 0), color = color.rgba(0,0,0)):
+    def __init__(self, name = 'Unknown', model = 'textures/agent', position = (0, 1, 0), texture = char_texture, color = color.rgba(0,0,0)):
         super().__init__(
             name = 'Agent ' + name,
             model = model,
+            texture = texture,
             position = Vec3(position),
             color = color,
-            scale = Vec3(1, 2, 1),
-            origin = Vec3(0, -0.25, 0)
+            origin = Vec3(0, 1, 0)
         )
     
     def decision(self, world):
