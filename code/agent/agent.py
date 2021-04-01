@@ -1,7 +1,8 @@
+import random
 from ursina import *
 from time import sleep
-import random
 from math import isclose
+from environment.blocks.PressurePlate import PressurePlate
 
 char_texture = load_texture('textures/Char.png')
 
@@ -17,7 +18,16 @@ class Agent(Entity):
         )
     
     def decision(self, world):
+        last_position = self.position
         random.choice([self.move, self.rotate_right, self.rotate_left])(world)
+
+        #agent in the pressure plate
+        entity = world.get_entity(self.position)
+        last_entity = world.get_entity(last_position)
+        if (entity != None) & (last_position != self.position) & (isinstance(entity, PressurePlate)):
+            entity.state = True
+        elif (last_entity != None) & (last_position != self.position) & (isinstance(last_entity, PressurePlate)):
+            entity.state = False
     
     def Forward(self):
         return round(Vec3(self.forward))

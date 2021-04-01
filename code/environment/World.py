@@ -1,6 +1,7 @@
 from ursina import Vec3, color
 from environment.blocks.FloorBlock import FloorBlock
 from environment.blocks.WallBlock import WallBlock
+from environment.blocks.PressurePlate import PressurePlate
 
 import math
 
@@ -19,6 +20,12 @@ class World():
         from_position = (center[0] - radius_x, center[1] - radius_y)
         to_position = (center[0] + radius_x, center[1] + radius_y)
         self.create_floor(from_position, to_position)
+
+    def update(self):
+        for pos in self.entities_map:
+            entity = self.entities_map[pos]
+            entity.update()
+
 
     # ================== Attributes Management ==================
 
@@ -81,9 +88,10 @@ class World():
                 block = create_block_from_code("Floor", (x, 0, y))
                 self.static_map[Vec3(x, 0, y)] = block
 
-def create_block_from_code(code, position):
+def create_block_from_code(code, position, block_affected_pos = None):
 
     # Manual Switch (sadly)
     if code == "Floor": return FloorBlock(position = position)
     elif code == "Wall": return WallBlock(position = position)
+    elif code == "PressurePlate": return PressurePlate(position = position, block_affected_pos = block_affected_pos)
     

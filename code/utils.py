@@ -76,9 +76,20 @@ def load_map(json_object, return_object):
             if "position" not in block: sys.exit("Every map block should have at least a code and position")
             position = tuple(block["position"])
 
-            print("Oi")
-
             block_object = create_block_from_code(code, position)
             return_object["world"].add_static_block(position, block_object)
 
-    # TODO: Dealing with non static blocks
+
+    # Dealing with entities
+    if "entities" in json_object["map"]:
+        for block in json_object["map"]["entities"]:
+
+            if "code" not in block: sys.exit("Every map block should have at least a code and position")
+            code = block["code"]
+            if "position" not in block: sys.exit("Every map block should have at least a code and position")
+            position = tuple(block["position"])
+            if "block_affected_pos" not in block: block_affected_pos = None
+            else: block_affected_pos = tuple(block["block_affected_pos"])
+
+            block_object = create_block_from_code(code, position, block_affected_pos)
+            return_object["world"].add_entity(position, block_object)
