@@ -30,17 +30,22 @@ class World():
     # ================== Attributes Management ==================
 
     def get_static_block(self, position):
+        position = convert_vec3_to_key(position)
         if position in self.static_map: return self.static_map[position]
         else: return None
 
     def add_static_block(self, position, block):
+        position = convert_vec3_to_key(position)
         self.static_map[position] = block
         
     def delete_static_block(self, position):
+        position = convert_vec3_to_key(position)
         if position not in self.static_map: return
         del self.static_map[position]
 
     def update_static_block(self, current_position, updated_position):
+        current_position = convert_vec3_to_key(current_position)
+        updated_position = convert_vec3_to_key(updated_position)
         if current_position not in self.static_map: return
 
         block = self.get_static_block(current_position)
@@ -49,13 +54,22 @@ class World():
         self.delete_static_block(current_position)
 
     def get_agent(self, position):
+        position = convert_vec3_to_key(position)
         if position in self.agents_map: return self.agents_map[position]
         else: return None
 
     def add_agent(self, position, agent):
+        position = convert_vec3_to_key(position)
         self.agents_map[position] = agent
+    
+    def delete_agent(self, position):
+        position = convert_vec3_to_key(position)
+        if position not in self.agents_map: return
+        del self.agents_map[position]
 
     def update_agent(self, current_position, updated_position):
+        current_position = convert_vec3_to_key(current_position)
+        updated_position = convert_vec3_to_key(updated_position)
         if current_position not in self.agents_map: return
 
         agent = self.get_agent(current_position)
@@ -63,17 +77,22 @@ class World():
         self.delete_agent(current_position)
     
     def get_entity(self, position):
+        position = convert_vec3_to_key(position)
         if position in self.entities_map: return self.entities_map[position]
         else: return None
 
     def add_entity(self, position, entity):
+        position = convert_vec3_to_key(position)
         self.entities_map[position] = entity
         
     def delete_entity(self, position):
+        position = convert_vec3_to_key(position)
         if position not in self.entities_map: return
         del self.entities_map[position]
 
     def update_entity(self, current_position, updated_position):
+        current_position = convert_vec3_to_key(current_position)
+        updated_position = convert_vec3_to_key(updated_position)
         if current_position not in self.entities_map: return
 
         entity = self.get_entity(current_position)
@@ -86,7 +105,7 @@ class World():
         for x in range(from_position[0], to_position[0] + 1, 1):
             for y in range(from_position[1], to_position[1] + 1, 1):
                 block = create_block_from_code("Floor", (x, 0, y))
-                self.static_map[Vec3(x, 0, y)] = block
+                self.static_map[(x, 0, y)] = block
 
 def create_block_from_code(code, position, block_affected_pos = None):
 
@@ -95,3 +114,11 @@ def create_block_from_code(code, position, block_affected_pos = None):
     elif code == "Wall": return WallBlock(position = position)
     elif code == "PressurePlate": return PressurePlate(position = position, block_affected_pos = block_affected_pos)
     
+# ================== Auxiliary Methods ==================
+
+def convert_vec3_to_key(vec):
+    x = round(vec[0])
+    y = round(vec[1])
+    z = round(vec[2])
+
+    return (x, y, z)

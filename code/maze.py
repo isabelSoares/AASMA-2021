@@ -36,18 +36,18 @@ def update():
 def input(key):
 
     if key == 'q':
-        print(map_info['agents']['RED'].position)
+        print(map_info['agents']['BLUE'].position)
         print("teste")
 
     # Just checking agent functions
     elif key == 'd': # rotate right
-        map_info['agents']['RED'].rotate_right()
+        map_info['agents']['BLUE'].rotate_right(world)
     elif key == 'a': # rotate left
-        map_info['agents']['RED'].rotate_left()
+        map_info['agents']['BLUE'].rotate_left(world)
     elif key == 's': # rotate randomly
-        map_info['agents']['RED'].rotate_randomly()
+        map_info['agents']['BLUE'].rotate_randomly(world)
     elif key == 'w': # move forward
-        map_info['agents']['RED'].move(world)
+        map_info['agents']['BLUE'].move(world)
 
     # Just checking world functions
     elif key == 'o':
