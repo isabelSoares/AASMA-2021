@@ -17,16 +17,15 @@ class PressurePlate(TriggersBlock):
         )
 
     def update(self):
-        if self.state == self.last_state:
-            return False
+        if self.state == self.last_state: return False
         else:
             self.last_state = self.state
-            if self.state:
-                self.color = color.rgba(255,255,255,255)
-            else:
-                self.color = color.rgba(247, 202, 24, 255)
+            if self.state: self.color = color.rgba(255,255,255,255)
+            else: self.color = color.rgba(247, 202, 24, 255)
+            return True
 
     def affect_block(self, block):
-        pass
+        block.set_state(self.state)
+        block.update()
 
         

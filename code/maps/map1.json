@@ -13,11 +13,14 @@
         "static": [
             {"code": "Wall", "position": [-3, 1, 1]},
             {"code": "Wall", "position": [-3, 2, 1]},
-            {"code": "Wall", "position": [-3, 1, -1]}
+            {"code": "Wall", "position": [-3, 1, -1]},
+            {"code": "Wall", "position": [-3, 2, -1]},
+            {"code": "Wall", "position": [3, 1, 0]}
         ],
 
         "entities": [
-            {"code": "PressurePlate", "position": [1, 1, 0], "block_affected_pos": [0,0,0]}
+            {"code": "PressurePlate", "position": [1, 1, 0], "block_affected_pos": [-3,1,0]},
+            {"code": "Door", "position": [-3, 1, 0]}
         ]
     }
 }

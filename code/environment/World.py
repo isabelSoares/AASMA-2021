@@ -1,7 +1,9 @@
 from ursina import Vec3, color
 from environment.blocks.FloorBlock import FloorBlock
 from environment.blocks.WallBlock import WallBlock
+from environment.blocks.TriggersBlock import TriggersBlock
 from environment.blocks.PressurePlate import PressurePlate
+from environment.blocks.Door import Door
 
 import math
 
@@ -24,7 +26,11 @@ class World():
     def update(self):
         for pos in self.entities_map:
             entity = self.entities_map[pos]
-            entity.update()
+            if entity.update() & isinstance(entity, TriggersBlock): 
+                block_affected_pos = entity.get_block_affected_pos()
+                block = self.get_entity(block_affected_pos)
+                entity.affect_block(block)
+        
 
 
     # ================== Attributes Management ==================
@@ -113,6 +119,7 @@ def create_block_from_code(code, position, block_affected_pos = None):
     if code == "Floor": return FloorBlock(position = position)
     elif code == "Wall": return WallBlock(position = position)
     elif code == "PressurePlate": return PressurePlate(position = position, block_affected_pos = block_affected_pos)
+    elif code == "Door": return Door(position = position)
     
 # ================== Auxiliary Methods ==================
 
