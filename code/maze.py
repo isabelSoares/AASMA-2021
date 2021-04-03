@@ -29,8 +29,12 @@ def update():
     t += time.dt
     if t > 1:
         t = 0
+        print()
+        print('------------ ' + str(world.count) + ' ------------')
         for agent in agents:
-            agent.decision(world)
+            agents_decisions = []
+            agents_decisions.append(agent.decision(world, agents_decisions))
+        world.count += 1
         world.update()
 
 def input(key):

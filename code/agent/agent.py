@@ -4,6 +4,19 @@ from time import sleep
 
 char_texture = load_texture('textures/Char.png')
 
+# ============= ACTIONS VARIABLES =============
+MOVE_ONLY = 'MOVE_ONLY'
+MOVE_UP = 'MOVE_UP'
+MOVE_DOWN = 'MOVE_DOWN'
+ROTATE_LEFT = 'ROTATE_LEFT'
+ROTATE_RIGHT = 'ROTATE_RIGHT'
+MOVE_ONLY_TO_PRESSURE_PLATE = 'MOVE_ONLY_TO_PressurePlate'
+MOVE_ONLY_TO_DOOR = 'MOVE_ONLY_TO_Door'
+MOVE_UP_TO_PRESSURE_PLATE = 'MOVE_UP_TO_PressurePlate'
+MOVE_UP_TO_DOOR = 'MOVE_UP_TO_Door'
+MOVE_DOWN_TO_PRESSURE_PLATE = 'MOVE_DOWN_TO_PressurePlate'
+MOVE_DOWN_TO_DOOR = 'MOVE_DOWN_TO_Door'
+
 class Agent(Entity):
     def __init__(self, name = 'Unknown', model = 'textures/agent', position = (0, 1, 0), texture = char_texture, color = color.rgba(0,0,0)):
         super().__init__(
@@ -15,9 +28,29 @@ class Agent(Entity):
             origin = Vec3(0, 1, 0)
         )
     
-    def decision(self, world):
+    def decision(self, world, agents_decisions):
         last_position = self.position
-        next_position = random.choice([self.move, self.rotate_right, self.rotate_left])(world)
+
+        possible_actions_list = self.possible_actions(world, agents_decisions)
+        print(self.name + ':')
+        print('   - possible actions: ' + str(possible_actions_list))
+        a = random.choice(possible_actions_list)
+        if a == MOVE_ONLY or a == MOVE_ONLY_TO_PRESSURE_PLATE:
+            next_position = self.move_only(world)
+        elif a == MOVE_UP or a == MOVE_UP_TO_PRESSURE_PLATE:
+            next_position = self.move_up(world)
+        elif a == MOVE_DOWN or a == MOVE_DOWN_TO_PRESSURE_PLATE:
+            next_position = self.move_down(world)
+        elif a == ROTATE_LEFT:
+            next_position = self.rotate_left()
+        elif a == ROTATE_RIGHT:
+            next_position = self.rotate_right()
+        elif a == MOVE_ONLY_TO_DOOR:
+            print('   - \"There\'s a door here!\"')
+        elif a == MOVE_UP_TO_DOOR:
+            print('   - \"There\'s a door here!\"')
+        elif a == MOVE_DOWN_TO_DOOR:
+            print('   - \"There\'s a door here!\"')
 
         #agent in the pressure plate
         entity = world.get_entity(next_position)
@@ -26,76 +59,81 @@ class Agent(Entity):
             entity.state = True
         elif (last_entity != None) & (last_position != next_position) & (type(last_entity).__name__ == "PressurePlate"):
             last_entity.state = False
-    
+        
+        return next_position
+
     def Forward(self):
         return round(Vec3(self.forward))
     
-    def move(self, world):
-        if not self.canMove(world):
-            return self.position
-        print(self.name + ': moved forward')
+    def move_only(self, world):
+        print('   - moved forward')
         final_position = self.position + self.Forward()
-
         world.update_agent(self.position, final_position)
         self.animate_position(final_position, curve=curve.linear, duration=.2)
         return final_position
     
-    def jump(self, world):
-        print(self.name + ': jumped forward')
+    def move_up(self, world):
+        print('   - jumped forward')
         final_position = self.position + self.Forward() + Vec3(0, 1, 0)
-
         world.update_agent(self.position, final_position)
-        self.animate_position(self.position + self.Forward(), curve=curve.linear, duration=.2)
-        self.animate_position(self.position + Vec3(0, 1, 0), curve=curve.linear, duration=.08)
+        self.position = self.position + self.Forward() + Vec3(0, 1, 0)
+        return final_position
     
-    def rotate_right(self, world):
-        print(self.name + ': rotated to the right')
+    def move_down(self, world):
+        print('   - came down forward')
+        final_position = self.position + self.Forward() - Vec3(0, 1, 0)
+        world.update_agent(self.position, final_position)
+        self.position = self.position + self.Forward() - Vec3(0, 1, 0)
+        return final_position
+    
+    def rotate_right(self):
+        print('   - rotated to the right')
         self.animate_rotation(self.rotation + Vec3(0, 90, 0), curve=curve.linear, duration=.2)
         return self.position
     
-    def rotate_left(self, world):
-        print(self.name + ': rotated to the left')
+    def rotate_left(self):
+        print('   - rotated to the left')
         self.animate_rotation(self.rotation - Vec3(0, 90, 0), curve=curve.linear, duration=.2)
         return self.position
     
     def rotate_randomly(self):
         print('   - random choice')
         return random.choice([self.rotate_right, self.rotate_left])()
-
-    def canMove(self, world):
-        blocksAhead = self.blocksAhead(world)
-        if blocksAhead == -1:
-            print(self.name + ': FAILED to move forward - NO BLOCKS AHEAD')
-            return False
-        elif blocksAhead == 1:
-            self.jump(world)
-            return False
-        elif blocksAhead > 1:
-            print(self.name + ': FAILED to to jump forward - ' + str(blocksAhead) + ' VERY HIGH')
-            return False
-        
-        entity_type = self.entityAhead(world)
-        if entity_type == 'Door':
-            print(self.name + ': FAILED to move forward - DOOR AHEAD')
-            return False
-        
-        return True
-
-    def blocksAhead(self, world):
-        print(self.Forward())
-        next_position = self.position + self.Forward() - Vec3(0, 1, 0)
-        count = -1
-        while world.get_static_block(next_position) != None:
-            count += 1
-            next_position += Vec3(0, 1, 0)
-        return count
     
-    def entityAhead(self, world):
-        next_position = Vec3(self.position + self.Forward())
-        if world.get_entity(next_position) != None:
-            return type(world.get_entity(next_position)).__name__
-        else:
-            return None
+    def possible_actions(self, world, agents_decisions):
+        possible_actions_list = []
+        next_position = self.position + self.Forward()
+        if self.agentAhead(world) or (next_position in agents_decisions):
+            return [ROTATE_LEFT, ROTATE_RIGHT]
+        if world.get_static_block(next_position - Vec3(0, 1, 0)) != None \
+            and world.get_static_block(next_position) == None \
+            and world.get_static_block(next_position + Vec3(0, 1, 0)) == None \
+            and (next_position not in agents_decisions):
+            if world.get_entity(next_position) != None:
+                possible_actions_list.append('MOVE_ONLY_TO_' + type(world.get_entity(next_position)).__name__)
+            else:
+                possible_actions_list.append(MOVE_ONLY)
+        if world.get_static_block(next_position) != None \
+            and world.get_static_block(next_position + Vec3(0, 1, 0)) == None \
+            and world.get_static_block(next_position + Vec3(0, 2, 0)) == None \
+            and (next_position + Vec3(0, 1, 0) not in agents_decisions):
+            if world.get_entity(next_position + Vec3(0, 1, 0)) != None:
+                possible_actions_list.append('MOVE_UP_TO_' + type(world.get_entity(next_position)).__name__)
+            else:
+                possible_actions_list.append(MOVE_UP)
+        if world.get_static_block(next_position - Vec3(0, 2, 0)) != None \
+            and world.get_static_block(next_position - Vec3(0, 1, 0)) == None \
+            and world.get_static_block(next_position) == None \
+            and world.get_static_block(next_position + Vec3(0, 1, 0)) == None \
+            and (next_position - Vec3(0, 1, 0) not in agents_decisions):
+            if world.get_entity(next_position - Vec3(0, 1, 0)) != None:
+                possible_actions_list.append('MOVE_DOWN_TO_' + type(world.get_entity(next_position)).__name__)
+            else:
+                possible_actions_list.append(MOVE_DOWN)
+        possible_actions_list.append(ROTATE_LEFT)
+        possible_actions_list.append(ROTATE_RIGHT)
+      
+        return possible_actions_list
     
     def agentAhead(self, world):
         next_position = Vec3(self.position + self.Forward())
