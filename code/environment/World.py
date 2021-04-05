@@ -1,4 +1,4 @@
-from ursina import Vec3, color
+from ursina import Vec3, color, Text, Entity, camera, Panel
 from environment.blocks.FloorBlock import FloorBlock
 from environment.blocks.WallBlock import WallBlock
 from environment.blocks.TriggersBlock import TriggersBlock
@@ -7,14 +7,80 @@ from environment.blocks.Door import Door
 
 import math
 
+class Metrics:
+    def __init__(self):
+        self.selected_agent = None
+
+        self.time = 0
+        self.steps = {}
+        self.pressure_plates_activated = {}
+        self.blocks_placed = {}
+        self.blocks_removed = {}
+
+    def initialize_for_agent(self, agent):
+        self.steps[agent] = 0
+        self.pressure_plates_activated[agent] = 0
+        self.blocks_placed[agent] = 0
+        self.blocks_removed[agent] = 0
+
+    def export_content(self, panel):
+        selection = panel.input_player.children[0].text.replace(" Selected", "")
+        # No ternary operator :'(
+        self.selected_agent = None if selection == "All Players" else selection
+
+        steps, pressure_plates_activated, blocks_placed, blocks_removed = 0, 0, 0, 0
+        if (self.selected_agent == None):
+            for agent in self.steps: steps += self.steps[agent]
+            for agent in self.pressure_plates_activated: pressure_plates_activated += self.pressure_plates_activated[agent]
+            for agent in self.blocks_placed: blocks_placed += self.blocks_placed[agent]
+            for agent in self.blocks_removed: blocks_removed += self.blocks_removed[agent]
+
+        else:
+            steps = self.steps[self.selected_agent]
+            pressure_plates_activated = self.pressure_plates_activated[self.selected_agent]
+            blocks_placed = self.blocks_placed[self.selected_agent]
+            blocks_removed = self.blocks_removed[self.selected_agent]
+
+        optional_tag = ""
+        if self.selected_agent != None: optional_tag = " (individualy)"
+        information_to_display = [
+            "Time: " + str(self.time),
+            "Steps" + optional_tag + ": " + str(steps),
+            "Pressure Plate Activations" + optional_tag + ": " + str(pressure_plates_activated),
+            "Blocks Placed by Agents" + optional_tag + ": " + str(blocks_placed),
+            "Blocks Removed by Agents" + optional_tag + ": " + str(blocks_removed),
+        ]
+
+        for index in range(len(information_to_display)):
+            information = information_to_display[index]
+            if index < len(panel.item_parent.children): panel.item_parent.children[index].text = information
+
+class InfoPanel(Panel):
+    def __init__(self):
+        super().__init__(
+            scale = (.4, .4),
+            origin = (0, 0),
+            position = (-.69, .29),
+        )
+
+        self.item_parent = Entity(parent=self)
+        self.input_speed = Entity(parent=self)
+        self.input_player = Entity(parent=self)
+
+    def get_time_tick(self):
+        return self.input_speed.children[0].value
+
 class World():
     def __init__(self, center = (0,0,0), size = (5, 5)):
 
-        # Initializing variables
+        # Initializing variables defining world
         self.static_map = {}
         self.agents_map = {}
         self.entities_map = {}
         self.count = 0
+
+        # Initializing metrics
+        self.metrics = Metrics()
 		
         # Create floor
         radius_x = math.ceil((size[0] - 1) / 2)
@@ -24,6 +90,9 @@ class World():
         self.create_floor(from_position, to_position)
 
     def update(self):
+
+        self.metrics.time = self.metrics.time + 1
+
         for pos in self.entities_map:
             entity = self.entities_map[pos]
             if entity.update() & isinstance(entity, TriggersBlock): 
@@ -67,6 +136,7 @@ class World():
     def add_agent(self, position, agent):
         position = convert_vec3_to_key(position)
         self.agents_map[position] = agent
+        self.metrics.initialize_for_agent(agent.name.replace("Agent ", ""))
     
     def delete_agent(self, position):
         position = convert_vec3_to_key(position)
@@ -104,6 +174,9 @@ class World():
         entity = self.get_entity(current_position)
         self.add_entity(updated_position, entity)
         self.delete_entity(current_position)
+    
+    def export_metrics_content(self, panel):
+        self.metrics.export_content(panel)
 
     # ================== Auxiliary Methods ==================
 

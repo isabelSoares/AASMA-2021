@@ -2,6 +2,7 @@ import random
 from ursina import *
 from time import sleep
 
+animation_duration_tick_proportion = .2
 char_texture = load_texture('textures/Char.png')
 
 # ============= ACTIONS VARIABLES =============
@@ -27,6 +28,8 @@ class Agent(Entity):
             color = color,
             origin = Vec3(0, 1, 0)
         )
+
+        self.animation_duration = animation_duration_tick_proportion
     
     def decision(self, world, agents_decisions):
         last_position = self.position
@@ -46,10 +49,13 @@ class Agent(Entity):
         elif a == ROTATE_RIGHT:
             next_position = self.rotate_right()
         elif a == MOVE_ONLY_TO_DOOR:
+            next_position = self.position;
             print('   - \"There\'s a door here!\"')
         elif a == MOVE_UP_TO_DOOR:
+            next_position = self.position;
             print('   - \"There\'s a door here!\"')
         elif a == MOVE_DOWN_TO_DOOR:
+            next_position = self.position;
             print('   - \"There\'s a door here!\"')
 
         #agent in the pressure plate
@@ -69,7 +75,7 @@ class Agent(Entity):
         print('   - moved forward')
         final_position = self.position + self.Forward()
         world.update_agent(self.position, final_position)
-        self.animate_position(final_position, curve=curve.linear, duration=.2)
+        self.animate_position(final_position, curve=curve.linear, duration=self.animation_duration)
         return final_position
     
     def move_up(self, world):
@@ -88,12 +94,12 @@ class Agent(Entity):
     
     def rotate_right(self):
         print('   - rotated to the right')
-        self.animate_rotation(self.rotation + Vec3(0, 90, 0), curve=curve.linear, duration=.2)
+        self.animate_rotation(self.rotation + Vec3(0, 90, 0), curve=curve.linear, duration=self.animation_duration)
         return self.position
     
     def rotate_left(self):
         print('   - rotated to the left')
-        self.animate_rotation(self.rotation - Vec3(0, 90, 0), curve=curve.linear, duration=.2)
+        self.animate_rotation(self.rotation - Vec3(0, 90, 0), curve=curve.linear, duration=self.animation_duration)
         return self.position
     
     def rotate_randomly(self):
@@ -138,3 +144,8 @@ class Agent(Entity):
     def agentAhead(self, world):
         next_position = Vec3(self.position + self.Forward())
         return world.get_agent(next_position) != None
+
+    # ================== Auxiliary Methods ==================
+
+    def set_animation_duration(self, tick_time):
+        self.animation_duration = animation_duration_tick_proportion * tick_time
