@@ -200,7 +200,7 @@ class Agent(Entity):
             else:
                 possible_actions_list.append(MOVE_DOWN)
 
-        if self.number_of_blocks > 0 and minus_1_block == None:
+        if self.number_of_blocks > 0 and minus_1_block == None and _0_block == None:
             possible_actions_list.append(CREATE_DOWN_BLOCK)
         if self.number_of_blocks > 0 and _0_block == None and minus_1_block != None:
             possible_actions_list.append(CREATE_ONLY_BLOCK)
