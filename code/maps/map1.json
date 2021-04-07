@@ -5,8 +5,8 @@
     },
 
     "agents": [
-        {"name": "BLUE", "position": [0, 1, 0], "color": [111,187,211], "block_color": [153,197,143], "number_of_blocks": 1},
-        {"name": "GREEN", "position": [-2, 1, 1], "color": [153,197,143], "block_color": [111,187,211], "number_of_blocks": 1}
+        {"name": "BLUE", "position": [0, 1, 0], "color": [111,187,211], "block_color": [255,69,0], "number_of_blocks": 1},
+        {"name": "ORANGE", "position": [-2, 1, 1], "color": [255,69,0], "block_color": [111,187,211], "number_of_blocks": 1}
     ],
 
     "map": {
