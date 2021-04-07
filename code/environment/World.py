@@ -1,5 +1,7 @@
-from ursina import Vec3, color, Text, Entity, camera, Panel
+from ursina import Vec3, color, Text, Entity, camera, Panel, destroy
 from environment.blocks.FloorBlock import FloorBlock
+from environment.blocks.AgentBlock import AgentBlock
+from environment.blocks.WinningPostBlock import WinningPostBlock
 from environment.blocks.WallBlock import WallBlock
 from environment.blocks.TriggersBlock import TriggersBlock
 from environment.blocks.PressurePlate import PressurePlate
@@ -75,6 +77,8 @@ class World():
 
         # Initializing variables defining world
         self.static_map = {}
+        self.goal_map = {}
+        self.dynamic_map = {}
         self.agents_map = {}
         self.entities_map = {}
         self.count = 0
@@ -112,11 +116,19 @@ class World():
     def add_static_block(self, position, block):
         position = convert_vec3_to_key(position)
         self.static_map[position] = block
+    
+    def create_agent_block(self, position, agent_name, color):
+        position = convert_vec3_to_key(position)
+        self.static_map[position] = AgentBlock(position, agent_name, color)
         
     def delete_static_block(self, position):
         position = convert_vec3_to_key(position)
         if position not in self.static_map: return
+        destroy(self.static_map[position])
         del self.static_map[position]
+    
+    def break_agent_block(self, position):
+        self.delete_static_block(position)
 
     def update_static_block(self, current_position, updated_position):
         current_position = convert_vec3_to_key(current_position)
@@ -185,11 +197,16 @@ class World():
             for y in range(from_position[1], to_position[1] + 1, 1):
                 block = create_block_from_code("Floor", (x, 0, y))
                 self.static_map[(x, 0, y)] = block
+        
+        for y in range(from_position[1], to_position[1] + 1, 1):
+            block = create_block_from_code("WinningPost", (to_position[0] + 1, 0, y))
+            self.goal_map[(to_position[0] + 1, 0, y)] = block
 
 def create_block_from_code(code, position, block_affected_pos = None):
 
     # Manual Switch (sadly)
     if code == "Floor": return FloorBlock(position = position)
+    elif code == "WinningPost": return WinningPostBlock(position = position)
     elif code == "Wall": return WallBlock(position = position)
     elif code == "PressurePlate": return PressurePlate(position = position, block_affected_pos = block_affected_pos)
     elif code == "Door": return Door(position = position)

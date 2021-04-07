@@ -59,7 +59,11 @@ def load_single_agent(json_agent, return_object):
     agent_color = DEFAULT_COLOR
     if ("color" in json_agent): agent_color = color.rgba(json_agent["color"][0], json_agent["color"][1], json_agent["color"][2])
 
-    new_agent = Agent(name = name, position = position, color = agent_color)
+    block_color = color.rgba(json_agent["block_color"][0], json_agent["block_color"][1], json_agent["block_color"][2])
+
+    number_of_blocks = json_agent["number_of_blocks"]
+
+    new_agent = Agent(name = name, position = position, color = agent_color, block_color = block_color, number_of_blocks = number_of_blocks)
     return_object["agents"][name] = new_agent
     return_object["world"].add_agent(position, new_agent)
 

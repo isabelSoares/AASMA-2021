@@ -18,7 +18,7 @@ map_info = load_map_from_json_file(sys.argv[1])
 
 # Setup window, camera and window panel
 setup_window(borderless = False)
-setup_camera(position = Vec3(50,50,50), look_at = map_info["center"])
+setup_camera(position = Vec3(-50,50,-50), look_at = map_info["center"])
 
 world = map_info['world']
 agents = map_info['agents'].values()
