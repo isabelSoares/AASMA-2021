@@ -1,0 +1,81 @@
+{
+    "world": {
+        "center": [0, 0, 0],
+        "floor-size": [10, 5]
+    },
+
+    "agents": [
+        {"name": "BLUE", "position": [-5, 1, 1], "color": [111,187,211], "block_color": [153,197,143], "number_of_blocks": 1},
+        {"name": "GREEN", "position": [-5, 1, -1], "color": [153,197,143], "block_color": [111,187,211], "number_of_blocks": 1}
+    ],
+
+    "map": {
+        "static": [
+            {"code": "Wall", "position": [-2, 1, 2]},
+            {"code": "Wall", "position": [-2, 2, 2]},
+            {"code": "Wall", "position": [-2, 3, 2]},
+            {"code": "Wall", "position": [-2, 3, 1]},
+            {"code": "Wall", "position": [-2, 1, 0]},
+            {"code": "Wall", "position": [-2, 2, 0]},
+            {"code": "Wall", "position": [-2, 3, 0]},
+            {"code": "Wall", "position": [-2, 1, -1]},
+            {"code": "Wall", "position": [-2, 2, -1]},
+            {"code": "Wall", "position": [-2, 3, -1]},
+            {"code": "Wall", "position": [-2, 1, -2]},
+            {"code": "Wall", "position": [-2, 2, -2]},
+            {"code": "Wall", "position": [-2, 3, -2]},
+
+            {"code": "Wall", "position": [2, 1, 2]},
+            {"code": "Wall", "position": [2, 2, 2]},
+            {"code": "Wall", "position": [2, 3, 2]},
+            {"code": "Wall", "position": [2, 1, 1]},
+            {"code": "Wall", "position": [2, 2, 1]},
+            {"code": "Wall", "position": [2, 3, 1]},
+            {"code": "Wall", "position": [2, 1, 0]},
+            {"code": "Wall", "position": [2, 2, 0]},
+            {"code": "Wall", "position": [2, 3, 0]},
+            {"code": "Wall", "position": [2, 1, -1]},
+            {"code": "Wall", "position": [2, 2, -1]},
+            {"code": "Wall", "position": [2, 3, -1]},
+            {"code": "Wall", "position": [2, 1, -2]},
+            {"code": "Wall", "position": [2, 2, -2]},
+            {"code": "Wall", "position": [2, 3, -2]},
+
+
+            {"code": "Wall", "position": [2, 3, -2]},
+            {"code": "Wall", "position": [2, 3, -1]},
+            {"code": "Wall", "position": [2, 3, 0]},
+            {"code": "Wall", "position": [2, 3, 1]},
+            {"code": "Wall", "position": [2, 3, 2]},
+
+            {"code": "Wall", "position": [3, 3, -2]},
+            {"code": "Wall", "position": [3, 3, -1]},
+            {"code": "Wall", "position": [3, 3, 0]},
+            {"code": "Wall", "position": [3, 3, 1]},
+            {"code": "Wall", "position": [3, 3, 2]},
+
+            {"code": "Wall", "position": [4, 3, -2]},
+            {"code": "Wall", "position": [4, 3, -1]},
+            {"code": "Wall", "position": [4, 3, 0]},
+            {"code": "Wall", "position": [4, 3, 1]},
+            {"code": "Wall", "position": [4, 3, 2]},
+
+            {"code": "Wall", "position": [5, 3, -2]},
+            {"code": "Wall", "position": [5, 3, -1]},
+            {"code": "Wall", "position": [5, 3, 0]},
+            {"code": "Wall", "position": [5, 3, 1]},
+            {"code": "Wall", "position": [5, 3, 2]},
+
+            {"code": "WinningPost", "position": [6, 3, -2]},
+            {"code": "WinningPost", "position": [6, 3, -1]},
+            {"code": "WinningPost", "position": [6, 3, 0]},
+            {"code": "WinningPost", "position": [6, 3, 1]},
+            {"code": "WinningPost", "position": [6, 3, 2]}
+        ],
+
+        "entities": [
+            {"code": "PressurePlate", "position": [-4, 1, -1], "block_affected_pos": [-2,1,1]},
+            {"code": "Door", "position": [-2, 1, 1]}
+        ]
+    }
+}

@@ -198,9 +198,9 @@ class World():
                 block = create_block_from_code("Floor", (x, 0, y))
                 self.static_map[(x, 0, y)] = block
         
-        for y in range(from_position[1], to_position[1] + 1, 1):
-            block = create_block_from_code("WinningPost", (to_position[0] + 1, 0, y))
-            self.goal_map[(to_position[0] + 1, 0, y)] = block
+        #for y in range(from_position[1], to_position[1] + 1, 1):
+        #    block = create_block_from_code("WinningPost", (to_position[0] + 1, 0, y))
+        #    self.goal_map[(to_position[0] + 1, 0, y)] = block
 
 def create_block_from_code(code, position, block_affected_pos = None):
 
