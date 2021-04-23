@@ -20,7 +20,8 @@ def setup_panel(panel, min, start_value, max, step, agents):
         "Steps (individualy): 0",
         "Pressure Plate Activations (individualy): 0",
         "Blocks Placed by Agents (individualy): 0",
-        "Blocks Removed by Agents (individualy): 0"
+        "Blocks Removed by Agents (individualy): 0",
+        "Messages Sent by Agents (individualy): 0",
     ]
 
     spacing = .08
@@ -29,16 +30,16 @@ def setup_panel(panel, min, start_value, max, step, agents):
         item = Text(text=information, parent=panel.item_parent, scale_override=1.75, origin=(-.5, 0), position=(-.45, .4 - + index * spacing))
 
     # ======== Input Display ========
-    slider = Slider(min, max, default=start_value, step=step, parent=panel.input_speed, scale=1.5, position=(-.25 * 1.5, - .075))
+    slider = Slider(min, max, default=start_value, step=step, parent=panel.input_speed, scale=1.5, position=(-.25 * 1.5, - .125))
 
     # ======== Input Player Display ========
-    text = Text(text="All Players Selected", parent=panel.input_player, scale_override=1.5, origin=(-.5, 0), position=(0, -.15), x=-.25)
-    # TODO: Dynamically add possible player (not sure how to add buttons)
-    drop_down_button = DropdownMenu('Metrics refers to...', parent=panel.input_player, position=(0, -.175), buttons=(
-        DropdownMenuButton('All Players'),
-        DropdownMenuButton('BLUE'),
-        DropdownMenuButton('GREEN'),
-    ))
+    text = Text(text="All Players Selected", parent=panel.input_player, scale_override=1.5, origin=(-.5, 0), position=(0, -.2), x=-.25)
+
+    drop_down_button = DropdownMenu('Metrics refers to...', parent=panel.input_player, position=(0, -.225), buttons=(DropdownMenuButton('All Players'),))
+    agents_list = list(agents)
+    for agent_index, agent_name in enumerate(agents_list):
+        drop_down_button.buttons += (DropdownMenuButton(agent_name, world_parent=drop_down_button, position=(0, - (agent_index + 2) *.99)),)
+        drop_down_button.buttons[agent_index + 1].scale = drop_down_button.buttons[0].scale
 
     for button in drop_down_button.buttons:
         def on_click(button=button): text.text = button.text + " Selected"

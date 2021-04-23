@@ -18,30 +18,34 @@ class Metrics:
         self.pressure_plates_activated = {}
         self.blocks_placed = {}
         self.blocks_removed = {}
+        self.messages_sent = {}
 
     def initialize_for_agent(self, agent):
         self.steps[agent] = 0
         self.pressure_plates_activated[agent] = 0
         self.blocks_placed[agent] = 0
         self.blocks_removed[agent] = 0
+        self.messages_sent[agent] = 0
 
     def export_content(self, panel):
         selection = panel.input_player.children[0].text.replace(" Selected", "")
         # No ternary operator :'(
         self.selected_agent = None if selection == "All Players" else selection
 
-        steps, pressure_plates_activated, blocks_placed, blocks_removed = 0, 0, 0, 0
+        steps, pressure_plates_activated, blocks_placed, blocks_removed, messages_sent = 0, 0, 0, 0, 0
         if (self.selected_agent == None):
             for agent in self.steps: steps += self.steps[agent]
             for agent in self.pressure_plates_activated: pressure_plates_activated += self.pressure_plates_activated[agent]
             for agent in self.blocks_placed: blocks_placed += self.blocks_placed[agent]
             for agent in self.blocks_removed: blocks_removed += self.blocks_removed[agent]
+            for agent in self.messages_sent: messages_sent += self.messages_sent[agent]
 
         else:
             steps = self.steps[self.selected_agent]
             pressure_plates_activated = self.pressure_plates_activated[self.selected_agent]
             blocks_placed = self.blocks_placed[self.selected_agent]
             blocks_removed = self.blocks_removed[self.selected_agent]
+            messages_sent = self.messages_sent[self.selected_agent]
 
         optional_tag = ""
         if self.selected_agent != None: optional_tag = " (individualy)"
@@ -51,6 +55,7 @@ class Metrics:
             "Pressure Plate Activations" + optional_tag + ": " + str(pressure_plates_activated),
             "Blocks Placed by Agents" + optional_tag + ": " + str(blocks_placed),
             "Blocks Removed by Agents" + optional_tag + ": " + str(blocks_removed),
+            "Messages Sent by Agents" + optional_tag + ": " + str(messages_sent),
         ]
 
         for index in range(len(information_to_display)):
@@ -120,6 +125,9 @@ class World():
     def create_agent_block(self, position, agent_name, color):
         position = convert_vec3_to_key(position)
         self.static_map[position] = AgentBlock(position, agent_name, color)
+        # Update metric
+        tmp_agent_name = agent_name.replace("Agent ", "")
+        self.metrics.blocks_placed[tmp_agent_name] += + 1
         
     def delete_static_block(self, position):
         position = convert_vec3_to_key(position)
@@ -127,8 +135,11 @@ class World():
         destroy(self.static_map[position])
         del self.static_map[position]
     
-    def break_agent_block(self, position):
+    def break_agent_block(self, position, agent_name):
         self.delete_static_block(position)
+        # Update metric
+        tmp_agent_name = agent_name.replace("Agent ", "")
+        self.metrics.blocks_removed[tmp_agent_name] += + 1
 
     def update_static_block(self, current_position, updated_position):
         current_position = convert_vec3_to_key(current_position)
@@ -145,10 +156,14 @@ class World():
         if position in self.agents_map: return self.agents_map[position]
         else: return None
 
-    def add_agent(self, position, agent):
+    def first_add_agent(self, position, agent):
         position = convert_vec3_to_key(position)
         self.agents_map[position] = agent
         self.metrics.initialize_for_agent(agent.name.replace("Agent ", ""))
+
+    def add_agent(self, position, agent):
+        position = convert_vec3_to_key(position)
+        self.agents_map[position] = agent
     
     def delete_agent(self, position):
         position = convert_vec3_to_key(position)
@@ -158,11 +173,26 @@ class World():
     def update_agent(self, current_position, updated_position):
         current_position = convert_vec3_to_key(current_position)
         updated_position = convert_vec3_to_key(updated_position)
-        if current_position not in self.agents_map: return
+        if current_position not in self.agents_map or current_position == updated_position: return
 
         agent = self.get_agent(current_position)
         self.add_agent(updated_position, agent)
         self.delete_agent(current_position)
+
+        # Agent in the pressure plate?
+        pressurePlateStepedOn = False
+        entity = self.get_entity(updated_position)
+        last_entity = self.get_entity(current_position)
+        if (entity != None) & (type(entity).__name__ == "PressurePlate"):
+            entity.state = True
+            pressurePlateStepedOn = True
+        elif (last_entity != None) & (type(last_entity).__name__ == "PressurePlate"):
+            last_entity.state = False
+
+        # Update metrics
+        agent_name = agent.name.replace("Agent ", "")
+        self.metrics.steps[agent_name] += + 1
+        if pressurePlateStepedOn: self.metrics.pressure_plates_activated[agent_name] += + 1
     
     def get_entity(self, position):
         position = convert_vec3_to_key(position)

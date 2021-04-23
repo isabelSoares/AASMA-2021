@@ -88,27 +88,19 @@ class Agent(Entity):
             print('   - \"Block created at (x,y,z) = ' + str(tuple(self.position + self.Forward() - Vec3(0,1,0))) + '!\"')
         elif a == BREAK_ONLY_BLOCK:
             next_position = self.position
-            world.break_agent_block(self.position + self.Forward())
+            world.break_agent_block(self.position + self.Forward(), self.name)
             self.number_of_blocks += 1
             print('   - \"Block broke at (x,y,z) = ' + str(tuple(self.position + self.Forward())) + '!\"')
         elif a == BREAK_UP_BLOCK:
             next_position = self.position
-            world.break_agent_block(self.position + self.Forward() + Vec3(0,1,0))
+            world.break_agent_block(self.position + self.Forward() + Vec3(0,1,0), self.name)
             self.number_of_blocks += 1
             print('   - \"Block broke at (x,y,z) = ' + str(tuple(self.position + self.Forward() + Vec3(0,1,0))) + '!\"')
         elif a == BREAK_DOWN_BLOCK:
             next_position = self.position
-            world.break_agent_block(self.position + self.Forward() - Vec3(0,1,0))
+            world.break_agent_block(self.position + self.Forward() - Vec3(0,1,0), self.name)
             self.number_of_blocks += 1
             print('   - \"Block broke at (x,y,z) = ' + str(tuple(self.position + self.Forward() - Vec3(0,1,0))) + '!\"')
-
-        #agent in the pressure plate
-        entity = world.get_entity(next_position)
-        last_entity = world.get_entity(last_position)
-        if (entity != None) & (last_position != next_position) & (type(entity).__name__ == "PressurePlate"):
-            entity.state = True
-        elif (last_entity != None) & (last_position != next_position) & (type(last_entity).__name__ == "PressurePlate"):
-            last_entity.state = False
         
         return next_position
 

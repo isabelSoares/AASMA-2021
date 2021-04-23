@@ -65,7 +65,7 @@ def load_single_agent(json_agent, return_object):
 
     new_agent = Agent(name = name, position = position, color = agent_color, block_color = block_color, number_of_blocks = number_of_blocks)
     return_object["agents"][name] = new_agent
-    return_object["world"].add_agent(position, new_agent)
+    return_object["world"].first_add_agent(position, new_agent)
 
 def load_map(json_object, return_object):
 
