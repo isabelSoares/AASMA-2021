@@ -13,8 +13,9 @@ from environment.World import World, InfoPanel
 from agent.agent import *
 
 # Check if file was given in arguments and load it
-if len(sys.argv) <= 1: sys.exit("Please provide a file to read the map from as an argument.")
-map_info = load_map_from_json_file(sys.argv[1])
+if len(sys.argv) <= 2: sys.exit("Please provide a type of agent and file to read the map from as an argument. Example: python ./maze.py random ./maps/map1.json")
+type_of_agent = sys.argv[1]
+map_info = load_map_from_json_file(type_of_agent, sys.argv[2])
 
 # Setup window, camera and window panel
 setup_window(borderless = False)

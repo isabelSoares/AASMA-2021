@@ -3,7 +3,9 @@ import sys
 
 from ursina import color
 from environment.World import World, create_block_from_code
+# ============= IMPORT VARIOUS TYPES OF AGENTS =============
 from agent.agent import Agent
+from agent.RandomAgent import RandomAgent
 
 # ============= DEFAULT WORLD VARIABLES =============
 DEFAULT_CENTER = (0,0,0)
@@ -11,13 +13,13 @@ DEFAULT_FLOOR_SIZE = (10, 10)
 # ============= DEFAULT AGENTS VARIABLES =============
 DEFAULT_COLOR = [255, 255, 255]
 
-def load_map_from_json_file(json_file):
+def load_map_from_json_file(type_of_agent, json_file):
 
     with open(json_file) as f: data = json.load(f)
     return_object = {}
 
     load_world(data, return_object)
-    load_agents(data, return_object)
+    load_agents(type_of_agent, data, return_object)
     load_map(data, return_object)
 
     return return_object
@@ -38,17 +40,17 @@ def load_world(json_object, return_object):
     return_object["world"] = world
     print("DEBUG-LOAD: World loaded")
 
-def load_agents(json_object, return_object):
+def load_agents(type_of_agent, json_object, return_object):
 
     if "agents" not in json_object: return
 
     return_object["agents"] = {}
     for agent in json_object["agents"]:
-        load_single_agent(agent, return_object)
+        load_single_agent(type_of_agent, agent, return_object)
 
     print("DEBUG-LOAD: {} agent(s) loaded".format(len(return_object["agents"])))
 
-def load_single_agent(json_agent, return_object):
+def load_single_agent(type_of_agent, json_agent, return_object):
 
     if "name" not in json_agent: sys.exit("Every agent should have at least a name and position")
     name = json_agent["name"]
@@ -63,9 +65,17 @@ def load_single_agent(json_agent, return_object):
 
     number_of_blocks = json_agent["number_of_blocks"]
 
-    new_agent = Agent(name = name, position = position, color = agent_color, block_color = block_color, number_of_blocks = number_of_blocks)
+    new_agent = create_agent_acording_to_type(type_of_agent, name, position, agent_color, block_color, number_of_blocks)
     return_object["agents"][name] = new_agent
     return_object["world"].first_add_agent(position, new_agent)
+
+def create_agent_acording_to_type(type_of_agent, name, position, color, block_color, number_of_blocks):
+    if type_of_agent.lower() == 'mockup':
+        return Agent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks)
+    if type_of_agent.lower() == 'random':
+        return RandomAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks)
+    else:
+        sys.exit("That type of agent is not recognized. Current options: ['mockup', 'random']")
 
 def load_map(json_object, return_object):
 
