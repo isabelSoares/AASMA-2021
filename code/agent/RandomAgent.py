@@ -41,6 +41,7 @@ class RandomAgent(Agent):
 
         possible_actions_list = self.possible_actions(world, agents_decisions)
         print(self.name + ':')
+        print('   - distance to goal: ' + str(world.distance_provider(self.name, self)))
         print('   - possible actions: ' + str(possible_actions_list))
         a = random.choice(possible_actions_list)
         if a == MOVE_ONLY or a == MOVE_ONLY_TO_PRESSURE_PLATE or a == MOVE_ONLY_TO_GOAL or a == MOVE_ONLY_TO_AGENT_BLOCK:

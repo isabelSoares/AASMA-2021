@@ -1,4 +1,4 @@
-from ursina import Vec3, color, Text, Entity, camera, Panel, destroy
+from ursina import Vec3, color, Text, Entity, camera, Panel, destroy, ursinamath
 from environment.blocks.FloorBlock import FloorBlock
 from environment.blocks.AgentBlock import AgentBlock
 from environment.blocks.WinningPostBlock import WinningPostBlock
@@ -97,6 +97,12 @@ class World():
         from_position = (center[0] - radius_x, center[1] - radius_y)
         to_position = (center[0] + radius_x, center[1] + radius_y)
         self.create_floor(from_position, to_position)
+    
+    def distance_provider(self, agent_name, agent):
+        goal_block = self.get_goal_block(agent_name)
+        print(goal_block)
+        print(agent)
+        return ursinamath.distance(goal_block, agent)
 
     def update(self):
 
@@ -112,6 +118,13 @@ class World():
 
 
     # ================== Attributes Management ==================
+
+    def get_goal_block(self, agent_name):
+        if agent_name in self.goal_map: return self.goal_map[agent_name]
+        else: return None
+
+    def add_goal_block(self, agent_name, block):
+        self.goal_map["Agent " + agent_name] = block
 
     def get_static_block(self, position):
         position = convert_vec3_to_key(position)
