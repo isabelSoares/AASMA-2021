@@ -6,6 +6,7 @@ from environment.World import World, create_block_from_code
 # ============= IMPORT VARIOUS TYPES OF AGENTS =============
 from agent.agent import Agent
 from agent.RandomAgent import RandomAgent
+from agent.RLearningAgent import RLearningAgent
 
 # ============= DEFAULT WORLD VARIABLES =============
 DEFAULT_CENTER = (0,0,0)
@@ -72,8 +73,10 @@ def load_single_agent(type_of_agent, json_agent, return_object):
 def create_agent_acording_to_type(type_of_agent, name, position, color, block_color, number_of_blocks):
     if type_of_agent.lower() == 'mockup':
         return Agent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks)
-    if type_of_agent.lower() == 'random':
+    elif type_of_agent.lower() == 'random':
         return RandomAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks)
+    elif type_of_agent.lower() == 'rlearning':
+        return RLearningAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks)
     else:
         sys.exit("That type of agent is not recognized. Current options: ['mockup', 'random']")
 

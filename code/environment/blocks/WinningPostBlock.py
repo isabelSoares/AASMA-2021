@@ -8,3 +8,6 @@ class WinningPostBlock(Block):
             color = color.rgba(238, 236, 0, 255),
         )
         self.agent_name = agent_name
+    
+    def getAgentName(self):
+        return self.agent_name

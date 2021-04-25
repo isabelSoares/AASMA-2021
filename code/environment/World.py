@@ -6,6 +6,7 @@ from environment.blocks.WallBlock import WallBlock
 from environment.blocks.TriggersBlock import TriggersBlock
 from environment.blocks.PressurePlate import PressurePlate
 from environment.blocks.Door import Door
+from environment.messages.Message import Message
 
 import math
 
@@ -90,6 +91,12 @@ class World():
 
         # Initializing metrics
         self.metrics = Metrics()
+
+        # Initializing messages
+        self.messages_id_count = 1
+        self.need_help_messages = []
+        self.being_helped_messages = []
+        self.info_messages = []
 		
         # Create floor
         radius_x = math.ceil((size[0] - 1) / 2)
@@ -242,6 +249,22 @@ class World():
         #for y in range(from_position[1], to_position[1] + 1, 1):
         #    block = create_block_from_code("WinningPost", (to_position[0] + 1, 0, y))
         #    self.goal_map[(to_position[0] + 1, 0, y)] = block
+    
+    # ==================== Message flow ====================
+
+    def send_message(self, agent, position, needed_action, text):
+        self.need_help_messages.append(Message(self.messages_id_count, agent, position, needed_action, text))
+        self.messages_id_count += 1
+    
+    def going_to_solve_older_message(self):
+        message = self.need_help_messages.pop()
+        self.being_helped_messages[message.getId()] = message
+        return message
+    
+    def solve_message(self, id):
+        if id not in self.being_helped_messages: return
+        destroy(self.being_helped_messages[id])
+        del self.being_helped_messages[id]
 
 def create_block_from_code(code, position, block_affected_pos = None):
 
