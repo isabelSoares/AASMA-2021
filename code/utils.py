@@ -90,7 +90,10 @@ def load_map(json_object, return_object):
             if "position" not in block: sys.exit("Every map block should have at least a code and position")
             position = tuple(block["position"])
 
-            block_object = create_block_from_code(code, position)
+            if "agent_name" in block:
+                block_object = create_block_from_code(code, position, block["agent_name"])
+            else:
+                block_object = create_block_from_code(code, position)
             return_object["world"].add_static_block(position, block_object)
 
 

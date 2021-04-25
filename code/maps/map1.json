@@ -11,11 +11,8 @@
 
     "map": {
         "static": [
-            {"code": "WinningPost", "position": [6, 0, -2]},
-            {"code": "WinningPost", "position": [6, 0, -1]},
-            {"code": "WinningPost", "position": [6, 0, 0]},
-            {"code": "WinningPost", "position": [6, 0, 1]},
-            {"code": "WinningPost", "position": [6, 0, 2]}
+            {"code": "WinningPost", "position": [6, 0, -1], "agent_name": "BLUE"},
+            {"code": "WinningPost", "position": [6, 0, 1], "agent_name": "ORANGE"}
         ],
 
         "entities": [
