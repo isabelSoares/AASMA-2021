@@ -78,7 +78,7 @@ def create_agent_acording_to_type(type_of_agent, name, position, color, block_co
     elif type_of_agent.lower() == 'rlearning':
         return RLearningAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks)
     else:
-        sys.exit("That type of agent is not recognized. Current options: ['mockup', 'random']")
+        sys.exit("That type of agent is not recognized. Current options: ['mockup', 'random', 'rlearning']")
 
 def load_map(json_object, return_object):
 
