@@ -100,8 +100,6 @@ class World():
     
     def distance_provider(self, agent_name, agent):
         goal_block = self.get_goal_block(agent_name)
-        print(goal_block)
-        print(agent)
         return ursinamath.distance(goal_block, agent)
 
     def update(self):
