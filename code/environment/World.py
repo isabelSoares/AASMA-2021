@@ -1,4 +1,4 @@
-from ursina import Vec3, color, Text, Entity, camera, Panel, destroy, ursinamath
+from ursina import Vec3, color, Text, Entity, camera, destroy, ursinamath
 from environment.blocks.FloorBlock import FloorBlock
 from environment.blocks.AgentBlock import AgentBlock
 from environment.blocks.WinningPostBlock import WinningPostBlock
@@ -62,21 +62,6 @@ class Metrics:
         for index in range(len(information_to_display)):
             information = information_to_display[index]
             if index < len(panel.item_parent.children): panel.item_parent.children[index].text = information
-
-class InfoPanel(Panel):
-    def __init__(self):
-        super().__init__(
-            scale = (.4, .4),
-            origin = (0, 0),
-            position = (-.69, .29),
-        )
-
-        self.item_parent = Entity(parent=self)
-        self.input_speed = Entity(parent=self)
-        self.input_player = Entity(parent=self)
-
-    def get_time_tick(self):
-        return self.input_speed.children[0].value
 
 class World():
     def __init__(self, center = (0,0,0), size = (5, 5)):
@@ -255,16 +240,49 @@ class World():
     def send_message(self, agent, position, needed_action, text):
         self.need_help_messages.append(Message(self.messages_id_count, agent, position, needed_action, text))
         self.messages_id_count += 1
+        # Update metric
+        tmp_agent_name = agent.replace("Agent ", "")
+        self.metrics.messages_sent[tmp_agent_name] += + 1
     
     def going_to_solve_older_message(self):
         message = self.need_help_messages.pop()
         self.being_helped_messages[message.getId()] = message
+        # Update metric
+        tmp_agent_name = agent.replace("Agent ", "")
+        self.metrics.messages_sent[tmp_agent_name] += + 1
+
         return message
     
     def solve_message(self, id):
         if id not in self.being_helped_messages: return
         destroy(self.being_helped_messages[id])
         del self.being_helped_messages[id]
+
+    def export_messages_content(self, panel):
+        number_of_messages = 5
+        selection = panel.input_message_type.children[0].text.replace(" Selected", "")
+        destroy(panel.messages)
+        panel.messages = Entity(parent=panel)
+        
+        messages = []
+        if selection == "Need Help":
+            if len(self.need_help_messages) < number_of_messages: number_of_messages = len(self.need_help_messages)
+            messages = self.need_help_messages[::-1]
+            messages = messages[:number_of_messages]
+        elif selection == "Being Helped":
+            if len(self.being_helped_messages) < number_of_messages: number_of_messages = len(self.being_helped_messages)
+            messages = self.being_helped_messages[::-1]
+            messages = messages[:number_of_messages]
+        elif selection == "Info":
+            if len(self.info_messages) < number_of_messages: number_of_messages = len(self.info_messages)
+            messages = self.info_messages[::-1]
+            messages = messages[:number_of_messages]
+
+        spacing = .06
+        for message_index, message in enumerate(messages):
+            text_to_add = message.agent + " @ " + str(message.position) + ": " + message.needed_action
+            item = Text(text=text_to_add, parent=panel.messages, scale_override=1.5, origin=(-.5, 0), position=(-.45, .125 - message_index * spacing))
+
 
 def create_block_from_code(code, position, block_affected_pos = None):
 

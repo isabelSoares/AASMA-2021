@@ -55,6 +55,7 @@ class RandomAgent(Agent):
         elif a == ROTATE_RIGHT:
             next_position = self.rotate_right()
         elif a == MOVE_ONLY_TO_DOOR:
+            world.send_message(self.name, last_position, "OPEN DOOR", "find pressure plate")
             next_position = self.position
             print('   - \"There\'s a door here!\"')
         elif a == MOVE_UP_TO_DOOR:

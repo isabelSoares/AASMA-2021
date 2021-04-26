@@ -12,7 +12,7 @@ def setup_camera(orthographic = True, position = Vec3(0,0,0), look_at = Vec3(0,0
     camera.fov = fov
 
 
-def setup_panel(panel, min, start_value, max, step, agents):
+def setup_panel_control(panel, min, start_value, max, step, agents):
 
     # ======== Information Display ========
     lines_of_informations = [
@@ -43,8 +43,24 @@ def setup_panel(panel, min, start_value, max, step, agents):
 
     for button in drop_down_button.buttons:
         def on_click(button=button): text.text = button.text + " Selected"
-        
         button.on_click = on_click
 
     drop_down_button.scale = 2 * drop_down_button.scale
     drop_down_button.x = drop_down_button.x - drop_down_button.scale[0] / 2
+
+def setup_panel_messages(panel):
+
+    # ======== Input Message Type ========
+    text = Text(text="Need Help Selected", parent=panel.input_message_type, scale_override=1.5, origin=(-.5, 0), position=(0, .4), x=-.25)
+    drop_down_button = DropdownMenu('Messages of type...', parent=panel.input_message_type, position=(0, .375), buttons=(
+        DropdownMenuButton('Need Help'),
+        DropdownMenuButton('Being Helped'),
+        DropdownMenuButton('Info')))
+
+    for button in drop_down_button.buttons:
+        def on_click(button=button): text.text = button.text + " Selected"
+        button.on_click = on_click
+
+    drop_down_button.scale = 2 * drop_down_button.scale
+    drop_down_button.x = drop_down_button.x - drop_down_button.scale[0] / 2
+

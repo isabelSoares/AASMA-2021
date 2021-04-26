@@ -7,8 +7,9 @@ app = Ursina()
 # Import util : load_json
 from utils import load_map_from_json_file
 # Import environment
-from environment.setup import setup_window, setup_camera, setup_panel
-from environment.World import World, InfoPanel
+from environment.setup import setup_window, setup_camera, setup_panel_control, setup_panel_messages
+from environment.World import World
+from environment.Panels import InfoPanel, MessagePanel
 # Import agent
 from agent.agent import *
 
@@ -24,9 +25,11 @@ setup_camera(position = Vec3(-50,50,-50), look_at = map_info["center"])
 world = map_info['world']
 agents = map_info['agents'].values()
 
-panel = InfoPanel()
+info_panel = InfoPanel()
+message_panel = MessagePanel()
 min_tick_time, tick_time, max_tick_time, step = 0.25, 1.0, 1.0, 0.05
-setup_panel(panel, min_tick_time, tick_time, max_tick_time, step, map_info['agents'].keys())
+setup_panel_control(info_panel, min_tick_time, tick_time, max_tick_time, step, map_info['agents'].keys())
+setup_panel_messages(message_panel)
 
 t = 0
 def update():
@@ -42,8 +45,9 @@ def update():
             agents_decisions.append(agent.decision(world, agents_decisions))
         
         world.update()
-        world.export_metrics_content(panel)
-        tick_time = panel.get_time_tick()
+        world.export_metrics_content(info_panel)
+        world.export_messages_content(message_panel)
+        tick_time = info_panel.get_time_tick()
 
 def input(key):
 
@@ -71,6 +75,7 @@ def input(key):
         else: map_info["world"].update_static_block(positions[1], positions[0])
 
     elif key == 'space':
-        panel.enabled = not panel.enabled
+        info_panel.enabled = not info_panel.enabled
+        message_panel.enabled = not message_panel.enabled
 
 app.run()
