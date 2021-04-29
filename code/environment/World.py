@@ -9,6 +9,7 @@ from environment.blocks.Door import Door
 from environment.messages.Message import Message
 
 import math
+from export import export_module
 
 class Metrics:
     def __init__(self):
@@ -28,7 +29,29 @@ class Metrics:
         self.blocks_removed[agent] = 0
         self.messages_sent[agent] = 0
 
-    def export_content(self, panel):
+    def initialize_csv_file(self):
+        write_row = ["Timestep"]
+        for agent in self.steps: write_row.append("Steps - " + agent)
+        for agent in self.pressure_plates_activated: write_row.append("Pressure Plates Activated - " + agent)
+        for agent in self.blocks_placed: write_row.append("Blocks Placed - " + agent)
+        for agent in self.blocks_removed: write_row.append("Blocks Removed - " + agent)
+        for agent in self.messages_sent: write_row.append("Messages Sent - " + agent)
+
+        export_module.write_row_to_csv(write_row)
+        # In order to write the zeros
+        self.export_content_to_csv()
+
+    def export_content_to_csv(self):
+        write_row = [self.time]
+        for agent in self.steps: write_row.append(self.steps[agent])
+        for agent in self.pressure_plates_activated: write_row.append(self.pressure_plates_activated[agent])
+        for agent in self.blocks_placed: write_row.append(self.blocks_placed[agent])
+        for agent in self.blocks_removed: write_row.append(self.blocks_removed[agent])
+        for agent in self.messages_sent: write_row.append(self.messages_sent[agent])
+
+        export_module.write_row_to_csv(write_row)
+
+    def export_content_to_panel(self, panel):
         selection = panel.input_player.children[0].text.replace(" Selected", "")
         # No ternary operator :'(
         self.selected_agent = None if selection == "All Players" else selection
@@ -220,8 +243,12 @@ class World():
         self.add_entity(updated_position, entity)
         self.delete_entity(current_position)
     
+    def initialize_csv_file(self):
+        self.metrics.initialize_csv_file()
+
     def export_metrics_content(self, panel):
-        self.metrics.export_content(panel)
+        self.metrics.export_content_to_panel(panel)
+        self.metrics.export_content_to_csv()
 
     # ================== Auxiliary Methods ==================
 

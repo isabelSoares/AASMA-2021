@@ -1,6 +1,13 @@
 import sys
 from time import sleep
 
+# Check if file was given in arguments
+if len(sys.argv) <= 2: sys.exit("Please provide a type of agent and file to read the map from as an argument. Example: python ./maze.py random ./maps/map1.json")
+type_of_agent = sys.argv[1]
+# Create export Module
+from export import create_export_module
+export_module = create_export_module(type_of_agent)
+
 # Ursina import
 from ursina import *
 app = Ursina()
@@ -13,9 +20,7 @@ from environment.Panels import InfoPanel, MessagePanel
 # Import agent
 from agent.agent import *
 
-# Check if file was given in arguments and load it
-if len(sys.argv) <= 2: sys.exit("Please provide a type of agent and file to read the map from as an argument. Example: python ./maze.py random ./maps/map1.json")
-type_of_agent = sys.argv[1]
+# Load map
 map_info = load_map_from_json_file(type_of_agent, sys.argv[2])
 
 # Setup window, camera and window panel
@@ -27,7 +32,7 @@ agents = map_info['agents'].values()
 
 info_panel = InfoPanel()
 message_panel = MessagePanel()
-min_tick_time, tick_time, max_tick_time, step = 0.25, 1.0, 1.0, 0.05
+min_tick_time, tick_time, max_tick_time, step = 0.005, 1.0, 1.0, 0.005
 setup_panel_control(info_panel, min_tick_time, tick_time, max_tick_time, step, map_info['agents'].keys())
 setup_panel_messages(message_panel)
 
@@ -37,26 +42,23 @@ def update():
     t += time.dt
     if t > tick_time:
         t = 0
-        print()
-        print('------------ ' + str(world.metrics.time) + ' ------------')
+        export_module.print_and_write_to_txt('')
+        export_module.print_and_write_to_txt('------------ ' + str(world.metrics.time) + ' ------------')
+        tick_time = info_panel.get_time_tick()
         for agent in agents:
-
+            agent.set_animation_duration(.8 * tick_time)
             agents_decisions = []
             agents_decisions.append(agent.decision(world, agents_decisions))
         
         world.update()
         world.export_metrics_content(info_panel)
         world.export_messages_content(message_panel)
-        tick_time = info_panel.get_time_tick()
+
+        export_module.save_current_state()
 
 def input(key):
-
-    if key == 'q':
-        print(map_info['agents']['BLUE'].position)
-        print("teste")
-
     # Just checking agent functions
-    elif key == 'd': # rotate right
+    if key == 'd': # rotate right
         map_info['agents']['BLUE'].rotate_right(world)
     elif key == 'a': # rotate left
         map_info['agents']['BLUE'].rotate_left(world)

@@ -1,5 +1,6 @@
 from ursina import *
 from agent.agent import Agent
+from export import export_module
 
 # ============= ACTIONS VARIABLES =============
 MOVE_ONLY = 'MOVE_ONLY'
@@ -40,9 +41,9 @@ class RLearningAgent(Agent):
         last_position = self.position
 
         possible_actions_list = self.possible_actions(world, agents_decisions)
-        print(self.name + ':')
-        print('   - distance to goal: ' + str(world.distance_provider(self.name, self)))
-        print('   - possible actions: ' + str(possible_actions_list))
+        export_module.print_and_write_to_txt(self.name + ':')
+        export_module.print_and_write_to_txt('   - distance to goal: ' + str(world.distance_provider(self.name, self)))
+        export_module.print_and_write_to_txt('   - possible actions: ' + str(possible_actions_list))
         a = random.choice(possible_actions_list)
         if a == MOVE_ONLY or a == MOVE_ONLY_TO_PRESSURE_PLATE or a == MOVE_ONLY_TO_GOAL or a == MOVE_ONLY_TO_AGENT_BLOCK:
             next_position = self.move_only(world)
@@ -56,13 +57,13 @@ class RLearningAgent(Agent):
             next_position = self.rotate_right()
         elif a == MOVE_ONLY_TO_DOOR:
             next_position = self.position
-            print('   - \"There\'s a door here!\"')
+            export_module.print_and_write_to_txt('   - \"There\'s a door here!\"')
         elif a == MOVE_UP_TO_DOOR:
             next_position = self.position
-            print('   - \"There\'s a door here!\"')
+            export_module.print_and_write_to_txt('   - \"There\'s a door here!\"')
         elif a == MOVE_DOWN_TO_DOOR:
             next_position = self.position
-            print('   - \"There\'s a door here!\"')
+            export_module.print_and_write_to_txt('   - \"There\'s a door here!\"')
         elif a == CREATE_ONLY_BLOCK:
             next_position = self.create_only(world)
         elif a == CREATE_UP_BLOCK:

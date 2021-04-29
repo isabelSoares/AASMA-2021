@@ -23,6 +23,7 @@ def load_map_from_json_file(type_of_agent, json_file):
     load_agents(type_of_agent, data, return_object)
     load_map(data, return_object)
 
+    return_object["world"].initialize_csv_file()
     return return_object
 
 def load_world(json_object, return_object):
