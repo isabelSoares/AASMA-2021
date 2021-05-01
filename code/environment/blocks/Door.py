@@ -22,3 +22,6 @@ class Door(StatefulBlock):
             if self.state: self.color = color.rgba(255,255,255,255)
             else: self.color = color.rgba(247, 202, 24, 255)
             return True
+    
+    def isOpen(self):
+        return self.state

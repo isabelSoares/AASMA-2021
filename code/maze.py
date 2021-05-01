@@ -48,7 +48,18 @@ def update():
         for agent in agents:
             agent.set_animation_duration(.8 * tick_time)
             agents_decisions = []
-            agents_decisions.append(agent.decision(world, agents_decisions))
+            a = agent.decision(world, agents_decisions)
+            if a == 'door_pressure_plate':
+                print()
+                print('--------- change rewards --------- ')
+                print()
+                print('door_pressure_plate')
+                print()
+                print('---------------------------------- ')
+                for agent in agents:
+                    agent.change_rewards(a)
+                break
+            agents_decisions.append(a)
         
         world.update()
         world.export_metrics_content(info_panel)

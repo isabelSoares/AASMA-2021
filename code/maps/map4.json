@@ -72,6 +72,7 @@
 
         "entities": [
             {"code": "PressurePlate", "position": [-4, 1, -1], "block_affected_pos": [-2,1,1]},
+            {"code": "PressurePlate", "position": [0, 1, -2], "block_affected_pos": [-2,1,1]},
             {"code": "Door", "position": [-2, 1, 1]}
         ]
     }

@@ -82,9 +82,9 @@ def create_agent_acording_to_type(type_of_agent, name, position, color, block_co
         #with open('Q-Function Agent ' + name + '.pkl', 'rb') as f:
         #    q_function = pickle.load(f)
         if name == 'ORANGE':
-            return RLearningAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks, q_function = q_function, rewards = [0, 20])
+            return RLearningAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks, q_function = q_function, rewards = 'pressure_plate')
         else:
-            return RLearningAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks, q_function = q_function, rewards = [20, 0])
+            return RLearningAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks, q_function = q_function, rewards = 'door')
     else:
         sys.exit("That type of agent is not recognized. Current options: ['mockup', 'random', 'rlearning']")
 
