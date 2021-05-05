@@ -209,10 +209,10 @@ class World():
         pressurePlateStepedOn = False
         entity = self.get_entity(updated_position)
         last_entity = self.get_entity(current_position)
-        if (entity != None) & (type(entity).__name__ == "PressurePlate"):
+        if (entity != None) and (type(entity).__name__ == "PressurePlate"):
             entity.state = True
             pressurePlateStepedOn = True
-        elif (last_entity != None) & (type(last_entity).__name__ == "PressurePlate"):
+        elif (last_entity != None) and (type(last_entity).__name__ == "PressurePlate"):
             last_entity.state = False
 
         # Update metrics

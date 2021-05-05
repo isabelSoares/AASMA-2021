@@ -39,7 +39,8 @@ class RLearningAgent(Agent):
             self.r_pressure_plate = 20
         elif self.rewards == 'wall':
             self.r_wall = 20
-
+        
+        self.forbidden_positions = []
 
         self.count = 0
         self.count_positions = []
@@ -91,18 +92,20 @@ class RLearningAgent(Agent):
         else:
             self.Q[current_position][a] += self.lr * (reward - self.Q[current_position][a])
         
-        if type(world.get_entity(last_position)).__name__ == 'Door' and next_distance_to_goal > distance_to_goal:
-            return "door_pressure_plate"
+        if type(world.get_entity(last_position)).__name__ == 'Door' and next_distance_to_goal < distance_to_goal:
+            self.forbidden_positions.append(last_position)
+            return (next_position, "door_pressure_plate")
         
         #if self.count%1000 == 0:
         #    with open('Q-Function ' + self.name + '.pkl', 'wb') as f:
         #        pickle.dump(self.Q, f)
         
-        if self.eps > 0.1:
+        if self.eps > 0.15:
             self.eps *= 0.999
         else:
-            self.eps = 0.1
-        print(self.eps)
+            self.eps = 0.15
+        print('door - ', self.r_door)
+        print('prssure plate - ', self.r_pressure_plate)
         
         return next_position
     
@@ -163,17 +166,17 @@ class RLearningAgent(Agent):
         possible_actions_list.append(ROTATE_LEFT)
         possible_actions_list.append(ROTATE_RIGHT)
 
-        if self.agentAhead(world) or (next_position in agents_decisions):
-            if self.number_of_blocks > 0:
-                possible_actions_list.append(CREATE_BLOCK)
-                self.agent_to_go_up = self.getAgentAhead(world)
-            return (possible_actions_list, height)
-
         minus_2_block = world.get_static_block(next_position - Vec3(0, 2, 0))
         minus_1_block = world.get_static_block(next_position - Vec3(0, 1, 0))
         _0_block = world.get_static_block(next_position)
         _1_block = world.get_static_block(next_position + Vec3(0, 1, 0))
         _2_block = world.get_static_block(next_position + Vec3(0, 2, 0))
+        
+        if self.agentAhead(world) or (next_position in agents_decisions):
+            if self.number_of_blocks > 0:
+                possible_actions_list.append(CREATE_BLOCK)
+                self.agent_to_go_up = self.getAgentAhead(world)
+            return (possible_actions_list, height)
 
         if type(world.get_entity(next_position)).__name__ == 'Door' and world.get_entity(next_position).isOpen():
             print()
@@ -183,22 +186,31 @@ class RLearningAgent(Agent):
             print()
             for a in world.agents_map:
                 print(world.agents_map[a].position)
-            exit()
+            #exit()
+        
+        #to delete
+        door_open = False
+        for i in world.agents_map:
+            if type(world.get_entity(world.agents_map[i].position)).__name__ == 'PressurePlate':
+                door_open = True
 
-        if minus_1_block != None \
+        if next_position not in self.forbidden_positions \
+            and minus_1_block != None \
             and _0_block == None \
             and _1_block == None \
             and next_position not in agents_decisions \
-            and ((type(world.get_entity(next_position)).__name__ != 'Door') or (type(world.get_entity(next_position)).__name__ == 'Door' and world.get_entity(next_position).isOpen())):
+            and ((type(world.get_entity(next_position)).__name__ != 'Door') or (type(world.get_entity(next_position)).__name__ == 'Door' and door_open)):#world.get_entity(next_position).isOpen())):
             if type(minus_1_block).__name__ == 'AgentBlock' and minus_1_block.color == self.color:
                 possible_actions_list.append(MOVE)
             elif type(minus_1_block).__name__ != 'AgentBlock':
                 possible_actions_list.append(MOVE)
-        elif _0_block != None \
+
+        elif next_position + Vec3(0, 1, 0) not in self.forbidden_positions \
+            and _0_block != None \
             and _1_block == None \
             and _2_block == None \
             and next_position + Vec3(0, 1, 0) not in agents_decisions \
-            and ((type(world.get_entity(next_position + Vec3(0, 1, 0))).__name__ != 'Door') or (type(world.get_entity(next_position + Vec3(0, 1, 0))).__name__ == 'Door' and world.get_entity(next_position + Vec3(0, 1, 0)).isOpen())):
+            and ((type(world.get_entity(next_position + Vec3(0, 1, 0))).__name__ != 'Door') or (type(world.get_entity(next_position + Vec3(0, 1, 0))).__name__ == 'Door' and door_open)):# and world.get_entity(next_position + Vec3(0, 1, 0)).isOpen())):
             if type(_0_block).__name__ == 'AgentBlock' and _0_block.color == self.color:
                 possible_actions_list.append(MOVE)
             elif type(_0_block).__name__ != 'AgentBlock':
@@ -206,12 +218,13 @@ class RLearningAgent(Agent):
             
             # up
             height += 1
-        elif minus_2_block != None \
+        elif next_position - Vec3(0, 1, 0) not in self.forbidden_positions \
+            and minus_2_block != None \
             and minus_1_block == None \
             and _0_block == None \
             and _1_block == None \
             and next_position - Vec3(0, 1, 0) not in agents_decisions \
-            and ((type(world.get_entity(next_position - Vec3(0, 1, 0))).__name__ != 'Door') or (type(world.get_entity(next_position - Vec3(0, 1, 0))).__name__ == 'Door' and world.get_entity(next_position - Vec3(0, 1, 0)).isOpen())):
+            and ((type(world.get_entity(next_position - Vec3(0, 1, 0))).__name__ != 'Door') or (type(world.get_entity(next_position - Vec3(0, 1, 0))).__name__ == 'Door' and door_open)):# and world.get_entity(next_position - Vec3(0, 1, 0)).isOpen())):
             if type(minus_2_block).__name__ == 'AgentBlock' and minus_2_block == self.color:
                 possible_actions_list.append(MOVE)
             elif type(minus_2_block).__name__ != 'AgentBlock':
@@ -226,10 +239,12 @@ class RLearningAgent(Agent):
         return (possible_actions_list, height)
     
     def change_rewards(self, rewards):
+        if rewards == 'no_change':
+            return
         self.rewards = rewards
         self.r_wall = 0
         if rewards == 'door_pressure_plate':
-            if self.door == 20:
+            if self.r_door == 20:
                 self.r_door = 0
                 self.r_pressure_plate = 20
             elif self.r_pressure_plate == 20:
