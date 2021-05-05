@@ -32,7 +32,7 @@ agents = map_info['agents'].values()
 
 info_panel = InfoPanel()
 message_panel = MessagePanel()
-min_tick_time, tick_time, max_tick_time, step = 0.005, 1.0, 1.0, 0.005
+min_tick_time, tick_time, max_tick_time, step = 0.005, 0.02, 1.0, 0.005
 setup_panel_control(info_panel, min_tick_time, tick_time, max_tick_time, step, map_info['agents'].keys())
 setup_panel_messages(message_panel)
 
@@ -52,11 +52,11 @@ def update():
 
             # RL Agent - don't worry about this code
             if len(a) == 2 and a[1] == 'door_pressure_plate':
+                r = 'door_pressure_plate'
                 if agent.r_door == 0:
-                    a[1] = 'no_change'
+                    r = 'no_change'
                 for agent in agents:
-                    agent.change_rewards(a[1])
-                break
+                    agent.change_rewards(r)
                 a = a[0]
             ########################################
 
