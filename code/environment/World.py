@@ -135,6 +135,11 @@ class World():
     def get_goal_block(self, agent_name):
         if agent_name in self.goal_map: return self.goal_map[agent_name]
         else: return None
+    
+    def get_agent_goal_position(self, agent_name):
+        goal_block = self.get_goal_block(agent_name)
+        if goal_block == None: return None
+        return goal_block.position
 
     def add_goal_block(self, agent_name, block):
         self.goal_map["Agent " + agent_name] = block

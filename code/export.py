@@ -26,7 +26,7 @@ class ExportModule:
         self.txt_file.write(string)
     
     def print_and_write_to_txt(self, string):
-        #print(string)
+        print(string)
         self.write_to_txt(string + '\n')
 
     def write_row_to_csv(self, row_values):

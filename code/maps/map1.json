@@ -1,18 +1,18 @@
 {
     "world": {
         "center": [0, 0, 0],
-        "floor-size": [10, 5]
+        "floor-size": [4, 5]
     },
 
     "agents": [
-        {"name": "BLUE", "position": [-5, 1, 0], "color": [111,187,211], "block_color": [255,69,0], "number_of_blocks": 1},
-        {"name": "ORANGE", "position": [-5, 1, 1], "color": [255,69,0], "block_color": [111,187,211], "number_of_blocks": 1}
+        {"name": "BLUE", "position": [-2, 1, 0], "color": [111,187,211], "block_color": [255,69,0], "number_of_blocks": 1},
+        {"name": "ORANGE", "position": [-2, 1, 1], "color": [255,69,0], "block_color": [111,187,211], "number_of_blocks": 1}
     ],
 
     "map": {
         "static": [
-            {"code": "WinningPost", "position": [6, 0, -1], "agent_name": "BLUE"},
-            {"code": "WinningPost", "position": [6, 0, 1], "agent_name": "ORANGE"}
+            {"code": "WinningPost", "position": [3, 0, -1], "agent_name": "BLUE"},
+            {"code": "WinningPost", "position": [3, 0, 1], "agent_name": "ORANGE"}
         ],
 
         "entities": [

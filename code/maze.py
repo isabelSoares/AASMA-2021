@@ -45,11 +45,27 @@ def update():
         export_module.print_and_write_to_txt('')
         export_module.print_and_write_to_txt('------------ ' + str(world.metrics.time) + ' ------------')
         tick_time = info_panel.get_time_tick()
+        agents_in_goal = 0
         for agent in agents:
             agent.set_animation_duration(.8 * tick_time)
             agents_decisions = []
             a = agent.decision(world, agents_decisions)
             agents_decisions.append(a)
+
+            if agent.position - Vec3(0, 1, 0) == world.get_agent_goal_position(agent.name):
+                agents_in_goal += 1
+
+        if agents_in_goal == len(agents):
+            print()
+            print()
+            print('   ==========================')
+            print(' //                          \\\\')
+            print(' |  The Agents won the game!  |')
+            print(' \\\\                          //')
+            print('   ==========================')
+            print()
+            print()
+            exit()
         
         world.update()
         world.export_metrics_content(info_panel)

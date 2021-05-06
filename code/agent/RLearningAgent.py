@@ -19,8 +19,8 @@ R_WALL = 20
 R_CREATE_BLOCK = 20
 
 EPS = 1
-LR = 0.2
-GAMMA = 0.4
+LR = 0.9
+GAMMA = 0.1
 
 
 var_names = ['STAY', 'MOVE', 'ROTATE_LEFT', 'ROTATE_RIGHT', 'CREATE_BLOCK', 'BREAK_BLOCK']
@@ -159,13 +159,15 @@ class RLearningAgent(Agent):
         #    with open('Q-Function ' + self.name + '.pkl', 'wb') as f:
         #        pickle.dump(self.Q, f)
         
-        if self.eps > 0.3:
-            self.eps *= 0.999
-        elif self.eps <= 0.3 and self.eps > 0.1:
+        if self.eps > 0.85:
+            self.eps *= 0.9999
+        elif self.eps <= 0.85 and self.eps > 0.2:
             self.eps *= 0.99
+        elif self.eps <= 2 and self.eps > 0.05:
+            self.eps *= 0.9999
         else:
-            self.eps = 0.1
-        
+            self.eps = 0.05
+
         #if self.lr > 0.2:
         #    self.lr *= 0.999
         #else:
