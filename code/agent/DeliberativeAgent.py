@@ -5,6 +5,7 @@ from export import export_module
 import sys
 import math
 import random
+import copy
 
 # ============= ACTIONS VARIABLES =============
 MOVE_ONLY = 'MOVE_ONLY'
@@ -53,7 +54,7 @@ class DeliberativeAgent(Agent):
 
         self.desires = []
         self.intention = None
-        self.plan = [ROTATE_RIGHT, MOVE_ONLY, MOVE_ONLY, MOVE_ONLY]
+        self.plan = []
 
     def decision(self, world, agents_decisions):
         last_position = self.position
@@ -131,7 +132,7 @@ class DeliberativeAgent(Agent):
         focused_desire = self.desires[-1]
         
         if focused_desire == REACH_GOAL:
-            self.intention = Intention(focused_desire, random.sample(self.goal_beliefs, 1))
+            self.intention = Intention(focused_desire, random.sample(self.goal_beliefs, 1)[0])
 
     def build_plan(self):
         
@@ -177,7 +178,117 @@ class DeliberativeAgent(Agent):
 
     # ======================= UTILITY FUNCTIONS =======================
     def build_path_plan(self, initial_position, final_position):
-        return []
+        
+        move_positions = (
+            (1, 0, 0), (-1, 0, 0), (0, 0, 1), (0, 0, -1),
+            (1, -1, 0), (-1, -1, 0), (0, -1, 1), (0, -1, -1),
+            (1, 1, 0), (-1, 1, 0), (0, 1, 1), (0, 1, -1),
+        )
+
+        class Explorer():
+            def __init__(self, current_position):
+                self.current_position = current_position
+                self.history_positions = list([current_position])
+
+        # Create Initial Explorer
+        current_position = convert_vec3_to_key(self.position)
+        current_explorers = set([Explorer(current_position)])
+
+        visited_positions = set([current_position])
+
+        done = False
+        while not done:
+            new_explorers = set()
+
+            for explorer in current_explorers:
+                current_distance = ursinamath.distance(explorer.current_position, final_position)
+
+                for move_position in move_positions:
+                    new_current_position_x = explorer.current_position[0] + move_position[0]
+                    new_current_position_y = explorer.current_position[1] + move_position[1]
+                    new_current_position_z = explorer.current_position[2] + move_position[2]
+                    new_current_position = (new_current_position_x, new_current_position_y, new_current_position_z)
+
+                    visited_positions.add(new_current_position)
+
+                    # Check if valid place to go
+                    check_position = list(new_current_position)
+                    check_position[1] = check_position[1] - 1
+                    check_position = tuple(check_position)
+                    
+                    if check_position not in self.beliefs: continue
+                    belief = self.beliefs[check_position]
+                    if belief.block == None: continue
+
+                    # TODO: This only works if there is no longer way to solve maze
+                    new_distance = ursinamath.distance(new_current_position, final_position)
+                    if new_distance > current_distance: continue
+                    
+                    new_explorer = copy.deepcopy(explorer)
+                    new_explorer.current_position = new_current_position
+                    new_explorer.history_positions.append(new_current_position)
+
+                    new_explorers.add(new_explorer)
+
+            if len(new_explorers) == 0: done = True
+            else: current_explorers = new_explorers
+
+        chosen_explorer = random.sample(current_explorers, 1)[0]
+        path_positions = chosen_explorer.history_positions
+
+        def plane_transformation_right(plane):
+            if plane == (1, 0, 0): return (0, 0, -1)
+            elif plane == (0, 0, -1): return (-1, 0, 0)
+            elif plane == (-1, 0, 0): return (0, 0, 1)
+            elif plane == (0, 0, 1): return (1, 0, 0)
+        def plane_transformation_left(plane):
+            if plane == (1, 0, 0): return (0, 0, 1)
+            elif plane == (0, 0, 1): return (-1, 0, 0)
+            elif plane == (-1, 0, 0): return (0, 0, -1)
+            elif plane == (0, 0, -1): return (1, 0, 0)
+        def plane_transformation_back(plane):
+            if plane == (1, 0, 0): return (-1, 0, 0)
+            elif plane == (0, 0, 1): return (0, 0, -1)
+            elif plane == (-1, 0, 0): return (1, 0, 0)
+            elif plane == (0, 0, -1): return (0, 0, 1)
+
+        # Create Path of Actions
+        paths_actions = list()
+        current_rotation = convert_vec3_to_key(self.Forward())
+        for index_position in range(1, len(path_positions)):
+                from_position = path_positions[index_position - 1]    
+                to_position = path_positions[index_position]
+
+                variation_x = to_position[0] - from_position[0]
+                variation_y = to_position[1] - from_position[1]
+                variation_z = to_position[2] - from_position[2]
+
+                plane_vector = (variation_x, 0, variation_z)
+                if current_rotation != plane_vector:
+                    right = plane_transformation_right(current_rotation)
+                    left = plane_transformation_left(current_rotation)
+                    back = plane_transformation_back(current_rotation)
+
+                    # Test Turn Right
+                    if right == plane_vector:
+                        current_rotation = right
+                        paths_actions.append(ROTATE_RIGHT)
+                    elif left == plane_vector:
+                        current_rotation = left
+                        paths_actions.append(ROTATE_LEFT)
+                    elif back == plane_vector:
+                        current_rotation = back
+                        paths_actions.extend([ROTATE_RIGHT, ROTATE_RIGHT])
+                    else:
+                        print("ERROR PARSING ROTATIONS!")
+                        sys.exit(1)
+
+                if variation_y < 0: paths_actions.append(MOVE_DOWN)
+                elif variation_y > 0: paths_actions.append(MOVE_UP)
+                else: paths_actions.append(MOVE_ONLY)
+
+
+        return paths_actions
 
     def print_beliefs(self):
         '''
