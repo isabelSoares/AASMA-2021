@@ -104,10 +104,10 @@ class Agent(Entity):
     
     def create_block(self, world):
         export_module.print_and_write_to_txt('   - block created (ahead) at (x,y,z) = ' + str(tuple(self.position + self.Forward())))
-        export_module.print_and_write_to_txt('   - ' + self.agent_to_go_up.name + ' new position = ' + str(tuple(self.position + self.Forward() + Vec3(0, 1, 0))))
+        #export_module.print_and_write_to_txt('   - ' + self.agent_to_go_up.name + ' new position = ' + str(tuple(self.position + self.Forward() + Vec3(0, 1, 0))))
         world.create_agent_block(self.position + self.Forward(), self.name, self.block_color)
         self.number_of_blocks -= 1
-        self.agent_to_go_up.position += Vec3(0, 1, 0)
+        #self.agent_to_go_up.position += Vec3(0, 1, 0)
         return self.position
     
     def break_block(self, world):

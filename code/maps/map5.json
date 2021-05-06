@@ -42,53 +42,41 @@
             
             {"code": "Floor", "position": [0, 0, 1]},
             {"code": "Floor", "position": [0, 0, 2]},
+            {"code": "Floor", "position": [1, 0, -2]},
+            {"code": "Floor", "position": [1, 0, -1]},
             {"code": "Floor", "position": [1, 0, 0]},
             {"code": "Floor", "position": [1, 0, 1]},
-            {"code": "Floor", "position": [2, 0, 0]},
+            {"code": "Floor", "position": [1, 0, 2]},
+            {"code": "Floor", "position": [2, 0, -1]},
             {"code": "Floor", "position": [2, 0, 1]},
-            
-            
-
-            {"code": "Wall", "position": [-2, 1, 2]},
-            {"code": "Wall", "position": [-2, 2, 2]},
-            {"code": "Wall", "position": [-2, 3, 2]},
-            {"code": "Wall", "position": [-2, 3, 1]},
-            {"code": "Wall", "position": [-2, 1, 0]},
-            {"code": "Wall", "position": [-2, 2, 0]},
-            {"code": "Wall", "position": [-2, 3, 0]},
-            {"code": "Wall", "position": [-2, 1, -1]},
-            {"code": "Wall", "position": [-2, 2, -1]},
-            {"code": "Wall", "position": [-2, 3, -1]},
-            {"code": "Wall", "position": [-2, 1, -2]},
-            {"code": "Wall", "position": [-2, 2, -2]},
-            {"code": "Wall", "position": [-2, 3, -2]},
-
-            {"code": "Wall", "position": [2, 1, 1]},
-            {"code": "Wall", "position": [2, 2, 1]},
-            {"code": "Wall", "position": [2, 1, 0]},
-            {"code": "Wall", "position": [2, 2, 0]},
+            {"code": "Floor", "position": [3, 0, -1]},
+            {"code": "Floor", "position": [3, 0, 1]},
+            {"code": "Floor", "position": [4, 0, -1]},
+            {"code": "Floor", "position": [4, 0, 1]},
+            {"code": "Floor", "position": [5, 0, -1]},
+            {"code": "Floor", "position": [5, 0, 1]},
 
 
-            {"code": "Wall", "position": [2, 2, 0]},
-            {"code": "Wall", "position": [2, 2, 1]},
 
-            {"code": "Wall", "position": [3, 2, 0]},
-            {"code": "Wall", "position": [3, 2, 1]},
 
-            {"code": "Wall", "position": [4, 2, 0]},
-            {"code": "Wall", "position": [4, 2, 1]},
+            {"code": "Wall", "position": [1, 1, 2]},
+            {"code": "Wall", "position": [1, 2, 2]},
+            {"code": "Wall", "position": [1, 3, 2]},
 
-            {"code": "Wall", "position": [5, 2, 0]},
-            {"code": "Wall", "position": [5, 2, 1]},
+            {"code": "Wall", "position": [1, 3, 1]},
 
-            {"code": "WinningPost", "position": [6, 2, 0], "agent_name": "BLUE"},
-            {"code": "WinningPost", "position": [6, 2, 1], "agent_name": "ORANGE"}
+            {"code": "Wall", "position": [1, 1, 0]},
+            {"code": "Wall", "position": [1, 2, 0]},
+            {"code": "Wall", "position": [1, 3, 0]},
+
+            {"code": "WinningPost", "position": [6, 0, -1], "agent_name": "BLUE"},
+            {"code": "WinningPost", "position": [6, 0, 1], "agent_name": "ORANGE"}
+
         ],
 
         "entities": [
-            {"code": "PressurePlate", "position": [-4, 1, -1], "block_affected_pos": [-2,1,1]},
-            {"code": "PressurePlate", "position": [0, 1, -2], "block_affected_pos": [-2,1,1]},
-            {"code": "Door", "position": [-2, 1, 1]}
+            {"code": "PressurePlate", "position": [-3, 1, -1], "block_affected_pos": [1,1,1]},
+            {"code": "Door", "position": [1, 1, 1]}
         ]
     }
 }

@@ -103,7 +103,7 @@ class World():
         # Initializing messages
         self.messages_id_count = 1
         self.need_help_messages = []
-        self.being_helped_messages = []
+        self.being_helped_messages = {}
         self.info_messages = []
 		
         # Create floor
@@ -265,25 +265,31 @@ class World():
     # ==================== Message flow ====================
 
     def send_message(self, agent, position, needed_action, text):
-        self.need_help_messages.append(Message(self.messages_id_count, agent, position, needed_action, text))
+        message = Message(self.messages_id_count, agent, position, needed_action, text)
+        self.need_help_messages.append(message)
         self.messages_id_count += 1
         # Update metric
         tmp_agent_name = agent.replace("Agent ", "")
         self.metrics.messages_sent[tmp_agent_name] += + 1
+        return message
     
-    def going_to_solve_older_message(self):
+    def going_to_solve_older_message(self, name):
+        if not self.need_help_messages: return None
         message = self.need_help_messages.pop()
         self.being_helped_messages[message.getId()] = message
         # Update metric
-        tmp_agent_name = agent.replace("Agent ", "")
+        tmp_agent_name = name.replace("Agent ", "")
         self.metrics.messages_sent[tmp_agent_name] += + 1
 
         return message
     
     def solve_message(self, id):
         if id not in self.being_helped_messages: return
-        destroy(self.being_helped_messages[id])
+        #destroy(self.being_helped_messages[id])
         del self.being_helped_messages[id]
+    
+    def is_message_being_solved(self, id):
+        return id in self.being_helped_messages
 
     def export_messages_content(self, panel):
         number_of_messages = 5

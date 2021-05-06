@@ -49,17 +49,6 @@ def update():
             agent.set_animation_duration(.8 * tick_time)
             agents_decisions = []
             a = agent.decision(world, agents_decisions)
-
-            # RL Agent - don't worry about this code
-            if len(a) == 2 and a[1] == 'door_pressure_plate':
-                r = 'door_pressure_plate'
-                if agent.r_door == 0:
-                    r = 'no_change'
-                for agent in agents:
-                    agent.change_rewards(r)
-                a = a[0]
-            ########################################
-
             agents_decisions.append(a)
         
         world.update()

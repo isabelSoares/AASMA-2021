@@ -33,36 +33,19 @@
             {"code": "Floor", "position": [-2, 0, 1]},
             {"code": "Floor", "position": [-2, 0, 2]},
             {"code": "Floor", "position": [-1, 0, 0]},
-            {"code": "Floor", "position": [-1, 0, 1]},
-            {"code": "Floor", "position": [0, 0, 1]},
-
-
-            {"code": "Wall", "position": [0, 1, 1]},
-            {"code": "Wall", "position": [0, 2, 1]},
+            {"code": "Floor", "position": [-1, 0, 2]},
 
             {"code": "Wall", "position": [0, 1, 0]},
             {"code": "Wall", "position": [0, 2, 0]},
 
             {"code": "Wall", "position": [0, 2, 0]},
-            {"code": "Wall", "position": [0, 2, 1]},
 
             {"code": "Wall", "position": [1, 2, 0]},
-            {"code": "Wall", "position": [1, 2, 1]},
 
             {"code": "Wall", "position": [2, 2, 0]},
-            {"code": "Wall", "position": [2, 2, 1]},
 
-            {"code": "Wall", "position": [3, 2, 0]},
-            {"code": "Wall", "position": [3, 2, 1]},
-
-            {"code": "Wall", "position": [4, 2, 0]},
-            {"code": "Wall", "position": [4, 2, 1]},
-
-            {"code": "Wall", "position": [5, 2, 0]},
-            {"code": "Wall", "position": [5, 2, 1]},
-
-            {"code": "WinningPost", "position": [6, 2, 0], "agent_name": "BLUE"},
-            {"code": "WinningPost", "position": [6, 2, 1], "agent_name": "ORANGE"}
+            {"code": "WinningPost", "position": [3, 2, 0], "agent_name": "BLUE"},
+            {"code": "WinningPost", "position": [-1, 0, 2], "agent_name": "ORANGE"}
         ],
 
         "entities": [
