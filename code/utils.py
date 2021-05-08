@@ -106,7 +106,7 @@ def load_map(json_object, return_object):
 
             if "agent_name" in block:
                 agent_name = block["agent_name"]
-                block_object = create_block_from_code(code, position, agent_name)
+                block_object = create_block_from_code(code, position, agent_name=agent_name)
                 return_object["world"].add_goal_block(agent_name, block_object)
             else:
                 block_object = create_block_from_code(code, position)
