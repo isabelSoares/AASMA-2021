@@ -278,6 +278,20 @@ class World():
         self.metrics.messages_sent[tmp_agent_name] += + 1
         return message
     
+    def send_info_message(self, agent, position, needed_action, text):
+        message = Message(self.messages_id_count, agent, position, needed_action, text)
+        for a in range(len(self.agents_map)-1):
+            self.info_messages.append(message)
+        self.messages_id_count += 1
+        # Update metric
+        tmp_agent_name = agent.replace("Agent ", "")
+        self.metrics.messages_sent[tmp_agent_name] += + 1
+        return message
+    
+    def get_info_message(self):
+        if self.info_messages: return self.info_messages.pop()
+        return None
+    
     def going_to_solve_older_message(self, name):
         if not self.need_help_messages: return None
         message = self.need_help_messages.pop()
