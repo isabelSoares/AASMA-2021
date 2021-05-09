@@ -64,7 +64,6 @@ class RLearningAgent(Agent):
         
         self.obstacle_completed = 0
         self.forbidden_positions = []
-        #self.forbidden_positions = [Vec3(-2, 1, 1)]
         self.unbreakable_blocks = []
 
         self.count = 0
@@ -73,21 +72,12 @@ class RLearningAgent(Agent):
         self.printQFunction()
 
     def decision(self, world, agents_decisions):
-        print(self.unbreakable_blocks)
         self.count += 1
 
         last_position = self.position
         current_position = self.position
 
-        entity_ahead = type(world.get_entity(last_position + self.Forward())).__name__
-        block_behind = world.get_static_block(last_position + self.Backward())
-        block_behind_1down = world.get_static_block(last_position + self.Backward() - Vec3(0, 1, 0))
-        block_behind_2down = type(world.get_static_block(last_position + self.Backward() - Vec3(0, 2, 0))).__name__
-        block_ahead = type(world.get_static_block(last_position + self.Forward())).__name__
-        block_ahead_1up = type(world.get_static_block(last_position + self.Forward() + Vec3(0, 1, 0))).__name__
-        block_ahead_2up = world.get_static_block(last_position + self.Forward() + Vec3(0, 2, 0))
-
-        print(str(self.name) + ' - ' + str(last_position) + '; door = ' + str(entity_ahead == 'Door') + '; forbidden_positions = ' + str(self.forbidden_positions))
+        print(str(self.name) + ' - ' + str(last_position) + '; forbidden_positions = ' + str(self.forbidden_positions))
         print('          - lr = ' + str(self.lr))
         print('          - eps = ' + str(self.eps))
         print()
@@ -101,22 +91,23 @@ class RLearningAgent(Agent):
         self.check_messages(world)
         self.check_if_message(world)
 
-        if self.id_being_helped == None and self.id_solving_message == None and (entity_ahead == 'Door') and (last_position + self.Forward() not in self.forbidden_positions):
+        if self.id_being_helped == None and self.id_solving_message == None and self.isDoor(self.getEntityAhead(world)) and (last_position + self.Forward() not in self.forbidden_positions):
             self.send_message(world, last_position + self.Forward(), 'pressure_plate', 'pressure_plate')
             return last_position
-        elif self.id_being_helped == None and self.id_solving_message == None and (block_ahead == 'WallBlock') and (block_ahead_1up == 'WallBlock') and (block_ahead_2up == None):
+        elif self.id_being_helped == None and self.id_solving_message == None and self.isWall(self.getBlockAhead(world)) and self.isWall(self.getBlockAhead_Up(world)) and self.isNone(self.getBlockAhead_Up_Up(world)) \
+             and (self.isNone(self.getBlockRight(world)) or (self.isAgentBlock(self.getBlockRight(world)) and self.getBlockRight(world).color != self.color)) \
+             and (self.isNone(self.getBlockLeft(world)) or (self.isAgentBlock(self.getBlockRight(world)) and self.getBlockLeft(world).color != self.color)):
             self.send_message(world, last_position + self.Forward(), 'create_block', 'create_block')
             return last_position
 
-        if entity_ahead == 'Door':
+        if self.isDoor(self.getEntityOfCurrentPosition(world)):
             self.forbidden_positions.append(last_position)
             next_position = self.take_action(MOVE, world, 0)
             if self.r_door > 0:
                 self.solve_message(world)
-            print('          - next_position = ' + str(next_position))
             return next_position
 
-        if (last_position + self.Backward() - Vec3(0, 2, 0)) not in self.unbreakable_blocks and block_behind == None and block_behind_1down == None and block_behind_2down == 'AgentBlock':
+        if (last_position + self.Backward() - Vec3(0, 2, 0)) not in self.unbreakable_blocks and self.isNone(self.getBlockBehind(world)) and self.isNone(self.getBlockBehind_Down(world)) and self.isAgentBlock(self.getBlockBehind_Down_Down(world)):
             world.send_info_message(self.name, last_position + self.Backward() - Vec3(0, 2, 0), 'unbreakable_block', 'unbreakable_block')
             self.unbreakable_blocks.append(last_position + self.Backward() - Vec3(0, 2, 0))
             if self.r_wall > 0:
@@ -136,21 +127,6 @@ class RLearningAgent(Agent):
 
         if current_position not in self.Q:
             self.Q[current_position] = np.zeros(6)
-        
-        
-        #####################
-        #print(self.count)
-        #if self.count%3000 == 0:
-        #    print()
-        #    print()
-        #    print()
-        #    print(self.name)
-        #    self.printQFunction()
-        #    print(self.forbidden_positions)
-        #    print(self.obstacle_completed)
-        #    if self.name == 'Agent ORANGE':
-        #        exit()
-        #####################
 
         a = self.egreedy(self.Q[current_position], possible_actions_list, self.eps)
 
@@ -159,7 +135,7 @@ class RLearningAgent(Agent):
         for i in world.agents_map:
             if type(world.get_entity(world.agents_map[i].position)).__name__ == 'PressurePlate':
                 door_open = True
-        
+
         n = None
         if a == MOVE and type(world.get_entity(last_position + self.Forward())).__name__ == 'Door' and not door_open:
             n = self.take_action(STAY, world, 0)
@@ -195,74 +171,42 @@ class RLearningAgent(Agent):
     
     def get_reward(self, world, last_position, next_position, distance_to_goal):
         r = 0
-        current_p_entity = type(world.get_entity(last_position)).__name__
-        forward_p_entity = type(world.get_entity(last_position + self.Forward())).__name__
-        backward_p_entity = type(world.get_entity(last_position + self.Backward())).__name__
-        right_p_entity = type(world.get_entity(last_position + self.Right())).__name__
-        left_p_entity = type(world.get_entity(last_position + self.Left())).__name__
-
-        forward_p_1up = type(world.get_static_block(last_position + self.Forward() + Vec3(0, 1, 0))).__name__
-        forward_p_2up = world.get_static_block(last_position + self.Forward() + Vec3(0, 2, 0))
-        backward_p_1up = type(world.get_static_block(last_position + self.Backward() + Vec3(0, 1, 0))).__name__
-        backward_p_2up = world.get_static_block(last_position + self.Backward() + Vec3(0, 2, 0))
-        right_p_1up = type(world.get_static_block(last_position + self.Right() + Vec3(0, 1, 0))).__name__
-        right_p_2up = world.get_static_block(last_position + self.Right() + Vec3(0, 2, 0))
-        left_p_1up = type(world.get_static_block(last_position + self.Left() + Vec3(0, 1, 0))).__name__
-        left_p_2up = world.get_static_block(last_position + self.Left() + Vec3(0, 2, 0))
-
-        current_p_block = type(world.get_static_block(last_position)).__name__
-        forward_p_block = type(world.get_static_block(last_position + self.Forward())).__name__
-        backward_p_block = type(world.get_static_block(last_position + self.Backward())).__name__
-        right_p_block = type(world.get_static_block(last_position + self.Right())).__name__
-        left_p_block = type(world.get_static_block(last_position + self.Left())).__name__
-        
-        forward_forward_p_block = type(world.get_static_block(last_position + self.Forward() + self.Forward())).__name__
-        forward_right_p_block = type(world.get_static_block(last_position + self.Forward() + self.Right())).__name__
-        forward_left_p_block = type(world.get_static_block(last_position + self.Forward() + self.Left())).__name__
-
-        forward_forward_p_1up = type(world.get_static_block(last_position + self.Forward() + self.Forward() + Vec3(0, 1, 0))).__name__
-        forward_forward_p_2up = world.get_static_block(last_position + self.Forward() + self.Forward() + Vec3(0, 2, 0))
-        forward_right_p_1up = type(world.get_static_block(last_position + self.Forward() + self.Right() + Vec3(0, 1, 0))).__name__
-        forward_right_p_2up = world.get_static_block(last_position + self.Forward() + self.Right() + Vec3(0, 2, 0))
-        forward_left_p_1up = type(world.get_static_block(last_position + self.Forward() + self.Left() + Vec3(0, 1, 0))).__name__
-        forward_left_p_2up = world.get_static_block(last_position + self.Forward() + self.Left() + Vec3(0, 2, 0))
-
-        if current_p_entity == 'PressurePlate':
+        if self.isPressurePlate(self.getEntityOfCurrentPosition(world, last_position)):
             r += self.r_pressure_plate
-        if forward_p_entity == 'PressurePlate':
+        if self.isPressurePlate(self.getEntityAhead(world, last_position)):
             r += self.r_pressure_plate * 0.2
-        elif current_p_entity == 'Door':
+        elif self.isDoor(self.getEntityOfCurrentPosition(world, last_position)):
             r += self.r_door
-        elif forward_p_entity == 'Door':
+        elif self.isDoor(self.getEntityAhead(world, last_position)):
             r += self.r_door * 0.2
-        elif backward_p_entity == 'Door' or \
-             right_p_entity == 'Door' or \
-             left_p_entity == 'Door':
+        elif self.isDoor(self.getEntityBehind(world, last_position)) or \
+             self.isDoor(self.getEntityRight(world, last_position)) or \
+             self.isDoor(self.getEntityLeft(world, last_position)):
             r += self.r_door * 0.1
-        elif (forward_p_block == 'WallBlock' \
-                and forward_p_1up == 'WallBlock' \
-                and forward_p_2up == None) or \
-            (backward_p_block == 'WallBlock' \
-                and backward_p_1up == 'WallBlock' \
-                and backward_p_2up == None) or \
-            (right_p_block == 'WallBlock' \
-                and right_p_1up == 'WallBlock' \
-                and right_p_2up == None) or \
-            (left_p_block == 'WallBlock' \
-                and left_p_1up == 'WallBlock' \
-                and left_p_2up == None):
+        elif (self.isWall(self.getBlockAhead(world, last_position)) \
+                and self.isWall(self.getBlockAhead_Up(world, last_position)) \
+                and self.isNone(self.getBlockAhead_Up_Up(world, last_position))) or \
+             (self.isWall(self.getBlockBehind(world, last_position)) \
+                and self.isWall(self.getBlockBehind_Up(world, last_position)) \
+                and self.isNone(self.getBlockBehind_Up_Up(world, last_position))) or \
+             (self.isWall(self.getBlockRight(world, last_position)) \
+                and self.isWall(self.getBlockRight_Up(world, last_position)) \
+                and self.isNone(self.getBlockRight_Up_Up(world, last_position))) or \
+             (self.isWall(self.getBlockLeft(world, last_position)) \
+                and self.isWall(self.getBlockLeft_Up(world, last_position)) \
+                and self.isNone(self.getBlockLeft_Up_Up(world, last_position))):
             r += self.r_wall
-        elif ((forward_forward_p_block == 'WallBlock' \
-                and forward_forward_p_1up == 'WallBlock' \
-                and forward_forward_p_2up == None) \
+        elif (self.isWall(self.getBlockAhead_Ahead(world, last_position)) \
+                and self.isWall(self.getBlockAhead_Ahead_Up(world, last_position)) \
+                and self.isNone(self.getBlockAhead_Ahead_Up_Up(world, last_position))) \
                 or \
-                (forward_right_p_block == 'WallBlock' \
-                and forward_right_p_1up == 'WallBlock' \
-                and forward_right_p_2up == None) \
+                (self.isWall(self.getBlockAhead_Right(world, last_position)) \
+                and self.isWall(self.getBlockAhead_Right_Up(world, last_position)) \
+                and self.isNone(self.getBlockAhead_Right_Up_Up(world, last_position))) \
                 or \
-                (forward_left_p_block == 'WallBlock' \
-                and forward_left_p_1up == 'WallBlock' \
-                and forward_left_p_2up == None)):
+                (self.isWall(self.getBlockAhead_Left(world, last_position)) \
+                and self.isWall(self.getBlockAhead_Left_Up(world, last_position)) \
+                and self.isNone(self.getBlockAhead_Left_Up_Up(world, last_position))):
             r += self.r_create_block
         if self.r_distance:
             r += 1/distance_to_goal
@@ -285,12 +229,6 @@ class RLearningAgent(Agent):
             self.lr = 0.2
     
     def send_message(self, world, position, needed_action, text):
-        print()
-        print()
-        print(self.name)
-        print("send")
-        print()
-        print()
         m = world.send_message(self.name, position, needed_action, text)
         self.id_being_helped = m.getId()
         self.clear_rewards()
@@ -309,7 +247,6 @@ class RLearningAgent(Agent):
 
     
     def check_messages(self, world):
-        print("check")
         info = world.get_info_message()
         if info != None and info.getNeededAction() == 'unbreakable_block':
             self.unbreakable_blocks.append(info.getPosition())
@@ -319,17 +256,13 @@ class RLearningAgent(Agent):
         self.id_solving_message = m.getId()
         a = m.getNeededAction()
         self.clear_rewards()
-        print(m)
-        print(m.getId())
-        print(a)
+
         if a == 'pressure_plate':
-            print('pressure_plate')
             self.r_pressure_plate = R_PRESSURE_PLATE
             self.r_distance = False
             self.lr = LR_DOOR
             self.gamma = GAMMA_DOOR
         elif a == 'create_block':
-            print('create_block')
             self.create_block_y = m.getPosition()[1]
             self.r_create_block = R_CREATE_BLOCK
             self.r_distance = False
@@ -337,20 +270,13 @@ class RLearningAgent(Agent):
             self.gamma = GAMMA_WALL
         else:
             self.r_distance = True
-        print(self.r_pressure_plate)
-        print(self.name)
     
     def check_if_message(self, world):
         if self.id_solving_message == None:
             return
-        print(1)
-        print(self.id_solving_message)
-        print(world.is_message_being_solved(self.id_solving_message))
         if self.id_solving_message != None and not world.is_message_being_solved(self.id_solving_message):
-            print(2)
             self.id_solving_message = None
             self.clear_rewards()
-        print(3)
     
     def solve_message(self, world):
         world.solve_message(self.id_being_helped)
@@ -405,72 +331,61 @@ class RLearningAgent(Agent):
             possible_actions_list.append(STAY)
             possible_actions_list.append(ROTATE_LEFT)
             possible_actions_list.append(ROTATE_RIGHT)
-
-        minus_2_block = world.get_static_block(next_position - Vec3(0, 2, 0))
-        minus_1_block = world.get_static_block(next_position - Vec3(0, 1, 0))
-        _0_block = world.get_static_block(next_position)
-        _1_block = world.get_static_block(next_position + Vec3(0, 1, 0))
-        _2_block = world.get_static_block(next_position + Vec3(0, 2, 0))
         
         if self.agentAhead(world) or (next_position in agents_decisions):
-            #if self.number_of_blocks > 0 and self.r_create_block > 0:
-            #    possible_actions_list.append(CREATE_BLOCK)
-            #    self.agent_to_go_up = self.getAgentAhead(world)
             return (possible_actions_list, height)
         
         #to delete
         door_open = False
         for i in world.agents_map:
-            if type(world.get_entity(world.agents_map[i].position)).__name__ == 'PressurePlate':
+            if self.isPressurePlate(world.get_entity(world.agents_map[i].position)):
                 door_open = True
 
         if next_position not in self.forbidden_positions \
-            and minus_1_block != None \
-            and _0_block == None \
-            and _1_block == None \
+            and self.getBlockAhead_Down(world) != None \
+            and self.getBlockAhead(world) == None \
+            and self.getBlockAhead_Up(world) == None \
             and next_position not in agents_decisions \
-            and ((type(world.get_entity(next_position)).__name__ != 'Door') or (type(world.get_entity(next_position)).__name__ == 'Door')):# and door_open)):#world.get_entity(next_position).isOpen())):
-            if type(minus_1_block).__name__ == 'AgentBlock' and minus_1_block.color == self.color:
+            and (not self.isDoor(self.getEntityAhead(world)) or self.isDoor(self.getEntityAhead(world))):# and door_open)):#self.getEntityAhead(world).isOpen())):
+            if self.isAgentBlock(self.getBlockAhead_Down(world)) and self.getBlockAhead_Down(world).color == self.color:
                 possible_actions_list.append(MOVE)
-            elif type(minus_1_block).__name__ != 'AgentBlock':
+            elif not self.isAgentBlock(self.getBlockAhead_Down(world)):
                 possible_actions_list.append(MOVE)
 
         elif (self.r_create_block <= 0 or (next_position + Vec3(0, 1, 0))[1] == self.create_block_y) \
             and next_position + Vec3(0, 1, 0) not in self.forbidden_positions \
-            and _0_block != None \
-            and _1_block == None \
-            and _2_block == None \
+            and self.getBlockAhead(world) != None \
+            and self.getBlockAhead_Up(world) == None \
+            and self.getBlockAhead_Up(world) == None \
             and next_position + Vec3(0, 1, 0) not in agents_decisions \
-            and ((type(world.get_entity(next_position + Vec3(0, 1, 0))).__name__ != 'Door') or (type(world.get_entity(next_position + Vec3(0, 1, 0))).__name__ == 'Door')):# and door_open)):# and world.get_entity(next_position + Vec3(0, 1, 0)).isOpen())):
-            if type(_0_block).__name__ == 'AgentBlock' and _0_block.color == self.color:
+            and (not self.isDoor(self.getEntityAhead_Up(world)) or self.isDoor(self.getEntityAhead_Up(world))):# and door_open)):# and self.getEntityAhead_Up(world)).isOpen())):
+            if self.isAgentBlock(self.getBlockAhead(world)) and self.getBlockAhead(world).color == self.color:
                 possible_actions_list.append(MOVE)
-            elif type(_0_block).__name__ != 'AgentBlock':
+            elif not self.isAgentBlock(self.getBlockAhead(world)):
                 possible_actions_list.append(MOVE)
             
             # up
             height += 1
         
         elif next_position - Vec3(0, 1, 0) not in self.forbidden_positions \
-            and minus_2_block != None \
-            and minus_1_block == None \
-            and _0_block == None \
-            and _1_block == None \
+            and self.getBlockAhead_Down_Down(world) != None \
+            and self.getBlockAhead_Down(world) == None \
+            and self.getBlockAhead(world) == None \
+            and self.getBlockAhead_Up(world) == None \
             and next_position - Vec3(0, 1, 0) not in agents_decisions \
-            and ((type(world.get_entity(next_position - Vec3(0, 1, 0))).__name__ != 'Door') or (type(world.get_entity(next_position - Vec3(0, 1, 0))).__name__ == 'Door')):# and door_open)):# and world.get_entity(next_position - Vec3(0, 1, 0)).isOpen())):
-            if type(minus_2_block).__name__ == 'AgentBlock' and minus_2_block.color == self.color:
+            and (not self.isDoor(self.getEntityAhead_Down(world)) or self.isDoor(self.getEntityAhead_Down(world))):# and door_open)):# and world.get_entity(next_position - Vec3(0, 1, 0)).isOpen())):
+            if self.isAgentBlock(self.getBlockAhead_Down_Down(world)) and self.getBlockAhead_Down_Down(world).color == self.color:
                 possible_actions_list.append(MOVE)
-            elif type(minus_2_block).__name__ != 'AgentBlock':
+            elif not self.isAgentBlock(self.getBlockAhead_Down_Down(world)):
                 possible_actions_list.append(MOVE)
 
             # down
             height -= 1
         
-        forward_forward_p_block = type(world.get_static_block(self.position + self.Forward() + self.Forward())).__name__
-
-        if forward_forward_p_block == 'WallBlock' and self.number_of_blocks > 0 and _0_block == None and minus_1_block != None and self.r_create_block > 0:
+        if self.isWall(self.getBlockAhead_Ahead(world)) and self.number_of_blocks > 0 and self.getBlockAhead(world) == None and self.getBlockAhead_Down(world) != None and self.r_create_block > 0:
             possible_actions_list.append(CREATE_BLOCK)
 
-        if _0_block != None and type(_0_block).__name__ == 'AgentBlock' and (_0_block.position not in self.unbreakable_blocks) and _0_block.agent_name == self.name and world.get_entity(next_position + Vec3(0,1,0)) == None:
+        if self.getBlockAhead(world) != None and self.isAgentBlock(self.getBlockAhead(world)) and (self.getBlockAhead(world).position not in self.unbreakable_blocks) and self.getBlockAhead(world).agent_name == self.name and self.isNone(self.getEntityAhead_Up(world)):
             possible_actions_list.append(BREAK_BLOCK)
       
         return (possible_actions_list, height)

@@ -137,6 +137,297 @@ class Agent(Entity):
     
     def Left(self):
         return round(Vec3(self.left))
+    
+    def Up(self):
+        return round(Vec3(self.up))
+    
+    def Down(self):
+        return round(Vec3(self.down))
+
+    def set_animation_duration(self, tick_time):
+        self.animation_duration = animation_duration_tick_proportion * tick_time
+    
+    def typeOfBlock(self, block):
+        return type(block).__name__
+    
+    def isNone(self, o):
+        return o == None
+    
+    def isWall(self, block):
+        return self.typeOfBlock(block) == 'WallBlock'
+    
+    def isAgentBlock(self, block):
+        return self.typeOfBlock(block) == 'AgentBlock'
+    
+    def typeOfEntity(self, entity):
+        return type(entity).__name__
+    
+    def isDoor(self, entity):
+        return self.typeOfEntity(entity) == 'Door'
+    
+    def isPressurePlate(self, entity):
+        return self.typeOfEntity(entity) == 'PressurePlate'
+    
+    # ================== Get Entities ==================
+
+    def getEntityOfCurrentPosition(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position)
+
+    def getEntityAhead(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Forward())
+    
+    def getEntityRight(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Right())
+    
+    def getEntityLeft(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Left())
+    
+    def getEntityBehind(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Backward())
+    
+    def getEntityUp(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Up())
+
+    def getEntityDown(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Down())
+    
+    def getEntityUp_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Up() + self.Up())
+    
+    def getEntityDown_Down(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Down() + self.Down())
+    
+    def getEntityAhead_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Forward() + self.Up())
+    
+    def getEntityAhead_Up_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Forward() + self.Up() + self.Up())
+    
+    def getEntityAhead_Down(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Forward() + self.Down())
+    
+    def getEntityAhead_Down_Down(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Forward() + self.Down() + self.Down())
+    
+    def getEntityAhead_Ahead(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Forward() + self.Forward())
+    
+    def getEntityAhead_Right(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Forward() + self.Right())
+    
+    def getEntityAhead_Left(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Forward() + self.Left())
+    
+    def getEntityAhead_Right_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Forward() + self.Right() + self.Up())
+    
+    def getEntityAhead_Right_Up_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Forward() + self.Right() + self.Up() + self.Up())
+    
+    def getEntityAhead_Left_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Forward() + self.Left() + self.Up())
+    
+    def getEntityAhead_Left_Up_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Forward() + self.Left() + self.Up() + self.Up())
+    
+    def getEntityAhead_Ahead_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Forward() + self.Forward() + self.Up())
+    
+    def getEntityAhead_Ahead_Up_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Forward() + self.Forward() + self.Up() + self.Up())
+    
+    def getEntityAhead_Ahead_Down(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Forward() + self.Forward() + self.Down())
+    
+    def getEntityAhead_Ahead_Down_Down(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Forward() + self.Forward() + self.Down() + self.Down())
+    
+    def getEntityBehind_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Backward() + self.Up())
+    
+    def getEntityBehind_Up_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Backward() + self.Up() + self.Up())
+    
+    def getEntityBehind_Down(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Backward() + self.Down())
+    
+    def getEntityBehind_Down_Down(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Backward() + self.Down() + self.Down())
+    
+    def getEntityRight_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Right() + self.Up())
+    
+    def getEntityRight_Up_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Right() + self.Up() + self.Up())
+    
+    def getEntityLeft_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Left() + self.Up())
+    
+    def getEntityLeft_Up_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_entity(position + self.Left() + self.Up() + self.Up())
+    
+    # ================== Get Blocks ==================
+
+    def getBlockOfCurrentPosition(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position)
+
+    def getBlockAhead(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Forward())
+    
+    def getBlockRight(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Right())
+    
+    def getBlockLeft(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Left())
+    
+    def getBlockBehind(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Backward())
+    
+    def getBlockUp(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Up())
+
+    def getBlockDown(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Down())
+    
+    def getBlockUp_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Up() + self.Up())
+    
+    def getBlockDown_Down(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Down() + self.Down())
+    
+    def getBlockAhead_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Forward() + self.Up())
+    
+    def getBlockAhead_Up_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Forward() + self.Up() + self.Up())
+    
+    def getBlockAhead_Down(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Forward() + self.Down())
+    
+    def getBlockAhead_Down_Down(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Forward() + self.Down() + self.Down())
+    
+    def getBlockAhead_Ahead(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Forward() + self.Forward())
+    
+    def getBlockAhead_Right(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Forward() + self.Right())
+    
+    def getBlockAhead_Left(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Forward() + self.Left())
+    
+    def getBlockAhead_Right_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Forward() + self.Right() + self.Up())
+    
+    def getBlockAhead_Right_Up_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Forward() + self.Right() + self.Up() + self.Up())
+    
+    def getBlockAhead_Left_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Forward() + self.Left() + self.Up())
+    
+    def getBlockAhead_Left_Up_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Forward() + self.Left() + self.Up() + self.Up())
+    
+    def getBlockAhead_Ahead_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Forward() + self.Forward() + self.Up())
+    
+    def getBlockAhead_Ahead_Up_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Forward() + self.Forward() + self.Up() + self.Up())
+    
+    def getBlockAhead_Ahead_Down(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Forward() + self.Forward() + self.Down())
+    
+    def getBlockAhead_Ahead_Down_Down(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Forward() + self.Forward() + self.Down() + self.Down())
+    
+    def getBlockBehind_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Backward() + self.Up())
+    
+    def getBlockBehind_Up_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Backward() + self.Up() + self.Up())
+    
+    def getBlockBehind_Down(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Backward() + self.Down())
+    
+    def getBlockBehind_Down_Down(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Backward() + self.Down() + self.Down())
+    
+    def getBlockRight_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Right() + self.Up())
+    
+    def getBlockRight_Up_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Right() + self.Up() + self.Up())
+    
+    def getBlockLeft_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Left() + self.Up())
+    
+    def getBlockLeft_Up_Up(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Left() + self.Up() + self.Up())
+    
 
     def set_animation_duration(self, tick_time):
         self.animation_duration = animation_duration_tick_proportion * tick_time
