@@ -8,6 +8,7 @@ import pickle
 from agent.agent import Agent
 from agent.RandomAgent import RandomAgent
 from agent.RLearningAgent import RLearningAgent
+from agent.DeliberativeAgent import DeliberativeAgent
 
 # ============= DEFAULT WORLD VARIABLES =============
 DEFAULT_CENTER = (0,0,0)
@@ -84,9 +85,11 @@ def create_agent_acording_to_type(type_of_agent, name, position, color, block_co
         if name == 'ORANGE':
             return RLearningAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks, q_function = q_function, rewards = 'nothing')
         else:
-            return RLearningAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks, q_function = q_function, rewards = 'nothing')
+            return RLearningAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks, q_function = q_function, rewards = 'door')
+    elif type_of_agent.lower() == 'deliberative':
+        return DeliberativeAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks)
     else:
-        sys.exit("That type of agent is not recognized. Current options: ['mockup', 'random', 'rlearning']")
+        sys.exit("That type of agent is not recognized. Current options: ['mockup', 'random', 'rlearning', 'deliberative']")
 
 def load_map(json_object, return_object):
 
@@ -103,7 +106,7 @@ def load_map(json_object, return_object):
 
             if "agent_name" in block:
                 agent_name = block["agent_name"]
-                block_object = create_block_from_code(code, position, agent_name)
+                block_object = create_block_from_code(code, position, agent_name=agent_name)
                 return_object["world"].add_goal_block(agent_name, block_object)
             else:
                 block_object = create_block_from_code(code, position)

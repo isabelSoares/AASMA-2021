@@ -336,11 +336,11 @@ class World():
             item = Text(text=text_to_add, parent=panel.messages, scale_override=1.5, origin=(-.5, 0), position=(-.45, .125 - message_index * spacing))
 
 
-def create_block_from_code(code, position, block_affected_pos = None):
+def create_block_from_code(code, position, block_affected_pos = None, agent_name = None):
 
     # Manual Switch (sadly)
     if code == "Floor": return FloorBlock(position = position)
-    elif code == "WinningPost": return WinningPostBlock(position = position)
+    elif code == "WinningPost": return WinningPostBlock(position = position, agent_name = agent_name)
     elif code == "Wall": return WallBlock(position = position)
     elif code == "PressurePlate": return PressurePlate(position = position, block_affected_pos = block_affected_pos)
     elif code == "Door": return Door(position = position)
