@@ -24,11 +24,25 @@ BREAK_DOWN_BLOCK = 'BREAK_DOWN_BLOCK'
 # ============= DESIRES VARIABLES =============
 REACH_GOAL = 'REACH_GOAL'
 OPEN_DOOR = 'OPEN_DOOR'
+OPEN_DOOR_BACK = 'OPEN_DOOR_BACK'
 PLACE_BLOCK = 'PLACE_BLOCK'
 BREAK_BLOCK = 'BREAK_BLOCK'
 REACH_POSITION = 'REACH_POSITION'
 EXPLORE_UNKNOWN = 'EXPLORE_UNKNOWN'
+ROAM_AROUND = 'ROAM_AROUND'
 STAY_STILL = 'STAY_STILL'
+
+# ============= PRE-DEFINED CONSTANTS =============
+RECONSIDER_CHANCE = 0.05
+BELIEF_STUCK_THRESHOLD = 25
+COSSINE_DOOR_AGENT = 0.5
+
+# ============= VALID MOVEMENT POSITIONS =============
+MOVE_POSITIONS = (
+    (1, 0, 0), (-1, 0, 0), (0, 0, 1), (0, 0, -1),
+    (1, -1, 0), (-1, -1, 0), (0, -1, 1), (0, -1, -1),
+    (1, 1, 0), (-1, 1, 0), (0, 1, 1), (0, 1, -1),
+)
 
 class Belief():
     def __init__(self, block, agent, entity):
@@ -54,6 +68,9 @@ class DeliberativeAgent(Agent):
         # Beliefs
         self.beliefs = {}
         self.goal_beliefs = set()
+        # For it to roam around
+        self.belief_stuck = False
+        self.belief_stuck_threshold = BELIEF_STUCK_THRESHOLD
 
         self.desires = []
         self.intention = None
@@ -88,14 +105,17 @@ class DeliberativeAgent(Agent):
             if self.reconsider():
                 export_module.print_and_write_to_txt('   - Reconsidered')
                 self.desires_update()
-                self.intention_update()
-
-                
+                self.intention_update()  
         
+        self.belief_update_after_decision(last_position, next_position)
+
         return next_position
 
     def beliefs_update(self, world):
         current_position = self.position
+
+        # Update stuck belief
+        self.belief_stuck = self.belief_stuck_threshold == 0
 
         # Update goal block belief
         distance = world.distance_provider(self.name, self)
@@ -159,11 +179,20 @@ class DeliberativeAgent(Agent):
                     if type(block).__name__ == "WinningPostBlock" and block.getAgentName() == self.name.replace("Agent ", ""):
                         self.goal_beliefs = set([check_position])
 
+    def belief_update_after_decision(self, last_position, next_position):
+        # If agent doesn't have decrement counter
+        if last_position == next_position: self.belief_stuck_threshold -= 1
+        else: self.belief_stuck_threshold = BELIEF_STUCK_THRESHOLD
+
     def desires_update(self):
         self.desires = [REACH_GOAL]
 
         # Wants door open?
         if self.desires_door_open() != None: self.desires.append(OPEN_DOOR)
+        # Wants to open door back to agent
+        if self.desires_door_open_back() != None: self.desires.append(OPEN_DOOR_BACK)
+        # Wants to Roam Around
+        if self.belief_stuck: self.desires.append(ROAM_AROUND)
 
     def intention_update(self):
         focused_desire = self.desires[-1]
@@ -176,20 +205,26 @@ class DeliberativeAgent(Agent):
 
             self.intention = Intention(focused_desire, objective_position)
 
-        elif focused_desire == OPEN_DOOR:
-            pressure_plate_position = self.pressure_plate_to_open()
-            if pressure_plate_position != None:
-                self.intention = Intention(focused_desire, pressure_plate_position)
-            # TODO: If pressure plate not known what to do?
+        elif focused_desire == OPEN_DOOR or focused_desire == OPEN_DOOR_BACK:
+            pressure_plate_position = self.pressure_plate_to_open(focused_desire)
+            self.intention = Intention(focused_desire, pressure_plate_position)
+
+        elif focused_desire == ROAM_AROUND:
+            self.intention = Intention(focused_desire, None)
 
     def build_plan(self):
+        # Get current position
+        current_position = convert_vec3_to_key(self.position)
         
-        if self.intention.desire == REACH_GOAL or self.intention.desire == EXPLORE_UNKNOWN or self.intention.desire == OPEN_DOOR:
-            current_position = convert_vec3_to_key(self.position)
-            self.plan = self.build_path_plan(current_position, self.intention.position)
+        if (self.intention.desire == REACH_GOAL or self.intention.desire == EXPLORE_UNKNOWN or 
+            self.intention.desire == OPEN_DOOR or self.intention.desire == OPEN_DOOR_BACK):
+                self.plan = self.build_path_plan(current_position, self.intention.position)
 
         elif self.intention.desire == STAY_STILL:
-            pass
+            self.plan = []
+
+        elif self.intention.desire == ROAM_AROUND:
+            self.plan = self.build_longest_path_plan(current_position)
 
     def empty_plan(self):
         return len(self.plan) == 0
@@ -198,8 +233,9 @@ class DeliberativeAgent(Agent):
         if self.intention == None: return True
         current_position = convert_vec3_to_key(self.position)
         
-        if self.intention.desire == REACH_GOAL or self.intention.desire == EXPLORE_UNKNOWN or self.intention.desire == REACH_POSITION:
-            return current_position == self.intention.position
+        if (self.intention.desire == REACH_GOAL or self.intention.desire == EXPLORE_UNKNOWN or 
+            self.intention.desire == REACH_POSITION or self.intention.desire == ROAM_AROUND):
+                return current_position == self.intention.position
 
         elif self.intention.desire == OPEN_DOOR and self.intention.position == current_position:
             return_value = self.desires_door_open()
@@ -216,10 +252,12 @@ class DeliberativeAgent(Agent):
 
         if self.intention.desire == REACH_GOAL or self.intention.desire == REACH_POSITION:
             return not self.check_valid_movement(self.intention.position, self.intention.position)
-        elif self.intention.desire == EXPLORE_UNKNOWN:
+        elif self.intention.desire == EXPLORE_UNKNOWN and self.intention.position != None:
             return not self.check_valid_explore_movement(self.intention.position, self.intention.position)
         elif self.intention.desire == STAY_STILL:
             return False
+
+        return False
 
     def execute(self, world, action):
         action_to_functions = dict(
@@ -246,8 +284,7 @@ class DeliberativeAgent(Agent):
     def reconsider(self):
         # Simply reconsiders based on percentage
         # TODO: Improve reconsider logic
-        reconsider_chance = 0.05
-        return random.random() < reconsider_chance
+        return random.random() < RECONSIDER_CHANCE
 
     def plan_is_sound(self):
         # Control how far along the plan is checked
@@ -281,6 +318,16 @@ class DeliberativeAgent(Agent):
                 distance = ursinamath.distance(door_belief, agent_belief)
                 if distance == 1: return (door_belief, agent_belief)
 
+        return None
+
+    def desires_door_open_back(self):
+        agents_beliefs = list()
+        door_beliefs = list()
+        for belief_position in self.beliefs:
+            belief = self.beliefs[belief_position]
+            if belief.agent != None and belief.agent.name != self.name: agents_beliefs.append(belief_position)
+            if belief.entity != None and type(belief.entity).__name__ == "Door": door_beliefs.append(belief_position)
+
         # If other agent further away than a door then wants it open (Heuristic)
         current_position = convert_vec3_to_key(self.position)
         for door_belief in door_beliefs:
@@ -291,13 +338,14 @@ class DeliberativeAgent(Agent):
                 sub_agent = sub_positions(current_position, agent_belief)
                 cossine_metric = degree_between_positions(sub_door, sub_agent)
 
-                if distance_to_door < distance_to_agent and cossine_metric >= 0.25: return (door_belief, agent_belief)
+                if distance_to_door < distance_to_agent and cossine_metric >= COSSINE_DOOR_AGENT:
+                    #print(distance_to_door, distance_to_agent, door_belief, agent_belief)
+                    return (door_belief, agent_belief)
 
-
-        return None
-
-    def pressure_plate_to_open(self):
-        door_to_open, _ = self.desires_door_open()
+    def pressure_plate_to_open(self, focused_desire):
+        if focused_desire == OPEN_DOOR: door_to_open, _ = self.desires_door_open()
+        elif focused_desire == OPEN_DOOR_BACK: door_to_open, _ = self.desires_door_open_back()
+        else: return None
 
         valid_positions = list()
         for belief_position in self.beliefs:
@@ -315,21 +363,80 @@ class DeliberativeAgent(Agent):
         if initial_position == final_position: return []
 
         path_positions = self.build_path_positions(initial_position, final_position)
+        # Doesn't know how to get to goal or goal not specified
+        if path_positions == None:
+            path_positions = self.build_path_positions_unknown(initial_position, final_position)
+            self.intention.desire = EXPLORE_UNKNOWN
+        # Doesn't have anything to explore or do        
+        if path_positions == None:
+            self.intention.desire = STAY_STILL
+            self.intention.position = convert_vec3_to_key(self.position)
+            return []
+        
+        self.intention.position = convert_vec3_to_key(path_positions[-1])
         path_actions = self.build_path_actions(path_positions)
+        return path_actions
 
+    def build_longest_path_plan(self, initial_position):
+        path_positions = self.build_path_positions_unknown(initial_position, None)
+        if path_positions != None: self.intention.desire = EXPLORE_UNKNOWN
+        if path_positions == None: path_positions = self.build_path_positions_longest(initial_position)
+        if path_positions == None: return []
+
+        path_actions = self.build_path_actions(path_positions)
         return path_actions
 
     def build_path_positions(self, initial_position, final_position):
-        move_positions = (
-            (1, 0, 0), (-1, 0, 0), (0, 0, 1), (0, 0, -1),
-            (1, -1, 0), (-1, -1, 0), (0, -1, 1), (0, -1, -1),
-            (1, 1, 0), (-1, 1, 0), (0, 1, 1), (0, 1, -1),
-        )
+        if final_position == None: return None
 
         class Explorer():
             def __init__(self, current_position):
                 self.current_position = current_position
                 self.history_positions = list([current_position])
+
+        # Create Initial Explorer
+        current_position = initial_position
+        current_explorers = set([Explorer(current_position)])
+        # Marks visited positions
+        visited_positions = set([current_position])
+
+        found_final = None
+        while found_final == None:
+            new_explorers = set()
+
+            for explorer in current_explorers:
+                for move_position in MOVE_POSITIONS:
+                    new_current_position = sum_positions(explorer.current_position, move_position)
+
+                    # Create Explorer
+                    new_explorer = copy.deepcopy(explorer)
+                    new_explorer.current_position = new_current_position
+                    new_explorer.history_positions.append(new_current_position)
+
+                    # Don't go to already visited cells
+                    if new_current_position in visited_positions: continue
+                    visited_positions.add(new_current_position)
+
+                    # Check if valid movement according to beliefs
+                    if not self.check_valid_movement(explorer.current_position, new_current_position):
+                        continue
+
+                    if new_current_position == final_position: found_final = new_explorer
+                    new_explorers.add(new_explorer)
+
+            current_explorers = new_explorers
+            
+            # Didn't find objective
+            if (len(current_explorers) == 0): return None
+
+        return found_final.history_positions
+
+    def build_path_positions_unknown(self, initial_position, final_position):
+        class Explorer():
+            def __init__(self, current_position):
+                self.current_position = current_position
+                self.history_positions = list([current_position])
+                self.valid_path = True
                 self.non_found_history_positions = list([current_position])
 
         # Create Initial Explorer
@@ -339,26 +446,87 @@ class DeliberativeAgent(Agent):
         # Marks visited positions
         visited_positions = set([current_position])
         # If path can't be formulated from beliefs then chose one not known place to explore
-        non_found_possibilities = list()
+        unknown_possibilities = set()
 
-        done = False
-        found_final = None
-        while not done:
+        while len(current_explorers) > 0:
             new_explorers = set()
 
             for explorer in current_explorers:
-                current_distance = ursinamath.distance(explorer.current_position, final_position)
-                for move_position in move_positions:
-                    new_current_position_x = explorer.current_position[0] + move_position[0]
-                    new_current_position_y = explorer.current_position[1] + move_position[1]
-                    new_current_position_z = explorer.current_position[2] + move_position[2]
-                    new_current_position = (new_current_position_x, new_current_position_y, new_current_position_z)
+                for move_position in MOVE_POSITIONS:
+                    new_current_position = sum_positions(explorer.current_position, move_position)
+
+                    # Don't go to already visited cells
+                    if new_current_position in visited_positions: continue
+                    visited_positions.add(new_current_position)
+
+                    # Create Explorer
+                    new_explorer = copy.deepcopy(explorer)
+
+                    # If block completely unknown
+                    if new_current_position not in self.beliefs:
+                        unknown_possibilities.add(new_explorer)
+                        continue
+
+                    # Check if valid movement according to beliefs
+                    if not self.check_valid_movement(explorer.current_position, new_current_position):
+                        new_explorer.valid_path = False
+                        if not self.check_valid_explore_movement(explorer.current_position, new_current_position):
+                            continue
+
+                    # Update Explorer
+                    new_explorer.current_position = new_current_position
+                    if (new_explorer.valid_path): new_explorer.history_positions.append(new_current_position)
+                    new_explorer.non_found_history_positions.append(new_current_position)
+
+                    new_explorers.add(new_explorer)
+
+            current_explorers = new_explorers
+
+        # If nothing to discover
+        if len(unknown_possibilities) == 0: return None
+
+        # Choose closest non known position to explore, in tie chose the one closest to final position (if exists)
+        chosen_explorer = None
+        chosen_steps, chosen_distance = None, None 
+        for possibility in unknown_possibilities:
+            steps_till_position = len(possibility.non_found_history_positions)
+            if final_position == None: distance_till_final = None
+            else: distance_till_final = ursinamath.distance(possibility.current_position, final_position)
+
+            if (chosen_explorer == None or steps_till_position < chosen_steps or 
+                (steps_till_position == chosen_steps and distance_till_final != None and distance_till_final < chosen_distance)):
+                    chosen_explorer = possibility
+                    chosen_steps = steps_till_position
+                    chosen_distance = distance_till_final
+
+        return chosen_explorer.history_positions
+
+    def build_path_positions_longest(self, initial_position):
+        class Explorer():
+            def __init__(self, current_position):
+                self.current_position = current_position
+                self.history_positions = list([current_position])
+
+        # Create Initial Explorer
+        current_position = initial_position
+        current_explorers = set([Explorer(current_position)])
+        # Marks visited positions
+        visited_positions = set([current_position])
+        # Explorers possible for choosing
+        final_explorers = list()
+
+        while len(current_explorers) > 0:
+            new_explorers = set()
+            final_explorers.clear()
+
+            for explorer in current_explorers:
+                for move_position in MOVE_POSITIONS:
+                    new_current_position = sum_positions(explorer.current_position, move_position)
 
                     # Create Explorer
                     new_explorer = copy.deepcopy(explorer)
                     new_explorer.current_position = new_current_position
                     new_explorer.history_positions.append(new_current_position)
-                    new_explorer.non_found_history_positions.append(new_current_position)
 
                     # Don't go to already visited cells
                     if new_current_position in visited_positions: continue
@@ -366,76 +534,15 @@ class DeliberativeAgent(Agent):
 
                     # Check if valid movement according to beliefs
                     if not self.check_valid_movement(explorer.current_position, new_current_position):
-                        if self.check_valid_explore_movement(explorer.current_position, new_current_position):
-                            new_explorer.history_positions = new_explorer.history_positions[:-1]
-                            non_found_possibilities.append(new_explorer)
+                        final_explorers.append(explorer)
                         continue
 
-                    if new_current_position == final_position: found_final = new_explorer
                     new_explorers.add(new_explorer)
 
             current_explorers = new_explorers
-            if (len(current_explorers) == 0 or found_final != None): done = True
 
-        chosen_explorer = found_final
-        if not found_final:
-            # Explorer unknown
-            self.intention.desire = EXPLORE_UNKNOWN
-
-            # Propagate Unfound explorers till unexplored
-            done = False
-            true_non_found_possibilities = set()
-            while not done:
-                new_explorers = set()
-
-                for explorer in non_found_possibilities:
-                    current_distance = ursinamath.distance(explorer.current_position, final_position)
-                    for move_position in move_positions:
-                        new_current_position_x = explorer.current_position[0] + move_position[0]
-                        new_current_position_y = explorer.current_position[1] + move_position[1]
-                        new_current_position_z = explorer.current_position[2] + move_position[2]
-                        new_current_position = (new_current_position_x, new_current_position_y, new_current_position_z)
-
-                        # Create Explorer
-                        new_explorer = copy.deepcopy(explorer)
-                        new_explorer.current_position = new_current_position
-                        new_explorer.non_found_history_positions.append(new_current_position)
-
-                        # Don't go to already visited cells
-                        if new_current_position in visited_positions: continue
-                        visited_positions.add(new_current_position)
-
-                        # If block completely unknown
-                        if new_current_position not in self.beliefs:
-                            true_non_found_possibilities.add(explorer)
-                            continue
-
-                        # Check if valid explore movement
-                        if self.check_valid_explore_movement(explorer.current_position, new_current_position):
-                            new_explorers.add(new_explorer)
-
-                non_found_possibilities = new_explorers
-                if len(non_found_possibilities) == 0: done = True
-            
-            # If nothing to discover
-            if len(true_non_found_possibilities) == 0:
-                self.intention.desire = STAY_STILL
-                self.intention.position = convert_vec3_to_key(self.position)
-                return []
-
-            # Choose closest non known position to explore, in tie chose the one close to final position
-            chosen_steps, chosen_distance = None, None 
-            for possibility in true_non_found_possibilities:
-                steps_till_position = len(possibility.non_found_history_positions)
-                distance_till_final = ursinamath.distance(possibility.current_position, final_position)
-
-                if (chosen_explorer == None or steps_till_position < chosen_steps or 
-                    (steps_till_position == chosen_steps and distance_till_final < chosen_distance)):
-                        chosen_explorer = possibility
-                        chosen_steps = steps_till_position
-                        chosen_distance = distance_till_final
-
-        return chosen_explorer.history_positions
+        if len(final_explorers) == 0: return None
+        return random.sample(final_explorers, 1)[0].history_positions
 
     def build_path_actions(self, path_positions):
         # Create Path of Actions
@@ -612,9 +719,11 @@ class DeliberativeAgent(Agent):
         export_module.print_and_write_to_txt(self.name + ': @ ' + str(convert_vec3_to_key(self.position)))
         export_module.print_and_write_to_txt('   - Beliefs: ' + str(len(self.beliefs)))
         export_module.print_and_write_to_txt('   - Beliefs for Goal: ' + str(len(self.goal_beliefs)))
+        export_module.print_and_write_to_txt('   - Belief Stuck: ' + str(self.belief_stuck))
         export_module.print_and_write_to_txt('   - Desires: ' + str(self.desires))
         if self.intention == None: export_module.print_and_write_to_txt('   - Intention: None')
-        else: export_module.print_and_write_to_txt('   - Intention: ' + self.intention.desire + " @ " + str(convert_vec3_to_key(self.intention.position)))
+        else: export_module.print_and_write_to_txt('   - Intention: ' + self.intention.desire + " @ " + 
+            str(None if self.intention.position == None else convert_vec3_to_key(self.intention.position)))
         export_module.print_and_write_to_txt('   - Plan: ' + str(self.plan))
 
 def sum_positions(position_1, position_2):
