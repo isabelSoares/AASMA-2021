@@ -34,15 +34,18 @@ STAY_STILL = 'STAY_STILL'
 
 # ============= PRE-DEFINED CONSTANTS =============
 RECONSIDER_CHANCE = 0.05
+PATH_CHECK_DEPT = -1
 BELIEF_STUCK_THRESHOLD = 25
 COSSINE_DOOR_AGENT = 0.5
 
-# ============= VALID MOVEMENT POSITIONS =============
+# ============= VALID MOVEMENT POSITIONS AND DIRECTIONS =============
 MOVE_POSITIONS = (
     (1, 0, 0), (-1, 0, 0), (0, 0, 1), (0, 0, -1),
     (1, -1, 0), (-1, -1, 0), (0, -1, 1), (0, -1, -1),
     (1, 1, 0), (-1, 1, 0), (0, 1, 1), (0, 1, -1),
 )
+
+DIRECTIONS = ((1, 0, 0), (-1, 0, 0), (0, 0, 1), (0, 0, -1))
 
 class Belief():
     def __init__(self, block, agent, entity):
@@ -115,7 +118,7 @@ class DeliberativeAgent(Agent):
         current_position = self.position
 
         # Update stuck belief
-        self.belief_stuck = self.belief_stuck_threshold == 0
+        self.belief_stuck = self.belief_stuck_threshold < 0
 
         # Update goal block belief
         distance = world.distance_provider(self.name, self)
@@ -141,9 +144,9 @@ class DeliberativeAgent(Agent):
 
         # Update 3 x 3 around
         for x in range(-1, 2):
-            for y in range(-1, 3):
+            for y in range(-1, 4):
                 for z in range(-1, 2):
-                    check_position = (self.position[0] + x, self.position[1] + y, self.position[2] + z)
+                    check_position = sum_positions(self.position, (x, y, z))
                     check_position = convert_vec3_to_key(check_position)
 
                     # Update belief
@@ -187,6 +190,8 @@ class DeliberativeAgent(Agent):
     def desires_update(self):
         self.desires = [REACH_GOAL]
 
+        # Wants to place block?
+        if self.desires_place_block() != None: self.desires.append(PLACE_BLOCK)
         # Wants door open?
         if self.desires_door_open() != None: self.desires.append(OPEN_DOOR)
         # Wants to open door back to agent
@@ -199,15 +204,17 @@ class DeliberativeAgent(Agent):
         
         if focused_desire == REACH_GOAL:
             goal_possibility = random.sample(self.goal_beliefs, 1)[0]
-            objective_position = list(goal_possibility)
-            objective_position[1] = objective_position[1] + 1
-            objective_position = tuple(objective_position)
+            objective_position = sum_positions(goal_possibility, (0, 1, 0))
 
             self.intention = Intention(focused_desire, objective_position)
 
         elif focused_desire == OPEN_DOOR or focused_desire == OPEN_DOOR_BACK:
             pressure_plate_position = self.pressure_plate_to_open(focused_desire)
             self.intention = Intention(focused_desire, pressure_plate_position)
+
+        elif focused_desire == PLACE_BLOCK:
+            block_position = self.desires_place_block()
+            self.intention = Intention(focused_desire, block_position)
 
         elif focused_desire == ROAM_AROUND:
             self.intention = Intention(focused_desire, None)
@@ -220,6 +227,9 @@ class DeliberativeAgent(Agent):
             self.intention.desire == OPEN_DOOR or self.intention.desire == OPEN_DOOR_BACK):
                 self.plan = self.build_path_plan(current_position, self.intention.position)
 
+        if self.intention.desire == PLACE_BLOCK:
+            self.plan = self.build_path_plan_block(current_position, self.intention.position)
+        
         elif self.intention.desire == STAY_STILL:
             self.plan = []
 
@@ -288,7 +298,8 @@ class DeliberativeAgent(Agent):
 
     def plan_is_sound(self):
         # Control how far along the plan is checked
-        elements_to_check = len(self.plan)
+        if PATH_CHECK_DEPT == -1: elements_to_check = len(self.plan)
+        else: elements_to_check = PATH_CHECK_DEPT
 
         temp = min(len(self.plan), elements_to_check)
         path_positions = self.build_path_positions_from_actions(self.plan[:temp])
@@ -299,6 +310,17 @@ class DeliberativeAgent(Agent):
 
             if not self.check_valid_movement(from_position, to_position):
                 return False
+
+        # Check if spot allows for placing of block
+        forward = convert_vec3_to_key(self.Forward())
+        current_position = convert_vec3_to_key(self.position)
+        forward_position = sum_positions(current_position, forward)
+
+        last_action = self.plan[:temp - 1]
+        last_position = path_positions[-1]
+        if last_action == CREATE_ONLY_BLOCK and not self.is_free_to_place_from_belief(forward_position): return False
+        elif last_action == CREATE_UP_BLOCK and not self.is_free_to_place_from_belief(sum_positions(forward_position, (0, 1, 0))): return False
+        elif last_action == CREATE_DOWN_BLOCK and not self.is_free_to_place_from_belief(sum_positions(forward_position, (0, -1, 0))): return False
 
         return True
 
@@ -339,8 +361,45 @@ class DeliberativeAgent(Agent):
                 cossine_metric = degree_between_positions(sub_door, sub_agent)
 
                 if distance_to_door < distance_to_agent and cossine_metric >= COSSINE_DOOR_AGENT:
-                    #print(distance_to_door, distance_to_agent, door_belief, agent_belief)
                     return (door_belief, agent_belief)
+
+    def desires_place_block(self):
+        if self.number_of_blocks == 0: return None
+
+        valid_place_block_positions = list()
+        for belief_position in self.beliefs:
+            for direction in DIRECTIONS:
+                if self.helpfull_place_block(belief_position, direction):
+                    valid_place_block_positions.append(belief_position)
+
+        if len(valid_place_block_positions) == 0: return None
+        else: return random.sample(valid_place_block_positions, 1)[0]
+
+    def helpfull_place_block(self, position_block, direction):
+        ahead_position = sum_positions(position_block, direction)
+
+        support_position = sum_positions(position_block, (0, -1, 0))
+        ahead_feet_position = sum_positions(ahead_position, (0, 0, 0))
+        ahead_head_position = sum_positions(ahead_position, (0, 1, 0))
+        ahead_above_head_position = sum_positions(ahead_position, (0, 2, 0))
+
+        # Position block must be known and be free
+        if (position_block not in self.beliefs or
+            not self.is_free_to_place_from_belief(position_block)): return False
+        # Support must be known and give support
+        if (support_position not in self.beliefs or
+            not self.gives_support_from_belief(support_position)): return False
+        # Ahead feet position must be known and be a wall
+        if (ahead_feet_position not in self.beliefs or
+            not self.is_wall_from_belief(ahead_feet_position)): return False
+        # Ahead head position must be known and be a wall
+        if (ahead_head_position not in self.beliefs or
+            not self.is_wall_from_belief(ahead_head_position)): return False
+        # Ahead head position must be known and not be a wall
+        if (ahead_above_head_position not in self.beliefs or
+            self.is_wall_from_belief(ahead_above_head_position)): return False
+
+        return True
 
     def pressure_plate_to_open(self, focused_desire):
         if focused_desire == OPEN_DOOR: door_to_open, _ = self.desires_door_open()
@@ -380,10 +439,41 @@ class DeliberativeAgent(Agent):
     def build_longest_path_plan(self, initial_position):
         path_positions = self.build_path_positions_unknown(initial_position, None)
         if path_positions != None: self.intention.desire = EXPLORE_UNKNOWN
-        if path_positions == None: path_positions = self.build_path_positions_longest(initial_position)
+        if path_positions == None or len(path_positions) <= 1: path_positions = self.build_path_positions_longest(initial_position)
         if path_positions == None: return []
 
         path_actions = self.build_path_actions(path_positions)
+        return path_actions
+
+    def build_path_plan_block(self, initial_position, block_position):
+
+        path_positions = self.build_path_positions(initial_position, block_position)
+        # Doesn't know how to get to block
+        if path_positions == None:
+            path_positions = self.build_path_positions_unknown(initial_position, block_position)
+            if path_positions != None:
+                self.intention.desire = EXPLORE_UNKNOWN
+                self.intention.position = convert_vec3_to_key(path_positions[-1])
+                path_actions = self.build_path_actions(path_positions)
+                return path_actions
+        # Doesn't have anything to explore or do        
+        if path_positions == None:
+            self.intention.desire = STAY_STILL
+            self.intention.position = convert_vec3_to_key(self.position)
+            return []
+        
+        # Has intention of being in position before it got to where it wants to place block
+        self.intention.position = convert_vec3_to_key(path_positions[-1])
+
+        path_actions = self.build_path_actions(path_positions)
+        # Remove last action which led agent to be in same block where it wants to place it
+        path_actions = self.remove_action_to_go_back_n_positions(path_actions, 1)
+
+        # Append right action according to position
+        position_to_be = convert_vec3_to_key(path_positions[-2])
+        action_to_append = self.compute_appropriate_action_block(position_to_be, block_position)
+        if action_to_append != None: path_actions.append(action_to_append)
+
         return path_actions
 
     def build_path_positions(self, initial_position, final_position):
@@ -551,12 +641,9 @@ class DeliberativeAgent(Agent):
         for index_position in range(1, len(path_positions)):
             from_position = path_positions[index_position - 1]    
             to_position = path_positions[index_position]
+            variation = sub_positions(to_position, from_position)
 
-            variation_x = to_position[0] - from_position[0]
-            variation_y = to_position[1] - from_position[1]
-            variation_z = to_position[2] - from_position[2]
-
-            plane_vector = (variation_x, 0, variation_z)
+            plane_vector = (variation[0], 0, variation[2])
             if current_rotation != plane_vector:
                 right = forward_after_right(current_rotation)
                 left = forward_after_left(current_rotation)
@@ -576,11 +663,19 @@ class DeliberativeAgent(Agent):
                     print("ERROR PARSING ROTATIONS!")
                     sys.exit(1)
 
-            if variation_y < 0: paths_actions.append(MOVE_DOWN)
-            elif variation_y > 0: paths_actions.append(MOVE_UP)
+            if variation[1] < 0: paths_actions.append(MOVE_DOWN)
+            elif variation[1] > 0: paths_actions.append(MOVE_UP)
             else: paths_actions.append(MOVE_ONLY)
 
         return paths_actions
+
+    def remove_action_to_go_back_n_positions(self, path_actions, n):
+        while n != 0 and len(path_actions) > 0:
+            last_action = path_actions.pop(-1)
+            if last_action != ROTATE_LEFT and last_action != ROTATE_RIGHT:
+                n = n - 1
+            
+        return path_actions
 
     def build_path_positions_from_actions(self, path_actions):
         current_position = convert_vec3_to_key(self.position)
@@ -600,24 +695,20 @@ class DeliberativeAgent(Agent):
 
         return path_positions
 
+    def compute_appropriate_action_block(self, position_to_be, block_position):
+        difference_position = sub_positions(block_position, position_to_be)
+
+        if difference_position[1] > 0: return CREATE_UP_BLOCK
+        elif difference_position[1] < 0: return CREATE_DOWN_BLOCK
+        else: return CREATE_ONLY_BLOCK
+
     # ======== END BUILD PATH ======== 
 
     def check_valid_movement(self, from_position, to_position):
-        support_position = list(to_position)
-        support_position[1] = support_position[1] - 1
-        support_position = tuple(support_position)
-
-        jump_head_position = list(from_position)
-        jump_head_position[1] = jump_head_position[1] + 2
-        jump_head_position = tuple(jump_head_position)
-
-        head_to_position = list(to_position)
-        head_to_position[1] = head_to_position[1] + 1
-        head_to_position = tuple(head_to_position)
-
-        fall_head_position = list(to_position)
-        fall_head_position[1] = fall_head_position[1] + 2
-        fall_head_position = tuple(fall_head_position)
+        support_position = sum_positions(to_position, (0, -1, 0))
+        jump_head_position = sum_positions(from_position, (0, 2, 0))
+        head_to_position = sum_positions(to_position, (0, 1, 0))
+        fall_head_position = sum_positions(to_position, (0, 2, 0))
 
         # Support must be known and give support
         if (support_position not in self.beliefs or
@@ -644,14 +735,9 @@ class DeliberativeAgent(Agent):
         return True
 
     def check_valid_explore_movement(self, from_position, to_position):
-        support_position = list(to_position)
-        support_position[1] = support_position[1] - 1
-        support_position = tuple(support_position)
-
-        head_to_position = list(to_position)
-        head_to_position[1] = head_to_position[1] + 1
-        head_to_position = tuple(head_to_position)
-
+        support_position = sum_positions(to_position, (0, -1, 0))
+        head_to_position = sum_positions(to_position, (0, 1, 0))
+        
         # Support must be free if known
         if (support_position in self.beliefs and
             not self.gives_support_from_belief(support_position)): return False
@@ -695,31 +781,41 @@ class DeliberativeAgent(Agent):
     def gives_support_from_belief(self, position):
         belief = self.beliefs[position]
         if belief.block == None: return False
+
+        # Check if Agent Block placed has its name
+        if type(belief.block).__name__ == "AgentBlock" and belief.block.color != self.color:
+            return False
+
         return True
 
-    def print_beliefs(self):
-        print("Beliefs:")
+    def is_wall_from_belief(self, position):
+        belief = self.beliefs[position]
+        if belief.block != None or type(belief.block).__name__ == "WallBlock": return True
+        return False
 
-        for position_belief in self.beliefs:
-            belief = self.beliefs[position_belief]
+    def is_free_to_place_from_belief(self, position):
+        belief = self.beliefs[position]
+        if belief.block != None or belief.agent != None or belief.entity != None: return False
+        return True
 
-            info_line = "("
-            if (belief.agent == None): info_line += "None" + ", "
-            else: info_line += belief.agent.name + ", "
-            if (belief.entity == None): info_line += "None" + ", "
-            else: info_line += type(belief.entity).__name__ + ", "
-            if (belief.block == None): info_line += "None" + ")"
-            else: info_line += type(belief.block).__name__ + ")"
+    def print_beliefs(self, position_belief):
+        belief = self.beliefs[position_belief]
 
-            print(info_line + " @ " + str(position_belief))
+        info_line = "("
+        if (belief.agent == None): info_line += "None" + ", "
+        else: info_line += belief.agent.name + ", "
+        if (belief.entity == None): info_line += "None" + ", "
+        else: info_line += type(belief.entity).__name__ + ", "
+        if (belief.block == None): info_line += "None" + ")"
+        else: info_line += type(belief.block).__name__ + ")"
 
-        print("Goal Possibilities: " + str(len(self.goal_beliefs)))
+        print(info_line + " @ " + str(position_belief))
 
     def print_agent_state(self):
         export_module.print_and_write_to_txt(self.name + ': @ ' + str(convert_vec3_to_key(self.position)))
         export_module.print_and_write_to_txt('   - Beliefs: ' + str(len(self.beliefs)))
         export_module.print_and_write_to_txt('   - Beliefs for Goal: ' + str(len(self.goal_beliefs)))
-        export_module.print_and_write_to_txt('   - Belief Stuck: ' + str(self.belief_stuck))
+        export_module.print_and_write_to_txt('   - Belief Stuck: ' + str(self.belief_stuck) + ' : ' + str(self.belief_stuck_threshold))
         export_module.print_and_write_to_txt('   - Desires: ' + str(self.desires))
         if self.intention == None: export_module.print_and_write_to_txt('   - Intention: None')
         else: export_module.print_and_write_to_txt('   - Intention: ' + self.intention.desire + " @ " + 
