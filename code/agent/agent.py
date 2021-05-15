@@ -153,6 +153,9 @@ class Agent(Entity):
     def isNone(self, o):
         return o == None
     
+    def isGoalBlock(self, block):
+        return self.typeOfBlock(block) == 'WinningPostBlock'
+    
     def isWall(self, block):
         return self.typeOfBlock(block) == 'WallBlock'
     
@@ -303,6 +306,10 @@ class Agent(Entity):
     def getBlockOfCurrentPosition(self, world, position=None):
         if position == None: position = self.position
         return world.get_static_block(position)
+    
+    def getBlockOfCurrentPosition_Down(self, world, position=None):
+        if position == None: position = self.position
+        return world.get_static_block(position + self.Down())
 
     def getBlockAhead(self, world, position=None):
         if position == None: position = self.position

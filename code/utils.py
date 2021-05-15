@@ -7,6 +7,7 @@ import pickle
 # ============= IMPORT VARIOUS TYPES OF AGENTS =============
 from agent.agent import Agent
 from agent.RandomAgent import RandomAgent
+from agent.ReactiveAgent import ReactiveAgent
 from agent.RLearningAgent import RLearningAgent
 from agent.DeliberativeAgent import DeliberativeAgent
 
@@ -78,6 +79,8 @@ def create_agent_acording_to_type(type_of_agent, name, position, color, block_co
         return Agent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks)
     elif type_of_agent.lower() == 'random':
         return RandomAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks)
+    elif type_of_agent.lower() == 'reactive':
+        return ReactiveAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks)
     elif type_of_agent.lower() == 'rlearning':
         q_function = {}
         #with open('Q-Function Agent ' + name + '.pkl', 'rb') as f:
