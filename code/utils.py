@@ -10,6 +10,7 @@ from agent.RandomAgent import RandomAgent
 from agent.ReactiveAgent import ReactiveAgent
 from agent.RLearningAgent import RLearningAgent
 from agent.DeliberativeAgent import DeliberativeAgent
+from agent.HybridAgent import HybridAgent
 
 # ============= DEFAULT WORLD VARIABLES =============
 DEFAULT_CENTER = (0,0,0)
@@ -91,6 +92,8 @@ def create_agent_acording_to_type(type_of_agent, name, position, color, block_co
             return RLearningAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks, q_function = q_function, rewards = 'door')
     elif type_of_agent.lower() == 'deliberative':
         return DeliberativeAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks)
+    elif type_of_agent.lower() == 'hybrid':
+        return HybridAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks)
     else:
         sys.exit("That type of agent is not recognized. Current options: ['mockup', 'random', 'rlearning', 'deliberative']")
 
