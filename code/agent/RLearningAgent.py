@@ -91,10 +91,10 @@ class RLearningAgent(Agent):
         self.check_messages(world)
         self.check_if_message(world)
 
-        if self.id_being_helped == None and self.id_solving_message == None and self.isDoor(self.getEntityAhead(world)) and (last_position + self.Forward() not in self.forbidden_positions):
+        if self.id_being_helped == None and self.id_solving_message == None and self.isDoor(self.getEntityAhead(world)) and self.hasPermission(self.getEntityAhead(world)) and (last_position + self.Forward() not in self.forbidden_positions):
             self.send_message(world, last_position + self.Forward(), 'pressure_plate', 'pressure_plate')
             return last_position
-        elif self.id_being_helped == None and self.id_solving_message == None and self.isWall(self.getBlockAhead(world)) and self.isWall(self.getBlockAhead_Up(world)) and self.isNone(self.getBlockAhead_Up_Up(world)) \
+        elif self.id_being_helped == None and self.id_solving_message == None and self.isWall(self.getBlockAhead(world)) and self.hasPermission(self.getBlockAhead(world)) and self.isWall(self.getBlockAhead_Up(world)) and self.isNone(self.getBlockAhead_Up_Up(world)) \
              and (self.isNone(self.getBlockRight(world)) or (self.isAgentBlock(self.getBlockRight(world)) and self.getBlockRight(world).color != self.color)) \
              and (self.isNone(self.getBlockLeft(world)) or (self.isAgentBlock(self.getBlockRight(world)) and self.getBlockLeft(world).color != self.color)):
             self.send_message(world, last_position + self.Forward(), 'create_block', 'create_block')
@@ -175,36 +175,43 @@ class RLearningAgent(Agent):
             r += self.r_pressure_plate
         if self.isPressurePlate(self.getEntityAhead(world, last_position)):
             r += self.r_pressure_plate * 0.2
-        elif self.isDoor(self.getEntityOfCurrentPosition(world, last_position)):
+        elif self.isDoor(self.getEntityOfCurrentPosition(world, next_position)) and self.hasPermission(self.getEntityOfCurrentPosition(world, next_position)):
             r += self.r_door
-        elif self.isDoor(self.getEntityAhead(world, last_position)):
+        elif self.isDoor(self.getEntityAhead(world, last_position)) and self.hasPermission(self.getEntityAhead(world, last_position)):
             r += self.r_door * 0.2
-        elif self.isDoor(self.getEntityBehind(world, last_position)) or \
-             self.isDoor(self.getEntityRight(world, last_position)) or \
-             self.isDoor(self.getEntityLeft(world, last_position)):
+        elif (self.isDoor(self.getEntityBehind(world, last_position)) and self.hasPermission(self.getEntityBehind(world, last_position))) or \
+             (self.isDoor(self.getEntityRight(world, last_position)) and self.hasPermission(self.getEntityRight(world, last_position))) or \
+             (self.isDoor(self.getEntityLeft(world, last_position)) and self.hasPermission(self.getEntityLeft(world, last_position))):
             r += self.r_door * 0.1
         elif (self.isWall(self.getBlockAhead(world, last_position)) \
+                and self.hasPermission(self.getBlockAhead(world, last_position)) \
                 and self.isWall(self.getBlockAhead_Up(world, last_position)) \
                 and self.isNone(self.getBlockAhead_Up_Up(world, last_position))) or \
              (self.isWall(self.getBlockBehind(world, last_position)) \
+                and self.hasPermission(self.getBlockBehind(world, last_position)) \
                 and self.isWall(self.getBlockBehind_Up(world, last_position)) \
                 and self.isNone(self.getBlockBehind_Up_Up(world, last_position))) or \
              (self.isWall(self.getBlockRight(world, last_position)) \
+                and self.hasPermission(self.getBlockRight(world, last_position)) \
                 and self.isWall(self.getBlockRight_Up(world, last_position)) \
                 and self.isNone(self.getBlockRight_Up_Up(world, last_position))) or \
              (self.isWall(self.getBlockLeft(world, last_position)) \
+                and self.hasPermission(self.getBlockLeft(world, last_position)) \
                 and self.isWall(self.getBlockLeft_Up(world, last_position)) \
                 and self.isNone(self.getBlockLeft_Up_Up(world, last_position))):
             r += self.r_wall
         elif (self.isWall(self.getBlockAhead_Ahead(world, last_position)) \
+                and self.hasPermission(self.getBlockAhead_Ahead(world, last_position)) \
                 and self.isWall(self.getBlockAhead_Ahead_Up(world, last_position)) \
                 and self.isNone(self.getBlockAhead_Ahead_Up_Up(world, last_position))) \
                 or \
                 (self.isWall(self.getBlockAhead_Right(world, last_position)) \
+                and self.hasPermission(self.getBlockAhead_Right(world, last_position)) \
                 and self.isWall(self.getBlockAhead_Right_Up(world, last_position)) \
                 and self.isNone(self.getBlockAhead_Right_Up_Up(world, last_position))) \
                 or \
                 (self.isWall(self.getBlockAhead_Left(world, last_position)) \
+                and self.hasPermission(self.getBlockAhead_Left(world, last_position)) \
                 and self.isWall(self.getBlockAhead_Left_Up(world, last_position)) \
                 and self.isNone(self.getBlockAhead_Left_Up_Up(world, last_position))):
             r += self.r_create_block
@@ -346,7 +353,7 @@ class RLearningAgent(Agent):
             and self.getBlockAhead(world) == None \
             and self.getBlockAhead_Up(world) == None \
             and next_position not in agents_decisions \
-            and (not self.isDoor(self.getEntityAhead(world)) or self.isDoor(self.getEntityAhead(world))):# and door_open)):#self.getEntityAhead(world).isOpen())):
+            and (not self.isDoor(self.getEntityAhead(world)) or (self.isDoor(self.getEntityAhead(world)) and self.hasPermission(self.getEntityAhead(world)))):
             if self.isAgentBlock(self.getBlockAhead_Down(world)) and self.getBlockAhead_Down(world).color == self.color:
                 possible_actions_list.append(MOVE)
             elif not self.isAgentBlock(self.getBlockAhead_Down(world)):
@@ -358,7 +365,7 @@ class RLearningAgent(Agent):
             and self.getBlockAhead_Up(world) == None \
             and self.getBlockAhead_Up(world) == None \
             and next_position + Vec3(0, 1, 0) not in agents_decisions \
-            and (not self.isDoor(self.getEntityAhead_Up(world)) or self.isDoor(self.getEntityAhead_Up(world))):# and door_open)):# and self.getEntityAhead_Up(world)).isOpen())):
+            and (not self.isDoor(self.getEntityAhead_Up(world)) or (self.isDoor(self.getEntityAhead_Up(world)) and self.hasPermission(self.getEntityAhead_Up(world)))):
             if self.isAgentBlock(self.getBlockAhead(world)) and self.getBlockAhead(world).color == self.color:
                 possible_actions_list.append(MOVE)
             elif not self.isAgentBlock(self.getBlockAhead(world)):
@@ -373,7 +380,7 @@ class RLearningAgent(Agent):
             and self.getBlockAhead(world) == None \
             and self.getBlockAhead_Up(world) == None \
             and next_position - Vec3(0, 1, 0) not in agents_decisions \
-            and (not self.isDoor(self.getEntityAhead_Down(world)) or self.isDoor(self.getEntityAhead_Down(world))):# and door_open)):# and world.get_entity(next_position - Vec3(0, 1, 0)).isOpen())):
+            and (not self.isDoor(self.getEntityAhead_Down(world)) or (self.isDoor(self.getEntityAhead_Down(world)) and self.hasPermission(self.getEntityAhead_Down(world)))):
             if self.isAgentBlock(self.getBlockAhead_Down_Down(world)) and self.getBlockAhead_Down_Down(world).color == self.color:
                 possible_actions_list.append(MOVE)
             elif not self.isAgentBlock(self.getBlockAhead_Down_Down(world)):

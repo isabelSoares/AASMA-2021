@@ -37,6 +37,7 @@ min_tick_time, tick_time, max_tick_time, step = 0.005, 0.02, 1.0, 0.005
 setup_panel_control(info_panel, min_tick_time, tick_time, max_tick_time, step, map_info['agents'].keys())
 setup_panel_messages(message_panel)
 
+max_time = 20000
 t = 0
 def update():
     global t, tick_time
@@ -73,6 +74,19 @@ def update():
         world.export_messages_content(message_panel)
 
         export_module.save_current_state()
+
+        if world.metrics.time == max_time:
+            print()
+            print()
+            print('   ==========================')
+            print(' //                          \\\\')
+            print(' |     Solution not found!    |')
+            print(' \\\\                          //')
+            print('   ==========================')
+            print()
+            print()
+            exit()
+
 
 def input(key):
     # Just checking agent functions
