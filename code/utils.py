@@ -112,8 +112,12 @@ def load_map(json_object, return_object):
 
             if "agent_name" in block:
                 agent_name = block["agent_name"]
-                block_object = create_block_from_code(code, position, agent_name=agent_name)
+                block_color = color.rgba(block["color"][0], block["color"][1], block["color"][2])
+                block_object = create_block_from_code(code, position, agent_name=agent_name, color=block_color)
                 return_object["world"].add_goal_block(agent_name, block_object)
+            elif "permission" in block:
+                permission = block["permission"]
+                block_object = create_block_from_code(code, position, permission = permission)
             else:
                 block_object = create_block_from_code(code, position)
             return_object["world"].add_static_block(position, block_object)
@@ -129,6 +133,9 @@ def load_map(json_object, return_object):
             position = tuple(block["position"])
             if "block_affected_pos" not in block: block_affected_pos = None
             else: block_affected_pos = tuple(block["block_affected_pos"])
-
-            block_object = create_block_from_code(code, position, block_affected_pos)
+            if "permission" in block:
+                permission = block["permission"]
+                block_object = create_block_from_code(code, position, block_affected_pos, permission = permission)
+            else:
+                block_object = create_block_from_code(code, position, block_affected_pos)
             return_object["world"].add_entity(position, block_object)

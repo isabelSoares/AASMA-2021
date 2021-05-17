@@ -34,7 +34,7 @@
             {"code": "Floor", "position": [-2, 0, 2]},
             {"code": "Floor", "position": [-1, 0, 0]},
 
-            {"code": "Wall", "position": [0, 1, 0]},
+            {"code": "Wall", "position": [0, 1, 0], "permission": "Agent BLUE"},
             {"code": "Wall", "position": [0, 2, 0]},
 
             {"code": "Wall", "position": [0, 2, 0]},
@@ -43,8 +43,8 @@
 
             {"code": "Wall", "position": [2, 2, 0]},
 
-            {"code": "WinningPost", "position": [3, 2, 0], "agent_name": "BLUE"},
-            {"code": "WinningPost", "position": [-1, 0, 2], "agent_name": "ORANGE"}
+            {"code": "WinningPost", "position": [3, 2, 0], "agent_name": "BLUE", "color": [224,255,255]},
+            {"code": "WinningPost", "position": [-1, 0, 2], "agent_name": "ORANGE", "color": [251,212,185]}
         ],
 
         "entities": [

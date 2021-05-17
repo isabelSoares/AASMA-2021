@@ -29,8 +29,8 @@
             {"code": "Wall", "position": [1, 2, -2]},
             {"code": "Wall", "position": [1, 3, -2]},
 
-            {"code": "WinningPost", "position": [6, 0, -1], "agent_name": "BLUE"},
-            {"code": "WinningPost", "position": [6, 0, 1], "agent_name": "ORANGE"}
+            {"code": "WinningPost", "position": [6, 0, -1], "agent_name": "BLUE", "color": [224,255,255]},
+            {"code": "WinningPost", "position": [6, 0, 1], "agent_name": "ORANGE", "color": [251,212,185]}
 
         ],
 

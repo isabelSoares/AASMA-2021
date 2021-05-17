@@ -81,8 +81,8 @@
             {"code": "Wall", "position": [5, 2, 0]},
             {"code": "Wall", "position": [5, 2, 1]},
 
-            {"code": "WinningPost", "position": [6, 2, 0], "agent_name": "BLUE"},
-            {"code": "WinningPost", "position": [6, 2, 1], "agent_name": "ORANGE"}
+            {"code": "WinningPost", "position": [6, 2, 0], "agent_name": "BLUE", "color": [224,255,255]},
+            {"code": "WinningPost", "position": [6, 2, 1], "agent_name": "ORANGE", "color": [251,212,185]}
         ],
 
         "entities": [

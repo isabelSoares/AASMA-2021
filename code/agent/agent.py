@@ -147,6 +147,9 @@ class Agent(Entity):
     def set_animation_duration(self, tick_time):
         self.animation_duration = animation_duration_tick_proportion * tick_time
     
+    def hasPermission(self, block_or_entity):
+        return block_or_entity.hasPermission(self.name)
+    
     def typeOfBlock(self, block):
         return type(block).__name__
     
@@ -155,6 +158,11 @@ class Agent(Entity):
     
     def isGoalBlock(self, block):
         return self.typeOfBlock(block) == 'WinningPostBlock'
+    
+    def isOwnGoalBlock(self, block):
+        if self.typeOfBlock(block) == 'WinningPostBlock' and block.getAgentName() in self.name:
+            return True
+        return False
     
     def isWall(self, block):
         return self.typeOfBlock(block) == 'WallBlock'

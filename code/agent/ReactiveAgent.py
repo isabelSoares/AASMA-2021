@@ -52,7 +52,7 @@ class ReactiveAgent(Agent):
             if type(world.get_entity(world.agents_map[i].position)).__name__ == 'PressurePlate':
                 door_open = True
 
-        if self.isDoor(self.getEntityAhead(world)) and self.getEntityAhead(world).position not in self.forbidden_positions and (self.state == 'random' or self.state == 'door'):
+        if self.isDoor(self.getEntityAhead(world)) and self.hasPermission(self.getEntityAhead(world)) and self.getEntityAhead(world).position not in self.forbidden_positions and (self.state == 'random' or self.state == 'door'):
             if self.state == 'random':
                 self.send_message(world, position_ahead, 'pressure_plate', 'pressure_plate')
                 self.state = 'door'
@@ -66,7 +66,7 @@ class ReactiveAgent(Agent):
                 self.forbidden_positions.append(position_ahead)
         elif self.state == 'pressure_plate' and self.isPressurePlate(self.getEntityOfCurrentPosition(world)):
             action = STAY
-        elif self.isWall(self.getBlockAhead(world)) and self.isWall(self.getBlockAhead_Up(world)) and self.isNone(self.getBlockAhead_Up_Up(world)) and self.state == 'random':
+        elif self.isWall(self.getBlockAhead(world)) and self.isWall(self.getBlockAhead_Up(world)) and self.isNone(self.getBlockAhead_Up_Up(world)) and self.hasPermission(self.getBlockAhead(world)) and self.state == 'random':
             self.send_message(world, current_position, 'create_block', 'create_block')
             self.state = 'wall'
         elif self.state == 'wall' and self.isAgentBlock(self.getBlockAhead(world)) and self.getBlockAhead(world).color == self.color:
@@ -78,7 +78,7 @@ class ReactiveAgent(Agent):
         elif self.state == 'random' and self.isAgentBlock(self.getBlockAhead(world)) and self.getBlockAhead(world).color == self.color:
             action = MOVE
             height = 1
-        elif self.state == 'random' and self.isGoalBlock(self.getBlockOfCurrentPosition_Down(world)):
+        elif self.state == 'random' and self.isOwnGoalBlock(self.getBlockOfCurrentPosition_Down(world)):
             action = STAY
         else:
             possible_actions_list, height = self.possible_actions(world, agents_decisions)
@@ -135,7 +135,7 @@ class ReactiveAgent(Agent):
             and self.getBlockAhead(world) == None \
             and self.getBlockAhead_Up(world) == None \
             and next_position not in agents_decisions \
-            and (not self.isDoor(self.getEntityAhead(world)) or self.isDoor(self.getEntityAhead(world))):# and door_open)):#self.getEntityAhead(world).isOpen())):
+            and (not self.isDoor(self.getEntityAhead(world)) or (self.isDoor(self.getEntityAhead(world)) and self.hasPermission(self.getEntityAhead(world)) and door_open)):
             if self.isAgentBlock(self.getBlockAhead_Down(world)) and self.getBlockAhead_Down(world).color == self.color:
                 possible_actions_list.append(MOVE)
             elif not self.isAgentBlock(self.getBlockAhead_Down(world)):
@@ -146,7 +146,7 @@ class ReactiveAgent(Agent):
             and self.getBlockAhead_Up(world) == None \
             and self.getBlockAhead_Up(world) == None \
             and next_position + Vec3(0, 1, 0) not in agents_decisions \
-            and (not self.isDoor(self.getEntityAhead_Up(world)) or self.isDoor(self.getEntityAhead_Up(world))):# and door_open)):# and self.getEntityAhead_Up(world)).isOpen())):
+            and (not self.isDoor(self.getEntityAhead_Up(world)) or (self.isDoor(self.getEntityAhead_Up(world)) and self.hasPermission(self.getEntityAhead_Up(world)) and door_open)):
             if self.isAgentBlock(self.getBlockAhead(world)) and self.getBlockAhead(world).color == self.color:
                 possible_actions_list.append(MOVE)
             elif not self.isAgentBlock(self.getBlockAhead(world)):
@@ -161,7 +161,7 @@ class ReactiveAgent(Agent):
             and self.getBlockAhead(world) == None \
             and self.getBlockAhead_Up(world) == None \
             and next_position - Vec3(0, 1, 0) not in agents_decisions \
-            and (not self.isDoor(self.getEntityAhead_Down(world)) or self.isDoor(self.getEntityAhead_Down(world))):# and door_open)):# and world.get_entity(next_position - Vec3(0, 1, 0)).isOpen())):
+            and (not self.isDoor(self.getEntityAhead_Down(world)) or (self.isDoor(self.getEntityAhead_Down(world)) and self.hasPermission(self.getEntityAhead_Down(world)) and door_open)):
             if self.isAgentBlock(self.getBlockAhead_Down_Down(world)) and self.getBlockAhead_Down_Down(world).color == self.color:
                 possible_actions_list.append(MOVE)
             elif not self.isAgentBlock(self.getBlockAhead_Down_Down(world)):
