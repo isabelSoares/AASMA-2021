@@ -62,9 +62,10 @@ class HybridAgent(Agent):
                 
         # Retrieve last message and execute it
         last_message = current_message
-        self.execute(world, last_message.content)
+        next_position = self.execute(world, last_message.content)
+        if next_position == None: next_position = last_position
 
-        return last_position
+        return next_position
 
 
     def get_perceptions(self, world):
@@ -91,7 +92,10 @@ class HybridAgent(Agent):
                     }
 
         perceptions = {
+            'name': self.name,
+            'number of blocks': self.number_of_blocks,
             'current position': convert_vec3_to_key(self.position),
+            'forward': convert_vec3_to_key(self.Forward()),
             'goal distance': goal_distance,
             'around': perceptions_around
         }
@@ -112,6 +116,8 @@ class HybridAgent(Agent):
             BREAK_UP_BLOCK = (self.break_up, True),
             BREAK_DOWN_BLOCK = (self.break_down, True)
         )
+
+        if action == None: return None
 
         function_to_call = action_to_functions[action]
         takes_world_argument = function_to_call[1]

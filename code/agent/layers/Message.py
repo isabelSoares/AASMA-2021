@@ -7,6 +7,7 @@ class MessageType(Enum):
     PERCEPTIONS = "PERCEPTIONS"
     ACTION = "ACTION"
     DONE_BELIEF_UPDATE = "DONE_BELIEF_UPDATE"
+    BUILD_PATH = "BUILD_PATH"
 
 class Message():
     def __init__(self, layer_from, direction, type_message, content):

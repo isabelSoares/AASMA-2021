@@ -33,4 +33,7 @@ class ReactiveLayer(Layer):
         if message_type == MessageType.PERCEPTIONS:
             return Message("Reactive", MessageDirection.UP, MessageType.PERCEPTIONS, message.content)
         elif message_type == MessageType.DONE_BELIEF_UPDATE:
-            return Message("Reactive", MessageDirection.DOWN, MessageType.ACTION, ROTATE_RIGHT)
+            return Message("Reactive", MessageDirection.UP, MessageType.BUILD_PATH, None)
+        elif message_type == MessageType.ACTION:
+            action = message.content;
+            return Message("Reactive", MessageDirection.DOWN, MessageType.ACTION, action)
