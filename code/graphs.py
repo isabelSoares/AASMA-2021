@@ -7,10 +7,17 @@ import pandas as pd
 list_of_maps = ['map1', 'map2', 'map3', 'map4', 'map5', 'map6', 'map7']
 agent_types = ['random', 'reactive', 'deliberative', 'rlearning']
 
-# to run every agent and every map
-# for agent_type in agent_types:
+#to run every agent and every map
+#for agent_type in agent_types:
 #    for map in list_of_maps:
-#        os.system('python .\maze.py ' + agent_type + ' ' + map)
+#        for i in range(10):
+#            os.system('python .\maze.py ' + agent_type + ' ' + map)
+
+#for map in list_of_maps:
+#    for i in range(10):
+#        os.system('python .\maze.py ' + 'random' + ' ' + map)
+
+number_of_tests = 10
 
 x = np.arange(len(agent_types))
 width = 0.3
@@ -26,6 +33,7 @@ for map_name in list_of_maps:
                 metrics[column][agent_types.index(agent_type)] = 0
             continue
         latest_metric_file = max(list_of_metric_files, key=os.path.getctime)
+        #best_x_files = sorted(list_of_metric_files, key=os.path.getctime, reverse=True)[:number_of_tests]
         df = pd.read_csv(latest_metric_file)
         last_row = df.iloc[-1]
 
@@ -33,6 +41,13 @@ for map_name in list_of_maps:
         for column in df.columns:
             if column not in metrics:
                 metrics[column] = [0] * len(agent_types)
+            #metric_files = []
+            #for f in best_x_files:
+                #last_row = df.iloc[-1]
+                #metric_files.append(last_row[i])
+            #metric_files = sorted(metric_files)
+            #metric_files = metric_files[2:number_of_tests-2]
+            #metrics[column][agent_types.index(agent_type)] = sum(metric_files)/len(metric_files)
             metrics[column][agent_types.index(agent_type)] = last_row[i]
 
             i += 1
