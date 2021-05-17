@@ -7,14 +7,14 @@ EXPORT_DIR = "./exports"
 DELIMITER = "/"
 
 class ExportModule:
-    def __init__(self, type_of_agent):
+    def __init__(self, type_of_agent, map_name):
         # Initialize Attributes
         self.timestamp = dateTimeObj = datetime.now()
         self.timestamp_str= dateTimeObj.strftime("%Y-%m-%d@%H-%M-%S")
-        self.directory_name = DELIMITER.join([EXPORT_DIR, type_of_agent, self.timestamp_str])
+        self.directory_name = DELIMITER.join([EXPORT_DIR, type_of_agent, map_name, self.timestamp_str])
 
         # Create needed directories
-        directory_path = DELIMITER.join([EXPORT_DIR, type_of_agent])
+        directory_path = DELIMITER.join([EXPORT_DIR, type_of_agent, map_name])
         if not os.path.isdir(directory_path):
             os.makedirs(directory_path)
         # Create needed files
@@ -43,6 +43,6 @@ class ExportModule:
         self.csv_file = open(self.directory_name + '.csv', 'a', newline='')
         self.csv_writer = csv.writer(self.csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-def create_export_module(type_of_agent):
+def create_export_module(type_of_agent, map_name):
     global export_module
-    export_module = ExportModule(type_of_agent)
+    export_module = ExportModule(type_of_agent, map_name)

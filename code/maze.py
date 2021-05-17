@@ -4,9 +4,10 @@ from time import sleep
 # Check if file was given in arguments
 if len(sys.argv) <= 2: sys.exit("Please provide a type of agent and file to read the map from as an argument. Example: python ./maze.py random ./maps/map1.json")
 type_of_agent = sys.argv[1]
+map_name = sys.argv[2]
 # Create export Module
 from export import create_export_module
-export_module = create_export_module(type_of_agent)
+export_module = create_export_module(type_of_agent, map_name)
 
 # Ursina import
 from ursina import *
@@ -21,7 +22,7 @@ from environment.Panels import InfoPanel, MessagePanel
 from agent.agent import *
 
 # Load map
-map_info = load_map_from_json_file(type_of_agent, sys.argv[2])
+map_info = load_map_from_json_file(type_of_agent, './maps/'+map_name+'.json' )
 
 # Setup window, camera and window panel
 setup_window(borderless = False)
