@@ -79,10 +79,18 @@ class DeliberativeMemory(LayerMemory):
         # For it to roam around
         self.belief_stuck = False
         self.belief_stuck_threshold = BELIEF_STUCK_THRESHOLD
+        # Cooperation beliefs
+        self.belief_door_to_open = None
+
+        # To pass to Communication Layer
+        self.door_to_pass = None
+        self.already_asked_for_help = False
 
         self.desires = []
         self.intention = None
         self.plan = []
+
+        self.chosen_action = None
 
     def beliefs_memory_update(self, percepts):
         name = percepts['name']
@@ -157,37 +165,14 @@ class DeliberativeMemory(LayerMemory):
             if type(block).__name__ == "WinningPostBlock" and block.getAgentName() == self.belief_name.replace("Agent ", ""):
                 self.goal_beliefs = set([check_position])
 
-    def get_belief_number_of_blocks(self):
-        return self.belief_number_blocks
-
-    def get_belief_current_position(self):
-        return self.belief_current_position
-
-    def get_belief_forward(self):
-        return self.belief_forward
-
     def has_belief(self, position):
         return position in self.beliefs
-
-    def get_belief(self, position):
-        return self.beliefs[position]
-
-    def set_belief(self, position, belief):
-        self.beliefs[position] = belief                  
-    
-    def get_action(self):
-        if len(self.plan) == 0: return None
-        return self.plan.pop(0)
 
     def desires_update(self):
         self.desires = [REACH_GOAL]
 
-        # Wants to place block?
-        if self.desires_place_block() != None: self.desires.append(PLACE_BLOCK)
         # Wants door open?
-        if self.desires_door_open() != None: self.desires.append(OPEN_DOOR)
-        # Wants to open door back to agent
-        if self.desires_door_open_back() != None: self.desires.append(OPEN_DOOR_BACK)
+        if self.belief_door_to_open != None: self.desires.append(OPEN_DOOR)
         # Wants to Roam Around
         if self.belief_stuck: self.desires.append(ROAM_AROUND)
     
@@ -200,50 +185,29 @@ class DeliberativeMemory(LayerMemory):
 
             self.intention = Intention(focused_desire, objective_position)
 
-        elif focused_desire == OPEN_DOOR or focused_desire == OPEN_DOOR_BACK:
+        elif focused_desire == OPEN_DOOR:
             pressure_plate_position = self.pressure_plate_to_open(focused_desire)
             self.intention = Intention(focused_desire, pressure_plate_position)
-
-        elif focused_desire == PLACE_BLOCK:
-            block_position = self.desires_place_block()
-            self.intention = Intention(focused_desire, block_position)
 
         elif focused_desire == ROAM_AROUND:
             self.intention = Intention(focused_desire, None)
 
-    def get_intention(self):
-        return self.intention
+    def check_for_helps(self, path_positions):
 
-    def set_intention(self, intention):
-        self.intention = intention
+        found_door = False
+        for path_position in path_positions:
+            # If not in belief no help
+            if path_position not in self.beliefs: continue
+            belief = self.beliefs[path_position]
 
-    def get_intention(self):
-        return self.intention
+            # Check whether needs to go through door
+            if type(belief.entity).__name__ == "Door" and not belief.entity.state:
+                found_door = True
+                self.door_to_pass = path_position
 
-    def get_plan(self):
-        return self.plan
-
-    def set_plan(self, plan):
-        self.plan = plan
-
-    def empty_plan(self):
-        return len(self.plan) == 0
-
-    def desires_door_open(self):
-        agents_beliefs = list()
-        door_beliefs = list()
-        for belief_position in self.beliefs:
-            belief = self.beliefs[belief_position]
-            if belief.agent != None and belief.agent.name != self.belief_name: agents_beliefs.append(belief_position)
-            if belief.entity != None and type(belief.entity).__name__ == "Door": door_beliefs.append(belief_position)
-
-        # If agent (not self) next to door assume wants it open
-        for door_belief in door_beliefs:
-            for agent_belief in agents_beliefs:
-                distance = ursinamath.distance(door_belief, agent_belief)
-                if distance == 1: return (door_belief, agent_belief)
-
-        return None
+        if not found_door:
+            self.door_to_pass = None
+            self.already_asked_for_help = False
 
     def print(self):
         export_module.print_and_write_to_txt('   - Beliefs: ' + str(len(self.beliefs)))
@@ -257,68 +221,20 @@ class DeliberativeMemory(LayerMemory):
 
     # ======================= UTILITY FUNCTIONS =======================
 
-    def desires_door_open_back(self):
-        agents_beliefs = list()
-        door_beliefs = list()
-        for belief_position in self.beliefs:
-            belief = self.beliefs[belief_position]
-            if belief.agent != None and belief.agent.name != self.belief_name: agents_beliefs.append(belief_position)
-            if belief.entity != None and type(belief.entity).__name__ == "Door": door_beliefs.append(belief_position)
+    def create_messages(self):
+        # If we have a help process going can't ask for more help
+        if self.already_asked_for_help: return None
+        # Send help with door
+        if self.door_to_pass != None:
+            self.already_asked_for_help = True
+            return {'agent': self.belief_name, 'action': OPEN_DOOR, 'position': self.door_to_pass}
 
-        # If other agent further away than a door then wants it open (Heuristic)
-        current_position = self.belief_current_position
-        for door_belief in door_beliefs:
-            distance_to_door = ursinamath.distance(door_belief, current_position)
-            sub_door = sub_positions(current_position, door_belief)
-            for agent_belief in agents_beliefs:
-                distance_to_agent = ursinamath.distance(agent_belief, current_position)
-                sub_agent = sub_positions(current_position, agent_belief)
-                cossine_metric = degree_between_positions(sub_door, sub_agent)
-
-                if distance_to_door < distance_to_agent and cossine_metric >= COSSINE_DOOR_AGENT:
-                    return (door_belief, agent_belief)
-
-    def desires_place_block(self):
-        if self.belief_number_blocks == 0: return None
-
-        valid_place_block_positions = list()
-        for belief_position in self.beliefs:
-            for direction in DIRECTIONS:
-                if self.helpfull_place_block(belief_position, direction):
-                    valid_place_block_positions.append(belief_position)
-
-        if len(valid_place_block_positions) == 0: return None
-        else: return random.sample(valid_place_block_positions, 1)[0]
-
-    def helpfull_place_block(self, position_block, direction):
-        ahead_position = sum_positions(position_block, direction)
-
-        support_position = sum_positions(position_block, (0, -1, 0))
-        ahead_feet_position = sum_positions(ahead_position, (0, 0, 0))
-        ahead_head_position = sum_positions(ahead_position, (0, 1, 0))
-        ahead_above_head_position = sum_positions(ahead_position, (0, 2, 0))
-
-        # Position block must be known and be free
-        if (position_block not in self.beliefs or
-            not self.is_free_to_place_from_belief(position_block)): return False
-        # Support must be known and give support
-        if (support_position not in self.beliefs or
-            not self.gives_support_from_belief(support_position)): return False
-        # Ahead feet position must be known and be a wall
-        if (ahead_feet_position not in self.beliefs or
-            not self.is_wall_from_belief(ahead_feet_position)): return False
-        # Ahead head position must be known and be a wall
-        if (ahead_head_position not in self.beliefs or
-            not self.is_wall_from_belief(ahead_head_position)): return False
-        # Ahead head position must be known and not be a wall
-        if (ahead_above_head_position not in self.beliefs or
-            self.is_wall_from_belief(ahead_above_head_position)): return False
-
-        return True
+    def beliefs_from_message(self, message):
+        if message['action'] == OPEN_DOOR:
+            self.belief_door_to_open = message['position']
 
     def pressure_plate_to_open(self, focused_desire):
-        if focused_desire == OPEN_DOOR: door_to_open, _ = self.desires_door_open()
-        elif focused_desire == OPEN_DOOR_BACK: door_to_open, _ = self.desires_door_open_back()
+        if focused_desire == OPEN_DOOR: door_to_open = self.belief_door_to_open
         else: return None
 
         valid_positions = list()
@@ -430,18 +346,31 @@ class DeliberativeLayer(Layer):
     def __init__(self):
         super().__init__(DeliberativeMemory())
 
-    def process_flow(self, message):
+    def process_flow(self, message, world):
 
         message_type = message.get_type_message()
         if message_type == MessageType.PERCEPTIONS:
             self.memory.beliefs_memory_update(message.get_content())
+            return Message("Deliberative", MessageDirection.UP, MessageType.COMMUNICATION_PERCEPTS, self.memory.belief_name)
+
+        elif message_type == MessageType.DONE_COMMUNICATION_PERCEPTS:
+            com_message = message.get_content()
+            if com_message != None: self.memory.beliefs_from_message(com_message)
             return Message("Deliberative", MessageDirection.DOWN, MessageType.DONE_BELIEF_UPDATE, None)
         
         elif message_type == MessageType.BUILD_PATH:
             self.make_deliberation()
             self.memory.print()
-            action = self.memory.get_action()
-            return Message("Deliberative", MessageDirection.DOWN, MessageType.ACTION, action)
+
+            if self.empty_plan(): action = None
+            else: action = self.memory.plan.pop(0)
+            
+            self.memory.chosen_action = action
+            com_message = self.memory.create_messages()
+            return Message("Deliberative", MessageDirection.UP, MessageType.COMMUNICATION_MESSAGES, com_message)
+
+        elif message_type == MessageType.DONE_COMMUNICATION_MESSAGES:
+            return Message("Deliberative", MessageDirection.DOWN, MessageType.ACTION, self.memory.chosen_action)
 
     def make_deliberation(self):
 
@@ -466,31 +395,26 @@ class DeliberativeLayer(Layer):
                 self.memory.intention_update()
 
     def empty_plan(self):
-        return self.memory.empty_plan()
+        return len(self.memory.plan) == 0
 
     def succededIntention(self):
-        intention = self.memory.get_intention()
+        intention = self.memory.intention
         if intention == None: return True
-        current_position = self.memory.get_belief_current_position()
+        current_position = self.memory.belief_current_position
         
         if (intention.desire == REACH_GOAL or intention.desire == EXPLORE_UNKNOWN or 
             intention.desire == REACH_POSITION or intention.desire == ROAM_AROUND):
                 return current_position == intention.position
 
         elif intention.desire == OPEN_DOOR and intention.position == current_position:
-            return_value = self.memory.desires_door_open()
-            if return_value != None:
-                agent_position = return_value[1]
-                stored_belief = self.memory.get_belief(agent_position)
-                stored_belief.agent = None
-                self.memory.set_belief(agent_position, stored_belief)
+            self.memory.belief_door_to_open = None
             return True
 
         elif intention.desire == STAY_STILL:
             return True
 
     def impossibleIntention(self):
-        intention = self.memory.get_intention()
+        intention = self.memory.intention
         if intention == None: return True
 
         if intention.desire == REACH_GOAL or intention.desire == REACH_POSITION:
@@ -509,28 +433,23 @@ class DeliberativeLayer(Layer):
 
     def build_plan(self):
         # Get current position
-        current_position = self.memory.get_belief_current_position()
-        intention = self.memory.get_intention()
+        current_position = self.memory.belief_current_position
+        intention = self.memory.intention
         
-        if (intention.desire == REACH_GOAL or intention.desire == EXPLORE_UNKNOWN or 
-            intention.desire == OPEN_DOOR or intention.desire == OPEN_DOOR_BACK):
-                plan = self.build_path_plan(current_position, intention.position)
-                self.memory.set_plan(plan)
-
-        if intention.desire == PLACE_BLOCK:
-            plan = self.build_path_plan_block(current_position, intention.position)
-            self.memory.set_plan(plan)
+        if (intention.desire == REACH_GOAL or intention.desire == EXPLORE_UNKNOWN or intention.desire == OPEN_DOOR):
+            plan = self.build_path_plan(current_position, intention.position)
+            self.memory.plan = plan
         
         elif intention.desire == STAY_STILL:
             plan = []
-            self.memory.set_plan(plan)
+            self.memory.plan = plan
 
         elif intention.desire == ROAM_AROUND:
             plan = self.build_longest_path_plan(current_position)
-            self.memory.set_plan(plan)
+            self.memory.plan = plan
 
     def plan_is_sound(self):
-        plan = self.memory.get_plan()
+        plan = self.memory.plan
         # Control how far along the plan is checked
         if PATH_CHECK_DEPT == -1: elements_to_check = len(plan)
         else: elements_to_check = PATH_CHECK_DEPT
@@ -546,8 +465,8 @@ class DeliberativeLayer(Layer):
                 return False
 
         # Check if spot allows for placing of block
-        forward = self.memory.get_belief_forward()
-        current_position = self.memory.get_belief_current_position()
+        forward = self.memory.belief_forward
+        current_position = self.memory.belief_current_position
         forward_position = sum_positions(current_position, forward)
 
         last_action = plan[:temp - 1]
@@ -563,67 +482,50 @@ class DeliberativeLayer(Layer):
     def build_path_plan(self, initial_position, final_position):
         # Check if already accomplished
         if initial_position == final_position: return []
+        unknown_path_positions = None
 
         path_positions = self.build_path_positions(initial_position, final_position)
         # Doesn't know how to get to goal or goal not specified
         if path_positions == None:
-            path_positions = self.build_path_positions_unknown(initial_position, final_position)
-            intention = self.memory.get_intention()
+            path_positions_return = self.build_path_positions_unknown(initial_position, final_position)
+            if path_positions_return != None:
+                path_positions = path_positions_return[0]
+                unknown_path_positions = path_positions_return[1]
+            intention = self.memory.intention
             intention.desire = EXPLORE_UNKNOWN
-            self.memory.set_intention(intention)
+            self.memory.intention = intention
         # Doesn't have anything to explore or do        
         if path_positions == None:
             intention = Intention(STAY_STILL, None)
-            self.memory.set_intention(intention)
+            self.memory.intention = intention
             return []
         
-        intention = self.memory.get_intention()
+        intention = self.memory.intention
         intention.position = convert_vec3_to_key(path_positions[-1])
-        self.memory.set_intention(intention)
+        self.memory.intention = intention
         path_actions = self.build_path_actions(path_positions)
+
+        # Check for helps
+        if unknown_path_positions != None:
+            self.memory.check_for_helps(unknown_path_positions)
+
         return path_actions
 
     def build_longest_path_plan(self, initial_position):
-        intention = self.memory.get_intention()
-        path_positions = self.build_path_positions_unknown(initial_position, None)
-        if path_positions != None: intention.desire = EXPLORE_UNKNOWN
-        if path_positions == None or len(path_positions) <= 1: path_positions = self.build_path_positions_longest(initial_position)
+        intention = self.memory.intention
+
+        path_positions_return = self.build_path_positions_unknown(initial_position, None)
+        if path_positions_return != None:
+            self.memory.check_for_helps(path_positions_return[1])
+            intention.desire = EXPLORE_UNKNOWN
+            path_positions = path_positions_return[0]
+
+        if path_positions_return == None or len(path_positions) <= 1:
+            path_positions = self.build_path_positions_longest(initial_position)
+
         if path_positions == None: return []
 
         path_actions = self.build_path_actions(path_positions)
-        return path_actions
-
-    def build_path_plan_block(self, initial_position, block_position):
-
-        path_positions = self.build_path_positions(initial_position, block_position)
-        # Doesn't know how to get to block
-        if path_positions == None:
-            path_positions = self.build_path_positions_unknown(initial_position, block_position)
-            if path_positions != None:
-                intention = Intention(EXPLORE_UNKNOWN, convert_vec3_to_key(path_positions[-1]))
-                self.memory.set_intention(intention)
-                path_actions = self.build_path_actions(path_positions)
-                return path_actions
-        # Doesn't have anything to explore or do        
-        if path_positions == None:
-            intention = Intention(STAY_STILL, convert_vec3_to_key(self.position))
-            self.memory.set_intention(intention)
-            return []
-        
-        # Has intention of being in position before it got to where it wants to place block
-        intention = self.memory.get_intention()
-        intention.position = convert_vec3_to_key(path_positions[-1])
-        self.memory.set_intention(intention)
-
-        path_actions = self.build_path_actions(path_positions)
-        # Remove last action which led agent to be in same block where it wants to place it
-        path_actions = self.remove_action_to_go_back_n_positions(path_actions, 1)
-
-        # Append right action according to position
-        position_to_be = convert_vec3_to_key(path_positions[-2])
-        action_to_append = self.compute_appropriate_action_block(position_to_be, block_position)
-        if action_to_append != None: path_actions.append(action_to_append)
-
         return path_actions
 
     def build_path_positions(self, initial_position, final_position):
@@ -739,7 +641,7 @@ class DeliberativeLayer(Layer):
                     chosen_steps = steps_till_position
                     chosen_distance = distance_till_final
 
-        return chosen_explorer.history_positions
+        return chosen_explorer.history_positions, chosen_explorer.non_found_history_positions
 
     def build_path_positions_longest(self, initial_position):
         class Explorer():
@@ -787,7 +689,7 @@ class DeliberativeLayer(Layer):
     def build_path_actions(self, path_positions):
         # Create Path of Actions
         paths_actions = list()
-        current_rotation = self.memory.get_belief_forward()
+        current_rotation = self.memory.belief_forward
         for index_position in range(1, len(path_positions)):
             from_position = path_positions[index_position - 1]    
             to_position = path_positions[index_position]
@@ -828,8 +730,8 @@ class DeliberativeLayer(Layer):
         return path_actions
 
     def build_path_positions_from_actions(self, path_actions):
-        current_position = self.memory.get_belief_current_position()
-        current_forward = self.memory.get_belief_forward()
+        current_position = self.memory.belief_current_position
+        current_forward = self.memory.belief_forward
 
         path_positions = list([current_position])
         for action in path_actions:
@@ -844,13 +746,6 @@ class DeliberativeLayer(Layer):
             if next_position != None and current_position != next_position: path_positions.append(next_position)
 
         return path_positions
-
-    def compute_appropriate_action_block(self, position_to_be, block_position):
-        difference_position = sub_positions(block_position, position_to_be)
-
-        if difference_position[1] > 0: return CREATE_UP_BLOCK
-        elif difference_position[1] < 0: return CREATE_DOWN_BLOCK
-        else: return CREATE_ONLY_BLOCK
 
     # ======== END BUILD PATH ======== 
 

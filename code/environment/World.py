@@ -323,7 +323,7 @@ class World():
             messages = messages[:number_of_messages]
         elif selection == "Being Helped":
             if len(self.being_helped_messages) < number_of_messages: number_of_messages = len(self.being_helped_messages)
-            messages = self.being_helped_messages[::-1]
+            messages = list(self.being_helped_messages.values())[::-1]
             messages = messages[:number_of_messages]
         elif selection == "Info":
             if len(self.info_messages) < number_of_messages: number_of_messages = len(self.info_messages)

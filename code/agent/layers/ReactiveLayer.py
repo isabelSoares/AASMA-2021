@@ -27,7 +27,7 @@ class ReactiveLayer(Layer):
     def __init__(self):
         super().__init__(ReactiveMemory())
 
-    def process_flow(self, message):
+    def process_flow(self, message, world):
 
         message_type = message.get_type_message()
         if message_type == MessageType.PERCEPTIONS:

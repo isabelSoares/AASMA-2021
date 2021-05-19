@@ -7,6 +7,7 @@ import sys
 # Importing Layers
 from agent.layers.ReactiveLayer import ReactiveLayer
 from agent.layers.DeliberativeLayer import DeliberativeLayer
+from agent.layers.CommunicationLayer import CommunicationLayer
 
 # Import Message Type
 from agent.layers.Message import Message
@@ -39,6 +40,7 @@ class HybridAgent(Agent):
         self.layers = [
             ReactiveLayer(),
             DeliberativeLayer(),
+            CommunicationLayer()
         ]
 
     def decision(self, world, agents_decisions):
@@ -54,7 +56,7 @@ class HybridAgent(Agent):
         to_index = 0
         while to_index != -1:
             targetLayer = self.layers[to_index]
-            current_message = targetLayer.process_flow(current_message)
+            current_message = targetLayer.process_flow(current_message, world)
 
             if (current_message.get_direction() == MessageDirection.UP): to_index = to_index + 1
             elif (current_message.get_direction() == MessageDirection.DOWN): to_index = to_index - 1
