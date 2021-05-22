@@ -95,6 +95,7 @@ class HybridAgent(Agent):
 
         perceptions = {
             'name': self.name,
+            'color': self.color,
             'number of blocks': self.number_of_blocks,
             'current position': convert_vec3_to_key(self.position),
             'forward': convert_vec3_to_key(self.Forward()),
