@@ -89,6 +89,7 @@ class DeliberativeMemory(LayerMemory):
         self.door_to_pass = None
         self.wall_to_pass = None
         self.already_asked_for_help = False
+        self.infos_to_transmit = []
 
         self.desires = []
         self.intention = None
@@ -171,6 +172,11 @@ class DeliberativeMemory(LayerMemory):
             if type(block).__name__ == "WinningPostBlock" and block.getAgentName() == self.belief_name.replace("Agent ", ""):
                 self.goal_beliefs = set([check_position])
 
+            # Create Messages to be transmitted 
+            if entity != None: self.infos_to_transmit.append({'type': "entity", 'position': check_position, 'belief': entity})
+            if type(block).__name__ == "AgentBlock": self.infos_to_transmit.append({ 'type': "block", 'position': check_position, 'belief': block })
+            if type(block).__name__ == "WinningPostBlock": self.infos_to_transmit.append({ 'type': "goal", 'position': check_position, 'belief': block })
+
     def has_belief(self, position):
         return position in self.beliefs
 
@@ -245,23 +251,73 @@ class DeliberativeMemory(LayerMemory):
     # ======================= UTILITY FUNCTIONS =======================
 
     def create_messages(self):
-        # If we have a help process going can't ask for more help
-        if self.already_asked_for_help: return None
 
-        # Send help with door
-        if self.door_to_pass != None:
-            self.already_asked_for_help = True
-            return {'agent': self.belief_name, 'action': OPEN_DOOR, 'position': self.door_to_pass}
-        # Send help with wall
-        elif self.wall_to_pass != None:
-            self.already_asked_for_help = True
-            return {'agent': self.belief_name, 'action': PLACE_BLOCK, 'position': self.wall_to_pass}
+        message = {
+            'infos': [],
+            'action': None,
+        }
+
+        # If we have a help process going can't ask for more help
+        if not self.already_asked_for_help: 
+            # Send help with door
+            if self.door_to_pass != None:
+                self.already_asked_for_help = True
+                message['action'] = {'agent': self.belief_name, 'action': OPEN_DOOR, 'position': self.door_to_pass}
+            # Send help with wall
+            elif self.wall_to_pass != None:
+                self.already_asked_for_help = True
+                message['action'] = {'agent': self.belief_name, 'action': PLACE_BLOCK, 'position': self.wall_to_pass}
+
+        # Treat Info messages
+        for info in self.infos_to_transmit:
+            content = { 'type': info['type'], 'belief': info['belief'] }
+            message_info = {'agent': self.belief_name, 'type': type(info['belief']).__name__, 'position': info['position'], 'content': content}
+            message['infos'].append(message_info)
+
+        # Reset Infos to send
+        self.infos_to_transmit = []
+
+        return message
 
     def beliefs_from_message(self, message):
-        # Open door
-        if message['action'] == OPEN_DOOR: self.belief_door_to_open = message['position']
-        # Place Block
-        if message['action'] == PLACE_BLOCK: self.belief_block_to_place = message['position']
+
+        if message['action'] != None:
+            action_message = message['action']
+            # Open door
+            if action_message['action'] == OPEN_DOOR: self.belief_door_to_open = action_message['position']
+            # Place Block
+            if action_message['action'] == PLACE_BLOCK: self.belief_block_to_place = action_message['position']
+
+        # Deal with info messages
+        for info in message['infos']:
+
+            position = info['position']
+            info_content_type = info['content']['type']
+
+            if info_content_type == "entity":
+                # If in beliefs simply write belief
+                if position in self.beliefs:
+                    saved_belief = self.beliefs[position]
+                    saved_belief.entity = info['content']['belief']
+                    self.beliefs[position] = saved_belief
+                # If not in beliefs simply write belief
+                else: belief = Belief(None, None, info['content']['belief'])
+            
+            elif info_content_type == "block":
+                # If in beliefs simply write belief
+                if position in self.beliefs:
+                    saved_belief = self.beliefs[position]
+                    saved_belief.block = info['content']['belief']
+                    self.beliefs[position] = saved_belief
+                # If not in beliefs simply write belief
+                else: belief = Belief(info['content']['belief'], None, None)
+
+            elif info_content_type == "goal":
+                block = info['content']['belief']
+                if type(block).__name__ == "WinningPostBlock" and block.getAgentName() == self.belief_name.replace("Agent ", ""):
+                    self.goal_beliefs = set([position])
+
+
 
     def pressure_plate_to_open(self, focused_desire):
         if focused_desire == OPEN_DOOR: door_to_open = self.belief_door_to_open
@@ -722,7 +778,7 @@ class DeliberativeLayer(Layer):
 
         # Doesn't have anything to explore or do
         self.memory.intention.desire = STAY_STILL
-        self.memory.intention.position = convert_vec3_to_key(self.memory.belief_position)
+        self.memory.intention.position = convert_vec3_to_key(self.memory.belief_current_position)
         return []
 
     def build_path_positions_longest(self, initial_position):
