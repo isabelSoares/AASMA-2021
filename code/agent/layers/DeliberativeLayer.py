@@ -42,7 +42,7 @@ STAY_STILL = 'STAY_STILL'
 # ============= PRE-DEFINED CONSTANTS =============
 RECONSIDER_CHANCE = 0.05
 PATH_CHECK_DEPT = -1
-BELIEF_STUCK_THRESHOLD = 25
+BELIEF_STUCK_THRESHOLD = 20
 COSSINE_DOOR_AGENT = 0.5
 
 # ============= VALID MOVEMENT POSITIONS AND DIRECTIONS =============
@@ -73,11 +73,13 @@ class DeliberativeMemory(LayerMemory):
         # Beliefs
         self.belief_name = ""
         self.belief_color = None
+        self.belief_last_position = None
         self.belief_current_position = None
         self.belief_forward = None
         self.belief_number_blocks = 0
         self.beliefs = {}
         self.goal_beliefs = set()
+        self.beliefs_agents_saw = []
         # For it to roam around
         self.belief_stuck = False
         self.belief_stuck_threshold = BELIEF_STUCK_THRESHOLD
@@ -103,13 +105,17 @@ class DeliberativeMemory(LayerMemory):
         color = percepts['color']
         self.belief_color = color
         current_position = percepts['current position']
+        self.belief_last_position = self.belief_current_position
         self.belief_current_position = current_position
         forward = percepts['forward']
         self.belief_forward = forward
         number_of_blocks = percepts['number of blocks']
         self.belief_number_blocks = number_of_blocks
+        self.beliefs_agents_saw = []
 
         # Update stuck belief
+        if self.belief_last_position == self.belief_current_position: self.belief_stuck_threshold = self.belief_stuck_threshold - 1
+        else: self.belief_stuck_threshold = BELIEF_STUCK_THRESHOLD
         self.belief_stuck = self.belief_stuck_threshold < 0
 
         # Update goal block belief
@@ -147,6 +153,7 @@ class DeliberativeMemory(LayerMemory):
 
             # If agent was seen clear agent from any other belief
             if agent != None:
+                self.beliefs_agents_saw.append(agent.name)
                 for belief_position in self.beliefs:
                     belief = self.beliefs[belief_position]
                     if belief.agent and belief.agent.name == agent.name:
@@ -174,6 +181,7 @@ class DeliberativeMemory(LayerMemory):
 
             # Create Messages to be transmitted 
             if entity != None: self.infos_to_transmit.append({'type': "entity", 'position': check_position, 'belief': entity})
+            if agent != None and agent.name == self.belief_name: self.infos_to_transmit.append({'type': "agent", 'position': check_position, 'belief': agent})
             if type(block).__name__ == "AgentBlock": self.infos_to_transmit.append({ 'type': "block", 'position': check_position, 'belief': block })
             if type(block).__name__ == "WinningPostBlock": self.infos_to_transmit.append({ 'type': "goal", 'position': check_position, 'belief': block })
 
@@ -317,7 +325,21 @@ class DeliberativeMemory(LayerMemory):
                 if type(block).__name__ == "WinningPostBlock" and block.getAgentName() == self.belief_name.replace("Agent ", ""):
                     self.goal_beliefs = set([position])
 
+            elif info_content_type == "agent":
+                agent = info['content']['belief']
+                if agent.name not in self.beliefs_agents_saw:
+                    for belief_position in self.beliefs:
+                        belief = self.beliefs[belief_position]
+                        if belief.agent and belief.agent.name == agent.name:
+                            belief.agent = None
 
+                    # If in beliefs simply write belief
+                    if position in self.beliefs:
+                        saved_belief = self.beliefs[position]
+                        saved_belief.agent = agent
+                        self.beliefs[position] = saved_belief
+                    # If not in beliefs simply write belief
+                    else: belief = Belief(None, info['content']['belief'], None)
 
     def pressure_plate_to_open(self, focused_desire):
         if focused_desire == OPEN_DOOR: door_to_open = self.belief_door_to_open
@@ -712,7 +734,7 @@ class DeliberativeLayer(Layer):
                     new_explorer = copy.deepcopy(explorer)
 
                     # If block completely unknown
-                    if not self.memory.has_belief(new_current_position):
+                    if not self.memory.has_belief(new_current_position) or new_current_position == final_position:
                         unknown_possibilities.add(new_explorer)
                         continue
 
