@@ -7,16 +7,6 @@ import pandas as pd
 list_of_maps = ['map1', 'map2', 'map3', 'map4', 'map5', 'map6', 'map7']
 agent_types = ['reactive', 'deliberative', 'hybrid', 'rlearning']
 
-#to run every agent and every map
-#for agent_type in agent_types:
-#    for map in list_of_maps:
-#        for i in range(10):
-#            os.system('python .\maze.py ' + agent_type + ' ' + map)
-
-#for map in list_of_maps:
-#    for i in range(10):
-#        os.system('python .\maze.py ' + 'random' + ' ' + map)
-
 number_of_tests = 10
 
 x = np.arange(len(agent_types))
@@ -24,6 +14,7 @@ width = 0.3
 
 for map_name in list_of_maps:
     metrics = {}
+    no_solution = {}
     for agent_type in agent_types:
         list_of_metric_files = glob.glob('./exports/' + agent_type + '/' + map_name + '/*.csv')
         if not list_of_metric_files:
@@ -49,6 +40,8 @@ for map_name in list_of_maps:
 
         if true_discount < 0:
             true_discount = 0
+        
+        no_solution[agent_types.index(agent_type)] = number_of_tests - number_of_true_tests
 
         last_rows.sort(key=lambda x: x[0])
         last_rows = last_rows[true_discount%2 : number_of_tests - (true_discount - true_discount%2)]
@@ -111,18 +104,21 @@ for map_name in list_of_maps:
 
             plt.savefig(_dir + metric)
             plt.close("all")
+    
+    _dir = './graphs/' + map_name + '/'
+    if not os.path.exists(_dir):
+        os.makedirs(_dir)
 
+    fig, ax = plt.subplots()
 
-# if needed
+    rect = ax.bar(x - width, no_solution.values(), width, label='No Solution')
 
-Timestep = []
-Steps_BLUE = []
-Steps_ORANGE = []
-Pressure_Plates_Activated_BLUE = []
-Pressure_Plates_Activated_ORANGE = []
-Blocks_Placed_BLUE = []
-Blocks_Placed_ORANGE = []
-Blocks_Removed_BLUE = []
-Blocks_Removed_ORANGE = []
-Messages_Sent_BLUE = []
-Messages_Sent_ORANGE = []
+    ax.set_ylabel('Runs without solution')
+    ax.set_title('Runs without solution')
+    ax.set_xticks(x)
+    ax.set_xticklabels(agent_types)
+
+    ax.bar_label(rect, padding=3)
+
+    plt.savefig(_dir + 'Runs without solution')
+    plt.close("all")
