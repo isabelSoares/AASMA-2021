@@ -48,9 +48,9 @@ def update():
         export_module.print_and_write_to_txt('------------ ' + str(world.metrics.time) + ' ------------')
         tick_time = info_panel.get_time_tick()
         agents_in_goal = 0
+        agents_decisions = []
         for agent in agents:
             agent.set_animation_duration(.8 * tick_time)
-            agents_decisions = []
             a = agent.decision(world, agents_decisions)
             agents_decisions.append(a)
 
@@ -67,6 +67,7 @@ def update():
             print('   ==========================')
             print()
             print()
+            print(world.metrics.time)
             exit()
         
         world.update()

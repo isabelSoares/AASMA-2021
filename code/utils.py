@@ -86,10 +86,7 @@ def create_agent_acording_to_type(type_of_agent, name, position, color, block_co
         q_function = {}
         #with open('Q-Function Agent ' + name + '.pkl', 'rb') as f:
         #    q_function = pickle.load(f)
-        if name == 'ORANGE':
-            return RLearningAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks, q_function = q_function, rewards = 'nothing')
-        else:
-            return RLearningAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks, q_function = q_function, rewards = 'door')
+        return RLearningAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks, q_function = q_function)
     elif type_of_agent.lower() == 'deliberative':
         return DeliberativeAgent(name = name, position = position, color = color, block_color = block_color, number_of_blocks = number_of_blocks)
     elif type_of_agent.lower() == 'hybrid':

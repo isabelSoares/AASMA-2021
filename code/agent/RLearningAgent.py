@@ -13,24 +13,24 @@ CREATE_BLOCK = 4
 BREAK_BLOCK = 5
 
 # =================== REWARD ==================
-R_DOOR = 20
-R_PRESSURE_PLATE = 20
-R_WALL = 20
-R_CREATE_BLOCK = 20
+R_DOOR = 1
+R_PRESSURE_PLATE = 1
+R_WALL = 1
+R_CREATE_BLOCK = 1
 
 EPS = 1
 LR = 0.9
-GAMMA = 0.1
-LR_DOOR = 0.8
-GAMMA_DOOR = 0.2
-LR_WALL = 0.9
-GAMMA_WALL = 0.1
+GAMMA = 0.6
+LR_DOOR = 0.4
+GAMMA_DOOR = 0.9
+LR_WALL = 0.4
+GAMMA_WALL = 0.9
 
 
 var_names = ['STAY', 'MOVE', 'ROTATE_LEFT', 'ROTATE_RIGHT', 'CREATE_BLOCK', 'BREAK_BLOCK']
 
 class RLearningAgent(Agent):
-    def __init__(self, name = 'Unknown', position = (0, 1, 0), color = color.rgba(0,0,0), block_color = None, number_of_blocks = 0, q_function = {}, rewards = 'pressure_plate'):
+    def __init__(self, name = 'Unknown', position = (0, 1, 0), color = color.rgba(0,0,0), block_color = None, number_of_blocks = 0, q_function = {}):
         super().__init__(
             name = name,
             position = position,
@@ -46,21 +46,12 @@ class RLearningAgent(Agent):
         self.lr = LR
         self.gamma = GAMMA
 
-        self.rewards = rewards
         self.r_distance = True
         self.r_door = 0
         self.r_pressure_plate = 0
         self.r_wall = 0
         self.r_create_block = 0
         self.create_block_y = None
-        if self.rewards == 'door':
-            self.r_door = R_DOOR
-        elif self.rewards == 'pressure_plate':
-            self.r_pressure_plate = R_PRESSURE_PLATE
-        elif self.rewards == 'wall':
-            self.r_wall = R_WALL
-        elif self.rewards == 'create_block':
-            self.r_create_block = R_CREATE_BLOCK
         
         self.obstacle_completed = 0
         self.forbidden_positions = []
@@ -68,8 +59,6 @@ class RLearningAgent(Agent):
 
         self.count = 0
         self.count_positions = []
-
-        self.printQFunction()
 
     def decision(self, world, agents_decisions):
         self.count += 1
@@ -94,9 +83,7 @@ class RLearningAgent(Agent):
         if self.id_being_helped == None and self.id_solving_message == None and self.isDoor(self.getEntityAhead(world)) and self.hasPermission(self.getEntityAhead(world)) and (last_position + self.Forward() not in self.forbidden_positions):
             self.send_message(world, last_position + self.Forward(), 'pressure_plate', 'pressure_plate')
             return last_position
-        elif self.id_being_helped == None and self.id_solving_message == None and self.isWall(self.getBlockAhead(world)) and self.hasPermission(self.getBlockAhead(world)) and self.isWall(self.getBlockAhead_Up(world)) and self.isNone(self.getBlockAhead_Up_Up(world)) \
-             and (self.isNone(self.getBlockRight(world)) or (self.isAgentBlock(self.getBlockRight(world)) and self.getBlockRight(world).color != self.color)) \
-             and (self.isNone(self.getBlockLeft(world)) or (self.isAgentBlock(self.getBlockRight(world)) and self.getBlockLeft(world).color != self.color)):
+        elif self.id_being_helped == None and self.id_solving_message == None and self.isWall(self.getBlockAhead(world)) and self.hasPermission(self.getBlockAhead(world)) and self.isWall(self.getBlockAhead_Up(world)) and self.isNone(self.getBlockAhead_Up_Up(world)):
             self.send_message(world, last_position + self.Forward(), 'create_block', 'create_block')
             return last_position
 
@@ -143,7 +130,7 @@ class RLearningAgent(Agent):
         else:
             next_position = self.take_action(a, world, height)
 
-        next_distance_to_goal = world.distance_provider(self.name, Entity(next_position))
+        #next_distance_to_goal = world.distance_provider(self.name, Entity(next_position))
         reward = self.get_reward(world, last_position, next_position, distance_to_goal)
 
         q_next_position = (next_position[0], next_position[1], next_position[2], orientation)
@@ -173,8 +160,8 @@ class RLearningAgent(Agent):
         r = 0
         if self.isPressurePlate(self.getEntityOfCurrentPosition(world, last_position)):
             r += self.r_pressure_plate
-        if self.isPressurePlate(self.getEntityAhead(world, last_position)):
-            r += self.r_pressure_plate * 0.2
+        #if self.isPressurePlate(self.getEntityAhead(world, last_position)):
+        #    r += self.r_pressure_plate * 0.2
         elif self.isDoor(self.getEntityOfCurrentPosition(world, next_position)) and self.hasPermission(self.getEntityOfCurrentPosition(world, next_position)):
             r += self.r_door
         elif self.isDoor(self.getEntityAhead(world, last_position)) and self.hasPermission(self.getEntityAhead(world, last_position)):
@@ -220,20 +207,24 @@ class RLearningAgent(Agent):
         return r
     
     def updateEPS(self):
-        if self.eps > 0.85:
+        if self.eps > 0.8:
             self.eps *= 0.9999
-        elif self.eps <= 0.85 and self.eps > 0.2:
-            self.eps *= 0.99
-        elif self.eps <= 2 and self.eps > 0.05:
+        elif self.eps <= 0.8 and self.eps > 0.3:
+            self.eps *= 0.9
+        elif self.eps <= 0.3 and self.eps > 0.2:
             self.eps *= 0.9999
         else:
-            self.eps = 0.05
+            self.eps = 0.2
     
     def updateLR(self):
-        if self.lr > 0.2:
-            self.lr *= 0.999
+        if self.lr > 0.97:
+            self.lr *= 0.9999
+        elif self.lr <= 0.97 and self.lr > 0.7:
+            self.lr *= 0.9
+        elif self.lr <= 0.7 and self.lr > 0.5:
+            self.lr *= 0.9999
         else:
-            self.lr = 0.2
+            self.lr = 0.4
     
     def send_message(self, world, position, needed_action, text):
         m = world.send_message(self.name, position, needed_action, text)
@@ -297,21 +288,6 @@ class RLearningAgent(Agent):
         self.r_wall = 0
         self.r_create_block = 0
         self.create_block_y = None
-        self.eps = EPS
-        self.lr = LR
-        self.gamma = GAMMA
-        self.Q = {}
-
-    def init_rewards(self, reward_name):
-        self.r_distance = False
-        if reward_name == 'door':
-            self.r_door = R_DOOR
-        elif reward_name == 'pressure_plate':
-            self.r_pressure_plate = R_PRESSURE_PLATE
-        elif reward_name == 'wall':
-            self.r_wall = R_WALL
-        elif reward_name == 'create_block':
-            self.r_create_block = R_CREATE_BLOCK
         self.eps = EPS
         self.lr = LR
         self.gamma = GAMMA

@@ -33,6 +33,8 @@ class ReactiveAgent(Agent):
         self.id_being_helped = None
         self.id_solving_message = None
 
+        self.count_after_help = 0
+
     def decision(self, world, agents_decisions):
         self.count += 1
         height = 0
@@ -52,9 +54,11 @@ class ReactiveAgent(Agent):
             if type(world.get_entity(world.agents_map[i].position)).__name__ == 'PressurePlate':
                 door_open = True
 
+        self.count_after_help += 1
         if self.isDoor(self.getEntityAhead(world)) and self.hasPermission(self.getEntityAhead(world)) and self.getEntityAhead(world).position not in self.forbidden_positions and (self.state == 'random' or self.state == 'door'):
             if self.state == 'random':
                 self.send_message(world, position_ahead, 'pressure_plate', 'pressure_plate')
+                self.count_after_help = 0
                 self.state = 'door'
                 action = STAY
             elif self.state == 'door' and not door_open:
@@ -68,18 +72,22 @@ class ReactiveAgent(Agent):
             action = STAY
         elif self.isWall(self.getBlockAhead(world)) and self.isWall(self.getBlockAhead_Up(world)) and self.isNone(self.getBlockAhead_Up_Up(world)) and self.hasPermission(self.getBlockAhead(world)) and self.state == 'random':
             self.send_message(world, current_position, 'create_block', 'create_block')
+            self.count_after_help = 0
             self.state = 'wall'
         elif self.state == 'wall' and self.isAgentBlock(self.getBlockAhead(world)) and self.getBlockAhead(world).color == self.color:
             action = MOVE
             height = 1
             self.solve_message(world)
-        elif self.state == 'create_block' and position_ahead == self.create_block_position and self.isNone(self.getBlockAhead(world)):
+        elif self.state == 'create_block' and self.number_of_blocks > 0 and position_ahead == self.create_block_position and self.isNone(self.getBlockAhead(world)):
             action = CREATE_BLOCK
+            self.number_of_blocks -= 1
         elif self.state == 'random' and self.isAgentBlock(self.getBlockAhead(world)) and self.getBlockAhead(world).color == self.color:
             action = MOVE
             height = 1
         elif self.state == 'random' and self.isOwnGoalBlock(self.getBlockOfCurrentPosition_Down(world)):
             action = STAY
+        elif (self.state == 'door' or self.state == 'wall') and self.count_after_help == 500:
+            self.solve_message(world)
         else:
             possible_actions_list, height = self.possible_actions(world, agents_decisions)
             action = random.choice(possible_actions_list)
