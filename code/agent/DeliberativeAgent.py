@@ -293,7 +293,6 @@ class DeliberativeAgent(Agent):
 
     def reconsider(self):
         # Simply reconsiders based on percentage
-        # TODO: Improve reconsider logic
         return random.random() < RECONSIDER_CHANCE
 
     def plan_is_sound(self):

@@ -117,7 +117,7 @@ class RLearningAgent(Agent):
 
         a = self.egreedy(self.Q[current_position], possible_actions_list, self.eps)
 
-        #to delete
+        #to test
         door_open = False
         for i in world.agents_map:
             if type(world.get_entity(world.agents_map[i].position)).__name__ == 'PressurePlate':
@@ -130,7 +130,6 @@ class RLearningAgent(Agent):
         else:
             next_position = self.take_action(a, world, height)
 
-        #next_distance_to_goal = world.distance_provider(self.name, Entity(next_position))
         reward = self.get_reward(world, last_position, next_position, distance_to_goal)
 
         q_next_position = (next_position[0], next_position[1], next_position[2], orientation)
@@ -160,8 +159,6 @@ class RLearningAgent(Agent):
         r = 0
         if self.isPressurePlate(self.getEntityOfCurrentPosition(world, last_position)):
             r += self.r_pressure_plate
-        #if self.isPressurePlate(self.getEntityAhead(world, last_position)):
-        #    r += self.r_pressure_plate * 0.2
         elif self.isDoor(self.getEntityOfCurrentPosition(world, next_position)) and self.hasPermission(self.getEntityOfCurrentPosition(world, next_position)):
             r += self.r_door
         elif self.isDoor(self.getEntityAhead(world, last_position)) and self.hasPermission(self.getEntityAhead(world, last_position)):
@@ -318,7 +315,7 @@ class RLearningAgent(Agent):
         if self.agentAhead(world) or (next_position in agents_decisions):
             return (possible_actions_list, height)
         
-        #to delete
+        #to test
         door_open = False
         for i in world.agents_map:
             if self.isPressurePlate(world.get_entity(world.agents_map[i].position)):

@@ -48,7 +48,7 @@ class ReactiveAgent(Agent):
         self.check_if_message(world)
         self.check_messages(world)
 
-        #to delete
+        #to test
         door_open = False
         for i in world.agents_map:
             if type(world.get_entity(world.agents_map[i].position)).__name__ == 'PressurePlate':
