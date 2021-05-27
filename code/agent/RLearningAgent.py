@@ -365,7 +365,7 @@ class RLearningAgent(Agent):
             # down
             height -= 1
         
-        if self.isWall(self.getBlockAhead_Ahead(world)) and self.number_of_blocks > 0 and self.getBlockAhead(world) == None and self.getBlockAhead_Down(world) != None and self.r_create_block > 0:
+        if (self.isWall(self.getBlockAhead_Ahead(world)) and self.isWall(self.getBlockAhead_Ahead_Up(world)) and self.isNone(self.getBlockAhead_Ahead_Up_Up(world))) and self.number_of_blocks > 0 and self.getBlockAhead(world) == None and self.getBlockAhead_Down(world) != None and self.r_create_block > 0:
             possible_actions_list.append(CREATE_BLOCK)
 
         if self.getBlockAhead(world) != None and self.isAgentBlock(self.getBlockAhead(world)) and (self.getBlockAhead(world).position not in self.unbreakable_blocks) and self.getBlockAhead(world).agent_name == self.name and self.isNone(self.getEntityAhead_Up(world)):
