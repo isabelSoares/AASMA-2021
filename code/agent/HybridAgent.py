@@ -77,7 +77,7 @@ class HybridAgent(Agent):
         perceptions_around = {} 
         # Update 3 x 3 around
         for x in range(-1, 2):
-            for y in range(-1, 4):
+            for y in range(-2, 4):
                 for z in range(-1, 2):
                     store_position = convert_vec3_to_key((x, y, z))
                     check_position = (self.position[0] + x, self.position[1] + y, self.position[2] + z)
