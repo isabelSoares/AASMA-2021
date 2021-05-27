@@ -1,0 +1,2732 @@
+
+------------ 0 ------------
+   - rotated to the left
+   - stayed
+
+------------ 1 ------------
+   - stayed
+   - moved forward
+
+------------ 2 ------------
+   - stayed
+   - rotated to the right
+
+------------ 3 ------------
+   - rotated to the left
+   - moved forward
+
+------------ 4 ------------
+   - rotated to the left
+   - rotated to the right
+
+------------ 5 ------------
+   - rotated to the right
+   - stayed
+
+------------ 6 ------------
+   - moved forward
+   - stayed
+
+------------ 7 ------------
+   - rotated to the left
+   - rotated to the right
+
+------------ 8 ------------
+   - rotated to the right
+   - moved forward
+
+------------ 9 ------------
+   - stayed
+   - rotated to the right
+
+------------ 10 ------------
+   - stayed
+   - rotated to the left
+
+------------ 11 ------------
+   - rotated to the left
+   - stayed
+
+------------ 12 ------------
+   - rotated to the right
+   - rotated to the right
+
+------------ 13 ------------
+   - stayed
+   - rotated to the left
+
+------------ 14 ------------
+   - rotated to the left
+   - rotated to the right
+
+------------ 15 ------------
+   - rotated to the right
+   - rotated to the left
+
+------------ 16 ------------
+   - rotated to the left
+   - rotated to the right
+
+------------ 17 ------------
+   - stayed
+   - rotated to the right
+
+------------ 18 ------------
+   - stayed
+   - moved forward
+
+------------ 19 ------------
+   - moved forward
+   - moved forward
+
+------------ 20 ------------
+   - stayed
+   - rotated to the left
+
+------------ 21 ------------
+   - rotated to the right
+   - stayed
+
+------------ 22 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 23 ------------
+   - rotated to the right
+   - rotated to the right
+
+------------ 24 ------------
+   - rotated to the left
+   - rotated to the left
+
+------------ 25 ------------
+   - rotated to the right
+   - rotated to the left
+
+------------ 26 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 27 ------------
+   - rotated to the left
+   - moved forward
+
+------------ 28 ------------
+   - rotated to the left
+   - moved forward
+
+------------ 29 ------------
+   - stayed
+   - stayed
+
+------------ 30 ------------
+   - rotated to the right
+   - rotated to the left
+
+------------ 31 ------------
+   - rotated to the left
+   - stayed
+
+------------ 32 ------------
+   - rotated to the left
+   - rotated to the left
+
+------------ 33 ------------
+   - stayed
+   - rotated to the left
+
+------------ 34 ------------
+   - stayed
+   - stayed
+
+------------ 35 ------------
+   - stayed
+   - rotated to the left
+
+------------ 36 ------------
+   - rotated to the left
+   - stayed
+
+------------ 37 ------------
+   - stayed
+   - stayed
+
+------------ 38 ------------
+   - rotated to the right
+   - rotated to the left
+
+------------ 39 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 40 ------------
+   - rotated to the right
+   - stayed
+
+------------ 41 ------------
+   - stayed
+   - rotated to the left
+
+------------ 42 ------------
+   - rotated to the right
+   - rotated to the left
+
+------------ 43 ------------
+   - rotated to the left
+   - stayed
+
+------------ 44 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 45 ------------
+   - moved forward
+   - stayed
+
+------------ 46 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 47 ------------
+   - stayed
+   - rotated to the right
+
+------------ 48 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 49 ------------
+   - rotated to the left
+   - moved forward
+
+------------ 50 ------------
+   - moved forward
+   - rotated to the left
+
+------------ 51 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 52 ------------
+   - moved forward
+   - rotated to the left
+
+------------ 53 ------------
+   - rotated to the right
+   - moved forward
+
+------------ 54 ------------
+   - stayed
+   - rotated to the right
+
+------------ 55 ------------
+   - moved forward
+   - rotated to the left
+
+------------ 56 ------------
+   - rotated to the right
+   - rotated to the left
+
+------------ 57 ------------
+   - stayed
+   - rotated to the right
+
+------------ 58 ------------
+   - moved forward
+   - rotated to the left
+
+------------ 59 ------------
+   - rotated to the left
+   - rotated to the left
+
+------------ 60 ------------
+   - stayed
+   - moved forward
+
+------------ 61 ------------
+   - stayed
+   - stayed
+
+------------ 62 ------------
+   - stayed
+   - stayed
+
+------------ 63 ------------
+   - stayed
+   - stayed
+
+------------ 64 ------------
+   - stayed
+   - rotated to the left
+
+------------ 65 ------------
+   - stayed
+   - moved forward
+
+------------ 66 ------------
+   - stayed
+   - moved forward
+
+------------ 67 ------------
+   - stayed
+   - stayed
+
+------------ 68 ------------
+   - stayed
+   - rotated to the right
+
+------------ 69 ------------
+   - stayed
+   - stayed
+
+------------ 70 ------------
+   - stayed
+   - stayed
+
+------------ 71 ------------
+   - stayed
+   - stayed
+
+------------ 72 ------------
+   - stayed
+   - rotated to the left
+
+------------ 73 ------------
+   - stayed
+   - moved forward
+
+------------ 74 ------------
+   - stayed
+   - rotated to the right
+
+------------ 75 ------------
+   - stayed
+   - rotated to the right
+
+------------ 76 ------------
+   - stayed
+   - stayed
+
+------------ 77 ------------
+   - stayed
+   - moved forward
+
+------------ 78 ------------
+   - stayed
+   - stayed
+
+------------ 79 ------------
+   - stayed
+   - moved forward
+
+------------ 80 ------------
+   - stayed
+   - rotated to the right
+
+------------ 81 ------------
+   - stayed
+   - rotated to the right
+
+------------ 82 ------------
+   - stayed
+   - stayed
+
+------------ 83 ------------
+   - stayed
+   - rotated to the right
+
+------------ 84 ------------
+   - stayed
+   - rotated to the left
+
+------------ 85 ------------
+   - stayed
+   - moved forward
+
+------------ 86 ------------
+   - stayed
+   - rotated to the left
+
+------------ 87 ------------
+   - stayed
+   - rotated to the left
+
+------------ 88 ------------
+   - stayed
+   - stayed
+
+------------ 89 ------------
+   - stayed
+   - stayed
+
+------------ 90 ------------
+   - stayed
+   - moved forward
+
+------------ 91 ------------
+   - stayed
+   - moved forward
+
+------------ 92 ------------
+   - stayed
+   - rotated to the right
+
+------------ 93 ------------
+   - stayed
+   - moved forward
+
+------------ 94 ------------
+   - stayed
+   - moved forward
+
+------------ 95 ------------
+   - stayed
+   - rotated to the right
+
+------------ 96 ------------
+   - stayed
+   - stayed
+
+------------ 97 ------------
+   - stayed
+   - rotated to the right
+
+------------ 98 ------------
+   - stayed
+   - rotated to the left
+
+------------ 99 ------------
+   - stayed
+   - moved forward
+
+------------ 100 ------------
+   - stayed
+   - rotated to the left
+
+------------ 101 ------------
+   - stayed
+   - moved forward
+
+------------ 102 ------------
+   - stayed
+   - rotated to the right
+
+------------ 103 ------------
+   - stayed
+   - stayed
+
+------------ 104 ------------
+   - stayed
+   - stayed
+
+------------ 105 ------------
+   - stayed
+   - stayed
+
+------------ 106 ------------
+   - stayed
+   - rotated to the right
+
+------------ 107 ------------
+   - stayed
+   - rotated to the left
+
+------------ 108 ------------
+   - stayed
+   - stayed
+
+------------ 109 ------------
+   - stayed
+   - rotated to the right
+
+------------ 110 ------------
+   - stayed
+   - moved forward
+
+------------ 111 ------------
+   - stayed
+   - rotated to the right
+
+------------ 112 ------------
+   - stayed
+   - moved forward
+
+------------ 113 ------------
+   - stayed
+   - rotated to the left
+
+------------ 114 ------------
+   - stayed
+   - moved forward
+
+------------ 115 ------------
+   - stayed
+   - rotated to the right
+
+------------ 116 ------------
+   - stayed
+   - stayed
+
+------------ 117 ------------
+   - stayed
+   - rotated to the left
+
+------------ 118 ------------
+   - stayed
+   - stayed
+
+------------ 119 ------------
+   - stayed
+   - rotated to the right
+
+------------ 120 ------------
+   - stayed
+   - moved forward
+
+------------ 121 ------------
+   - stayed
+   - rotated to the right
+
+------------ 122 ------------
+   - stayed
+   - rotated to the left
+
+------------ 123 ------------
+   - stayed
+   - moved forward
+
+------------ 124 ------------
+   - stayed
+   - stayed
+
+------------ 125 ------------
+   - stayed
+   - moved forward
+
+------------ 126 ------------
+   - stayed
+   - rotated to the right
+
+------------ 127 ------------
+   - stayed
+   - rotated to the left
+
+------------ 128 ------------
+   - stayed
+   - rotated to the right
+
+------------ 129 ------------
+   - stayed
+   - rotated to the right
+
+------------ 130 ------------
+   - stayed
+   - stayed
+
+------------ 131 ------------
+   - stayed
+   - rotated to the left
+
+------------ 132 ------------
+   - stayed
+   - rotated to the right
+
+------------ 133 ------------
+   - stayed
+   - rotated to the left
+
+------------ 134 ------------
+   - stayed
+   - stayed
+
+------------ 135 ------------
+   - stayed
+   - stayed
+
+------------ 136 ------------
+   - stayed
+   - rotated to the right
+
+------------ 137 ------------
+   - stayed
+   - rotated to the right
+
+------------ 138 ------------
+   - stayed
+   - rotated to the left
+
+------------ 139 ------------
+   - stayed
+   - rotated to the left
+
+------------ 140 ------------
+   - stayed
+   - stayed
+
+------------ 141 ------------
+   - stayed
+   - rotated to the right
+
+------------ 142 ------------
+   - stayed
+   - stayed
+
+------------ 143 ------------
+   - stayed
+   - stayed
+
+------------ 144 ------------
+   - stayed
+   - rotated to the right
+
+------------ 145 ------------
+   - stayed
+   - moved forward
+
+------------ 146 ------------
+   - stayed
+   - moved forward
+
+------------ 147 ------------
+   - stayed
+   - stayed
+
+------------ 148 ------------
+   - stayed
+   - rotated to the left
+
+------------ 149 ------------
+   - stayed
+   - rotated to the right
+
+------------ 150 ------------
+   - stayed
+   - moved forward
+
+------------ 151 ------------
+   - stayed
+   - stayed
+
+------------ 152 ------------
+   - stayed
+   - stayed
+
+------------ 153 ------------
+   - stayed
+   - rotated to the left
+
+------------ 154 ------------
+   - stayed
+   - moved forward
+
+------------ 155 ------------
+   - stayed
+   - rotated to the left
+
+------------ 156 ------------
+   - stayed
+   - rotated to the right
+
+------------ 157 ------------
+   - stayed
+   - stayed
+
+------------ 158 ------------
+   - stayed
+   - stayed
+
+------------ 159 ------------
+   - stayed
+   - rotated to the right
+
+------------ 160 ------------
+   - stayed
+   - rotated to the right
+
+------------ 161 ------------
+   - stayed
+   - rotated to the left
+
+------------ 162 ------------
+   - stayed
+   - rotated to the right
+
+------------ 163 ------------
+   - stayed
+   - moved forward
+
+------------ 164 ------------
+   - stayed
+   - rotated to the left
+
+------------ 165 ------------
+   - stayed
+   - rotated to the right
+
+------------ 166 ------------
+   - stayed
+   - stayed
+
+------------ 167 ------------
+   - stayed
+   - rotated to the right
+
+------------ 168 ------------
+   - stayed
+   - stayed
+
+------------ 169 ------------
+   - stayed
+   - rotated to the right
+
+------------ 170 ------------
+   - stayed
+   - rotated to the left
+
+------------ 171 ------------
+   - stayed
+   - rotated to the left
+
+------------ 172 ------------
+   - stayed
+   - rotated to the right
+
+------------ 173 ------------
+   - stayed
+   - rotated to the left
+
+------------ 174 ------------
+   - stayed
+   - moved forward
+
+------------ 175 ------------
+   - stayed
+   - rotated to the left
+
+------------ 176 ------------
+   - stayed
+   - rotated to the left
+
+------------ 177 ------------
+   - stayed
+   - stayed
+
+------------ 178 ------------
+   - stayed
+   - moved forward
+
+------------ 179 ------------
+   - stayed
+   - stayed
+
+------------ 180 ------------
+   - stayed
+   - rotated to the right
+
+------------ 181 ------------
+   - stayed
+   - stayed
+
+------------ 182 ------------
+   - stayed
+   - stayed
+
+------------ 183 ------------
+   - stayed
+   - rotated to the right
+
+------------ 184 ------------
+   - stayed
+   - stayed
+
+------------ 185 ------------
+   - stayed
+   - stayed
+
+------------ 186 ------------
+   - stayed
+   - moved forward
+
+------------ 187 ------------
+   - stayed
+   - stayed
+
+------------ 188 ------------
+   - stayed
+   - moved forward
+
+------------ 189 ------------
+   - stayed
+   - rotated to the left
+
+------------ 190 ------------
+   - stayed
+   - stayed
+
+------------ 191 ------------
+   - stayed
+   - stayed
+
+------------ 192 ------------
+   - stayed
+   - rotated to the right
+
+------------ 193 ------------
+   - stayed
+   - stayed
+
+------------ 194 ------------
+   - stayed
+   - rotated to the left
+
+------------ 195 ------------
+   - stayed
+   - rotated to the left
+
+------------ 196 ------------
+   - stayed
+   - moved forward
+
+------------ 197 ------------
+   - stayed
+   - rotated to the left
+
+------------ 198 ------------
+   - stayed
+   - rotated to the right
+
+------------ 199 ------------
+   - stayed
+   - moved forward
+
+------------ 200 ------------
+   - stayed
+   - stayed
+
+------------ 201 ------------
+   - stayed
+   - rotated to the left
+
+------------ 202 ------------
+   - stayed
+   - rotated to the right
+
+------------ 203 ------------
+   - stayed
+   - rotated to the right
+
+------------ 204 ------------
+   - stayed
+   - stayed
+
+------------ 205 ------------
+   - stayed
+   - rotated to the left
+
+------------ 206 ------------
+   - stayed
+   - moved forward
+
+------------ 207 ------------
+   - stayed
+   - rotated to the left
+
+------------ 208 ------------
+   - stayed
+   - rotated to the right
+
+------------ 209 ------------
+   - stayed
+   - stayed
+
+------------ 210 ------------
+   - stayed
+   - rotated to the right
+
+------------ 211 ------------
+   - stayed
+   - stayed
+
+------------ 212 ------------
+   - stayed
+   - stayed
+
+------------ 213 ------------
+   - stayed
+   - rotated to the left
+
+------------ 214 ------------
+   - stayed
+   - rotated to the left
+
+------------ 215 ------------
+   - stayed
+   - moved forward
+
+------------ 216 ------------
+   - stayed
+   - rotated to the left
+
+------------ 217 ------------
+   - stayed
+   - stayed
+
+------------ 218 ------------
+   - stayed
+   - rotated to the right
+
+------------ 219 ------------
+   - stayed
+   - moved forward
+
+------------ 220 ------------
+   - stayed
+   - rotated to the right
+
+------------ 221 ------------
+   - stayed
+   - rotated to the left
+
+------------ 222 ------------
+   - stayed
+   - rotated to the left
+
+------------ 223 ------------
+   - stayed
+   - stayed
+
+------------ 224 ------------
+   - stayed
+   - stayed
+
+------------ 225 ------------
+   - stayed
+   - rotated to the right
+
+------------ 226 ------------
+   - stayed
+   - stayed
+
+------------ 227 ------------
+   - stayed
+   - moved forward
+
+------------ 228 ------------
+   - stayed
+   - moved forward
+
+------------ 229 ------------
+   - stayed
+   - stayed
+
+------------ 230 ------------
+   - stayed
+   - rotated to the left
+
+------------ 231 ------------
+   - stayed
+   - rotated to the left
+
+------------ 232 ------------
+   - stayed
+   - rotated to the left
+
+------------ 233 ------------
+   - stayed
+   - stayed
+
+------------ 234 ------------
+   - stayed
+   - rotated to the left
+
+------------ 235 ------------
+   - stayed
+   - rotated to the left
+
+------------ 236 ------------
+   - stayed
+   - stayed
+
+------------ 237 ------------
+   - stayed
+   - stayed
+
+------------ 238 ------------
+   - stayed
+   - rotated to the right
+
+------------ 239 ------------
+   - stayed
+   - rotated to the right
+
+------------ 240 ------------
+   - stayed
+   - rotated to the right
+
+------------ 241 ------------
+   - stayed
+   - stayed
+
+------------ 242 ------------
+   - stayed
+   - rotated to the left
+
+------------ 243 ------------
+   - stayed
+   - stayed
+
+------------ 244 ------------
+   - stayed
+   - rotated to the left
+
+------------ 245 ------------
+   - stayed
+   - stayed
+
+------------ 246 ------------
+   - stayed
+   - stayed
+
+------------ 247 ------------
+   - stayed
+   - rotated to the left
+
+------------ 248 ------------
+   - stayed
+   - stayed
+
+------------ 249 ------------
+   - stayed
+   - stayed
+
+------------ 250 ------------
+   - stayed
+   - stayed
+
+------------ 251 ------------
+   - stayed
+   - moved forward
+
+------------ 252 ------------
+   - stayed
+   - moved forward
+
+------------ 253 ------------
+   - stayed
+   - rotated to the left
+
+------------ 254 ------------
+   - stayed
+   - moved forward
+
+------------ 255 ------------
+   - stayed
+   - rotated to the right
+
+------------ 256 ------------
+   - stayed
+   - rotated to the left
+
+------------ 257 ------------
+   - stayed
+   - rotated to the left
+
+------------ 258 ------------
+   - stayed
+   - stayed
+
+------------ 259 ------------
+   - stayed
+   - moved forward
+
+------------ 260 ------------
+   - moved forward
+   - moved forward
+
+------------ 261 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 262 ------------
+   - stayed
+   - rotated to the left
+
+------------ 263 ------------
+   - moved forward
+   - moved forward
+
+------------ 264 ------------
+   - rotated to the right
+   - stayed
+
+------------ 265 ------------
+   - rotated to the right
+   - rotated to the right
+
+------------ 266 ------------
+   - rotated to the right
+   - moved forward
+
+------------ 267 ------------
+   - rotated to the right
+   - rotated to the right
+
+------------ 268 ------------
+   - moved forward
+   - stayed
+
+------------ 269 ------------
+   - moved forward
+   - moved forward
+
+------------ 270 ------------
+   - rotated to the left
+   - stayed
+
+------------ 271 ------------
+   - rotated to the right
+   - stayed
+
+------------ 272 ------------
+   - rotated to the right
+   - rotated to the right
+
+------------ 273 ------------
+   - rotated to the right
+   - moved forward
+
+------------ 274 ------------
+   - moved forward
+   - stayed
+
+------------ 275 ------------
+   - rotated to the left
+   - rotated to the right
+
+------------ 276 ------------
+   - stayed
+   - rotated to the right
+
+------------ 277 ------------
+   - stayed
+   - stayed
+
+------------ 278 ------------
+   - moved forward
+   - rotated to the left
+
+------------ 279 ------------
+   - moved forward
+   - moved forward
+
+------------ 280 ------------
+   - rotated to the left
+   - rotated to the left
+
+------------ 281 ------------
+   - moved forward
+   - rotated to the left
+
+------------ 282 ------------
+   - moved forward
+   - rotated to the left
+
+------------ 283 ------------
+   - rotated to the right
+   - rotated to the right
+
+------------ 284 ------------
+   - stayed
+   - stayed
+
+------------ 285 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 286 ------------
+   - stayed
+   - moved forward
+
+------------ 287 ------------
+   - stayed
+   - stayed
+
+------------ 288 ------------
+   - rotated to the right
+   - rotated to the left
+
+------------ 289 ------------
+   - stayed
+   - stayed
+
+------------ 290 ------------
+   - rotated to the right
+   - rotated to the right
+
+------------ 291 ------------
+   - rotated to the right
+   - stayed
+
+------------ 292 ------------
+   - rotated to the left
+   - rotated to the right
+
+------------ 293 ------------
+   - rotated to the left
+   - rotated to the right
+
+------------ 294 ------------
+   - rotated to the right
+   - moved forward
+
+------------ 295 ------------
+   - rotated to the right
+   - stayed
+
+------------ 296 ------------
+   - rotated to the left
+   - rotated to the right
+
+------------ 297 ------------
+   - stayed
+   - rotated to the left
+
+------------ 298 ------------
+   - rotated to the right
+   - moved forward
+
+------------ 299 ------------
+   - rotated to the left
+   - stayed
+
+------------ 300 ------------
+   - moved forward
+   - stayed
+
+------------ 301 ------------
+   - moved forward
+   - rotated to the left
+
+------------ 302 ------------
+   - rotated to the left
+   - stayed
+
+------------ 303 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 304 ------------
+   - rotated to the left
+   - stayed
+
+------------ 305 ------------
+   - rotated to the left
+   - moved forward
+
+------------ 306 ------------
+   - rotated to the right
+   - moved forward
+
+------------ 307 ------------
+   - rotated to the left
+   - stayed
+
+------------ 308 ------------
+   - rotated to the left
+   - rotated to the right
+
+------------ 309 ------------
+   - rotated to the right
+   - rotated to the left
+
+------------ 310 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 311 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 312 ------------
+   - rotated to the right
+   - moved forward
+
+------------ 313 ------------
+   - rotated to the right
+   - stayed
+
+------------ 314 ------------
+   - moved forward
+   - moved forward
+
+------------ 315 ------------
+   - rotated to the right
+   - rotated to the right
+
+------------ 316 ------------
+   - stayed
+   - rotated to the right
+
+------------ 317 ------------
+   - moved forward
+   - rotated to the left
+
+------------ 318 ------------
+   - rotated to the left
+   - stayed
+
+------------ 319 ------------
+   - rotated to the left
+   - rotated to the right
+
+------------ 320 ------------
+   - rotated to the left
+   - rotated to the right
+
+------------ 321 ------------
+   - rotated to the left
+   - moved forward
+
+------------ 322 ------------
+   - stayed
+   - moved forward
+
+------------ 323 ------------
+   - rotated to the left
+   - rotated to the left
+
+------------ 324 ------------
+   - rotated to the left
+   - moved forward
+
+------------ 325 ------------
+   - moved forward
+   - rotated to the left
+
+------------ 326 ------------
+   - stayed
+   - moved forward
+
+------------ 327 ------------
+   - rotated to the left
+   - moved forward
+
+------------ 328 ------------
+   - rotated to the left
+   - stayed
+
+------------ 329 ------------
+   - moved forward
+   - stayed
+
+------------ 330 ------------
+   - rotated to the right
+   - rotated to the left
+
+------------ 331 ------------
+   - stayed
+   - rotated to the left
+
+------------ 332 ------------
+   - stayed
+   - stayed
+
+------------ 333 ------------
+   - rotated to the left
+   - moved forward
+
+------------ 334 ------------
+   - stayed
+   - rotated to the left
+
+------------ 335 ------------
+   - rotated to the left
+   - rotated to the left
+
+------------ 336 ------------
+   - stayed
+   - rotated to the left
+
+------------ 337 ------------
+   - stayed
+   - rotated to the left
+
+------------ 338 ------------
+   - rotated to the left
+   - stayed
+
+------------ 339 ------------
+   - rotated to the left
+   - stayed
+
+------------ 340 ------------
+   - rotated to the left
+   - moved forward
+
+------------ 341 ------------
+   - stayed
+   - moved forward
+
+------------ 342 ------------
+   - stayed
+   - rotated to the left
+
+------------ 343 ------------
+   - rotated to the right
+   - rotated to the right
+
+------------ 344 ------------
+   - stayed
+   - moved forward
+
+------------ 345 ------------
+   - rotated to the right
+   - moved forward
+
+------------ 346 ------------
+   - rotated to the right
+   - rotated to the right
+
+------------ 347 ------------
+   - rotated to the left
+   - rotated to the left
+
+------------ 348 ------------
+   - rotated to the right
+   - stayed
+
+------------ 349 ------------
+   - stayed
+   - stayed
+
+------------ 350 ------------
+   - rotated to the left
+   - stayed
+
+------------ 351 ------------
+   - moved forward
+   - stayed
+
+------------ 352 ------------
+   - stayed
+   - stayed
+
+------------ 353 ------------
+   - stayed
+   - stayed
+
+------------ 354 ------------
+   - rotated to the right
+   - stayed
+
+------------ 355 ------------
+   - stayed
+   - stayed
+
+------------ 356 ------------
+   - rotated to the right
+   - stayed
+
+------------ 357 ------------
+   - stayed
+   - stayed
+
+------------ 358 ------------
+   - rotated to the right
+   - stayed
+
+------------ 359 ------------
+   - moved forward
+   - stayed
+
+------------ 360 ------------
+   - rotated to the right
+   - stayed
+
+------------ 361 ------------
+   - rotated to the right
+   - stayed
+
+------------ 362 ------------
+   - stayed
+   - stayed
+
+------------ 363 ------------
+   - stayed
+   - stayed
+
+------------ 364 ------------
+   - moved forward
+   - stayed
+
+------------ 365 ------------
+   - stayed
+   - stayed
+
+------------ 366 ------------
+   - rotated to the right
+   - stayed
+
+------------ 367 ------------
+   - rotated to the right
+   - stayed
+
+------------ 368 ------------
+   - stayed
+   - stayed
+
+------------ 369 ------------
+   - stayed
+   - stayed
+
+------------ 370 ------------
+   - stayed
+   - stayed
+
+------------ 371 ------------
+   - stayed
+   - stayed
+
+------------ 372 ------------
+   - moved forward
+   - stayed
+
+------------ 373 ------------
+   - rotated to the right
+   - stayed
+
+------------ 374 ------------
+   - stayed
+   - stayed
+
+------------ 375 ------------
+   - rotated to the right
+   - stayed
+
+------------ 376 ------------
+   - rotated to the left
+   - stayed
+
+------------ 377 ------------
+   - stayed
+   - stayed
+
+------------ 378 ------------
+   - rotated to the right
+   - stayed
+
+------------ 379 ------------
+   - stayed
+   - stayed
+
+------------ 380 ------------
+   - rotated to the right
+   - stayed
+
+------------ 381 ------------
+   - rotated to the right
+   - stayed
+
+------------ 382 ------------
+   - stayed
+   - stayed
+
+------------ 383 ------------
+   - rotated to the left
+   - stayed
+
+------------ 384 ------------
+   - rotated to the left
+   - stayed
+
+------------ 385 ------------
+   - stayed
+   - stayed
+
+------------ 386 ------------
+   - moved forward
+   - stayed
+
+------------ 387 ------------
+   - rotated to the left
+   - stayed
+
+------------ 388 ------------
+   - rotated to the right
+   - stayed
+
+------------ 389 ------------
+   - moved forward
+   - stayed
+
+------------ 390 ------------
+   - stayed
+   - stayed
+
+------------ 391 ------------
+   - rotated to the left
+   - stayed
+
+------------ 392 ------------
+   - rotated to the left
+   - stayed
+
+------------ 393 ------------
+   - moved forward
+   - stayed
+
+------------ 394 ------------
+   - stayed
+   - stayed
+
+------------ 395 ------------
+   - rotated to the right
+   - stayed
+
+------------ 396 ------------
+   - moved forward
+   - stayed
+
+------------ 397 ------------
+   - rotated to the right
+   - stayed
+
+------------ 398 ------------
+   - stayed
+   - stayed
+
+------------ 399 ------------
+   - stayed
+   - stayed
+
+------------ 400 ------------
+   - moved forward
+   - stayed
+
+------------ 401 ------------
+   - rotated to the left
+   - stayed
+
+------------ 402 ------------
+   - rotated to the right
+   - stayed
+
+------------ 403 ------------
+   - rotated to the left
+   - stayed
+
+------------ 404 ------------
+   - rotated to the left
+   - stayed
+
+------------ 405 ------------
+   - moved forward
+   - stayed
+
+------------ 406 ------------
+   - rotated to the right
+   - stayed
+
+------------ 407 ------------
+   - stayed
+   - stayed
+
+------------ 408 ------------
+   - rotated to the left
+   - stayed
+
+------------ 409 ------------
+   - rotated to the right
+   - stayed
+
+------------ 410 ------------
+   - moved forward
+   - stayed
+
+------------ 411 ------------
+   - stayed
+   - stayed
+
+------------ 412 ------------
+   - rotated to the right
+   - stayed
+
+------------ 413 ------------
+   - rotated to the right
+   - stayed
+
+------------ 414 ------------
+   - stayed
+   - stayed
+
+------------ 415 ------------
+   - rotated to the left
+   - stayed
+
+------------ 416 ------------
+   - rotated to the right
+   - stayed
+
+------------ 417 ------------
+   - stayed
+   - stayed
+
+------------ 418 ------------
+   - rotated to the left
+   - stayed
+
+------------ 419 ------------
+   - rotated to the right
+   - stayed
+
+------------ 420 ------------
+   - rotated to the right
+   - stayed
+
+------------ 421 ------------
+   - rotated to the right
+   - stayed
+
+------------ 422 ------------
+   - rotated to the left
+   - stayed
+
+------------ 423 ------------
+   - moved forward
+   - stayed
+
+------------ 424 ------------
+   - stayed
+   - stayed
+
+------------ 425 ------------
+   - stayed
+   - stayed
+
+------------ 426 ------------
+   - rotated to the right
+   - stayed
+
+------------ 427 ------------
+   - rotated to the left
+   - stayed
+
+------------ 428 ------------
+   - rotated to the right
+   - stayed
+
+------------ 429 ------------
+   - rotated to the right
+   - stayed
+
+------------ 430 ------------
+   - moved forward
+   - stayed
+
+------------ 431 ------------
+   - moved forward
+   - stayed
+
+------------ 432 ------------
+   - stayed
+   - moved forward
+
+------------ 433 ------------
+   - stayed
+   - moved forward
+
+------------ 434 ------------
+   - rotated to the right
+   - rotated to the left
+
+------------ 435 ------------
+   - rotated to the right
+   - rotated to the right
+
+------------ 436 ------------
+   - rotated to the right
+   - moved forward
+
+------------ 437 ------------
+   - moved forward
+   - stayed
+
+------------ 438 ------------
+   - rotated to the right
+   - rotated to the right
+
+------------ 439 ------------
+   - rotated to the left
+   - stayed
+
+------------ 440 ------------
+   - rotated to the right
+   - rotated to the left
+
+------------ 441 ------------
+   - rotated to the left
+   - moved forward
+
+------------ 442 ------------
+   - rotated to the left
+   - stayed
+
+------------ 443 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 444 ------------
+   - rotated to the right
+   - moved forward
+
+------------ 445 ------------
+   - rotated to the left
+   - rotated to the left
+
+------------ 446 ------------
+   - rotated to the left
+   - moved forward
+
+------------ 447 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 448 ------------
+   - rotated to the left
+   - rotated to the right
+
+------------ 449 ------------
+   - moved forward
+   - rotated to the left
+
+------------ 450 ------------
+   - rotated to the right
+   - moved forward
+
+------------ 451 ------------
+   - moved forward
+   - stayed
+
+------------ 452 ------------
+   - stayed
+   - rotated to the right
+
+------------ 453 ------------
+   - rotated to the left
+   - stayed
+
+------------ 454 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 455 ------------
+   - stayed
+   - rotated to the left
+
+------------ 456 ------------
+   - rotated to the left
+   - moved forward
+
+------------ 457 ------------
+   - rotated to the left
+   - moved forward
+
+------------ 458 ------------
+   - rotated to the right
+   - moved forward
+
+------------ 459 ------------
+   - stayed
+   - stayed
+
+------------ 460 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 461 ------------
+   - rotated to the right
+   - moved forward
+
+------------ 462 ------------
+   - rotated to the right
+   - moved forward
+
+------------ 463 ------------
+   - stayed
+   - rotated to the right
+
+------------ 464 ------------
+   - rotated to the right
+   - rotated to the left
+
+------------ 465 ------------
+   - moved forward
+   - moved forward
+
+------------ 466 ------------
+   - rotated to the left
+   - stayed
+
+------------ 467 ------------
+   - rotated to the left
+   - rotated to the right
+
+------------ 468 ------------
+   - moved forward
+   - moved forward
+
+------------ 469 ------------
+   - rotated to the right
+   - rotated to the left
+
+------------ 470 ------------
+   - rotated to the right
+   - rotated to the right
+
+------------ 471 ------------
+   - rotated to the left
+   - rotated to the right
+
+------------ 472 ------------
+   - stayed
+   - rotated to the right
+
+------------ 473 ------------
+   - stayed
+   - moved forward
+
+------------ 474 ------------
+   - rotated to the right
+   - stayed
+
+------------ 475 ------------
+   - stayed
+   - rotated to the right
+
+------------ 476 ------------
+   - moved forward
+   - rotated to the left
+
+------------ 477 ------------
+   - rotated to the left
+   - stayed
+
+------------ 478 ------------
+   - stayed
+   - stayed
+
+------------ 479 ------------
+   - stayed
+   - rotated to the right
+
+------------ 480 ------------
+   - moved forward
+   - rotated to the left
+
+------------ 481 ------------
+   - rotated to the left
+   - rotated to the right
+
+------------ 482 ------------
+   - moved forward
+   - stayed
+
+------------ 483 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 484 ------------
+   - moved forward
+   - rotated to the left
+
+------------ 485 ------------
+   - rotated to the left
+   - stayed
+
+------------ 486 ------------
+   - rotated to the right
+   - stayed
+
+------------ 487 ------------
+   - rotated to the left
+   - stayed
+
+------------ 488 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 489 ------------
+   - stayed
+   - stayed
+
+------------ 490 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 491 ------------
+   - rotated to the right
+   - moved forward
+
+------------ 492 ------------
+   - rotated to the right
+   - rotated to the right
+
+------------ 493 ------------
+   - rotated to the right
+   - rotated to the left
+
+------------ 494 ------------
+   - rotated to the right
+   - rotated to the right
+
+------------ 495 ------------
+   - stayed
+   - stayed
+
+------------ 496 ------------
+   - rotated to the right
+   - rotated to the left
+
+------------ 497 ------------
+   - rotated to the right
+   - stayed
+
+------------ 498 ------------
+   - rotated to the left
+   - stayed
+
+------------ 499 ------------
+   - rotated to the right
+   - rotated to the right
+
+------------ 500 ------------
+   - stayed
+   - stayed
+
+------------ 501 ------------
+   - rotated to the right
+   - stayed
+
+------------ 502 ------------
+   - moved forward
+   - stayed
+
+------------ 503 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 504 ------------
+   - stayed
+   - rotated to the left
+
+------------ 505 ------------
+   - moved forward
+   - rotated to the left
+
+------------ 506 ------------
+   - rotated to the right
+   - rotated to the left
+
+------------ 507 ------------
+   - rotated to the left
+   - rotated to the right
+
+------------ 508 ------------
+   - rotated to the right
+   - rotated to the right
+
+------------ 509 ------------
+   - stayed
+   - stayed
+
+------------ 510 ------------
+   - rotated to the right
+   - stayed
+
+------------ 511 ------------
+   - rotated to the right
+   - stayed
+
+------------ 512 ------------
+   - stayed
+   - rotated to the right
+
+------------ 513 ------------
+   - rotated to the left
+   - moved forward
+
+------------ 514 ------------
+   - stayed
+   - stayed
+
+------------ 515 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 516 ------------
+   - rotated to the left
+   - rotated to the left
+
+------------ 517 ------------
+   - rotated to the left
+   - rotated to the right
+
+------------ 518 ------------
+   - stayed
+   - stayed
+
+------------ 519 ------------
+   - rotated to the left
+   - rotated to the left
+
+------------ 520 ------------
+   - rotated to the right
+   - stayed
+
+------------ 521 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 522 ------------
+   - rotated to the left
+   - rotated to the right
+
+------------ 523 ------------
+   - rotated to the right
+   - moved forward
+
+------------ 524 ------------
+   - moved forward
+   - rotated to the right
+
+------------ 525 ------------
+   - stayed
+   - rotated to the left
+
+------------ 526 ------------
+   - stayed
+   - rotated to the left
+
+------------ 527 ------------
+   - stayed
+   - rotated to the left
+
+------------ 528 ------------
+   - stayed
+   - moved forward
+
+------------ 529 ------------
+   - stayed
+   - rotated to the left
+
+------------ 530 ------------
+   - stayed
+   - rotated to the left
+
+------------ 531 ------------
+   - stayed
+   - rotated to the left
+
+------------ 532 ------------
+   - stayed
+   - rotated to the right
+
+------------ 533 ------------
+   - stayed
+   - stayed
+
+------------ 534 ------------
+   - stayed
+   - moved forward
+
+------------ 535 ------------
+   - stayed
+   - rotated to the left
+
+------------ 536 ------------
+   - stayed
+   - stayed
+
+------------ 537 ------------
+   - stayed
+   - stayed
+
+------------ 538 ------------
+   - stayed
+   - rotated to the left
+
+------------ 539 ------------
+   - stayed
+   - moved forward
+
+------------ 540 ------------
+   - stayed
+   - stayed
+
+------------ 541 ------------
+   - stayed
+   - stayed
+
+------------ 542 ------------
+   - stayed
+   - stayed
+
+------------ 543 ------------
+   - stayed
+   - stayed
+
+------------ 544 ------------
+   - stayed
+   - rotated to the right
+
+------------ 545 ------------
+   - stayed
+   - moved forward
+
+------------ 546 ------------
+   - stayed
+   - rotated to the left
+
+------------ 547 ------------
+   - stayed
+   - rotated to the right
+
+------------ 548 ------------
+   - stayed
+   - rotated to the right
+
+------------ 549 ------------
+   - stayed
+   - rotated to the right
+
+------------ 550 ------------
+   - stayed
+   - rotated to the right
+
+------------ 551 ------------
+   - stayed
+   - rotated to the right
+
+------------ 552 ------------
+   - stayed
+   - rotated to the left
+
+------------ 553 ------------
+   - stayed
+   - rotated to the right
+
+------------ 554 ------------
+   - stayed
+   - rotated to the right
+
+------------ 555 ------------
+   - stayed
+   - stayed
+
+------------ 556 ------------
+   - stayed
+   - rotated to the right
+
+------------ 557 ------------
+   - stayed
+   - rotated to the left
+
+------------ 558 ------------
+   - stayed
+   - moved forward
+
+------------ 559 ------------
+   - stayed
+   - rotated to the left
+
+------------ 560 ------------
+   - stayed
+   - rotated to the right
+
+------------ 561 ------------
+   - stayed
+   - stayed
+
+------------ 562 ------------
+   - stayed
+   - stayed
+
+------------ 563 ------------
+   - stayed
+   - rotated to the left
+
+------------ 564 ------------
+   - stayed
+   - rotated to the left
+
+------------ 565 ------------
+   - stayed
+   - moved forward
+
+------------ 566 ------------
+   - stayed
+   - rotated to the left
+
+------------ 567 ------------
+   - stayed
+   - moved forward
+
+------------ 568 ------------
+   - stayed
+   - moved forward
+
+------------ 569 ------------
+   - stayed
+   - stayed
+
+------------ 570 ------------
+   - stayed
+   - rotated to the left
+
+------------ 571 ------------
+   - stayed
+   - rotated to the right
+
+------------ 572 ------------
+   - stayed
+   - rotated to the left
+
+------------ 573 ------------
+   - stayed
+   - rotated to the left
+
+------------ 574 ------------
+   - stayed
+   - rotated to the left
+
+------------ 575 ------------
+   - stayed
+   - moved forward
+
+------------ 576 ------------
+   - stayed
+   - rotated to the right
+
+------------ 577 ------------
+   - stayed
+   - moved forward
+
+------------ 578 ------------
+   - stayed
+   - rotated to the left
+
+------------ 579 ------------
+   - stayed
+   - rotated to the right
+
+------------ 580 ------------
+   - stayed
+   - moved forward
+
+------------ 581 ------------
+   - stayed
+   - rotated to the right
+
+------------ 582 ------------
+   - stayed
+   - moved forward
+
+------------ 583 ------------
+   - stayed
+   - rotated to the left
+
+------------ 584 ------------
+   - stayed
+   - stayed
+
+------------ 585 ------------
+   - stayed
+   - stayed
+
+------------ 586 ------------
+   - stayed
+   - stayed
+
+------------ 587 ------------
+   - stayed
+   - rotated to the right
+
+------------ 588 ------------
+   - stayed
+   - rotated to the right
+
+------------ 589 ------------
+   - stayed
+   - rotated to the left
+
+------------ 590 ------------
+   - stayed
+   - rotated to the right
+
+------------ 591 ------------
+   - stayed
+   - moved forward
+
+------------ 592 ------------
+   - stayed
+   - moved forward
+
+------------ 593 ------------
+   - stayed
+   - moved forward
+
+------------ 594 ------------
+   - stayed
+   - rotated to the left
+
+------------ 595 ------------
+   - stayed
+   - rotated to the left
+
+------------ 596 ------------
+   - stayed
+   - moved forward
+
+------------ 597 ------------
+   - stayed
+   - moved forward
+
+------------ 598 ------------
+   - stayed
+   - rotated to the left
+
+------------ 599 ------------
+   - stayed
+   - moved forward
+
+------------ 600 ------------
+   - stayed
+   - stayed
+
+------------ 601 ------------
+   - stayed
+   - rotated to the right
+
+------------ 602 ------------
+   - stayed
+   - stayed
+
+------------ 603 ------------
+   - stayed
+   - moved forward
+
+------------ 604 ------------
+   - stayed
+   - rotated to the right
+
+------------ 605 ------------
+   - stayed
+   - moved forward
+
+------------ 606 ------------
+   - stayed
+   - moved forward
+
+------------ 607 ------------
+   - stayed
+   - rotated to the left
+
+------------ 608 ------------
+   - stayed
+   - moved forward
+
+------------ 609 ------------
+   - stayed
+   - rotated to the right
+
+------------ 610 ------------
+   - stayed
+   - stayed
+
+------------ 611 ------------
+   - stayed
+   - rotated to the left
+
+------------ 612 ------------
+   - stayed
+   - stayed
+
+------------ 613 ------------
+   - stayed
+   - rotated to the right
+
+------------ 614 ------------
+   - stayed
+   - rotated to the right
+
+------------ 615 ------------
+   - stayed
+   - stayed
+
+------------ 616 ------------
+   - stayed
+   - moved forward
+
+------------ 617 ------------
+   - stayed
+   - moved forward
+
+------------ 618 ------------
+   - stayed
+   - moved forward
+
+------------ 619 ------------
+   - stayed
+   - moved forward
+
+------------ 620 ------------
+   - stayed
+   - rotated to the right
+
+------------ 621 ------------
+   - stayed
+   - stayed
+
+------------ 622 ------------
+   - stayed
+   - rotated to the right
+
+------------ 623 ------------
+   - stayed
+   - moved forward
+
+------------ 624 ------------
+   - stayed
+   - moved forward
+
+------------ 625 ------------
+   - stayed
+   - rotated to the left
+
+------------ 626 ------------
+   - stayed
+   - stayed
+
+------------ 627 ------------
+   - stayed
+   - rotated to the right
+
+------------ 628 ------------
+   - stayed
+   - stayed
+
+------------ 629 ------------
+   - stayed
+   - rotated to the right
+
+------------ 630 ------------
+   - stayed
+   - rotated to the left
+
+------------ 631 ------------
+   - stayed
+   - rotated to the left
+
+------------ 632 ------------
+   - stayed
+   - rotated to the right
+
+------------ 633 ------------
+   - stayed
+   - stayed
+
+------------ 634 ------------
+   - stayed
+   - stayed
+
+------------ 635 ------------
+   - stayed
+   - rotated to the left
+
+------------ 636 ------------
+   - stayed
+   - moved forward
+
+------------ 637 ------------
+   - stayed
+   - moved forward
+
+------------ 638 ------------
+   - stayed
+   - stayed
+
+------------ 639 ------------
+   - stayed
+   - rotated to the right
+
+------------ 640 ------------
+   - stayed
+   - moved forward
+
+------------ 641 ------------
+   - stayed
+   - rotated to the left
+
+------------ 642 ------------
+   - stayed
+   - moved forward
+
+------------ 643 ------------
+   - stayed
+   - rotated to the left
+
+------------ 644 ------------
+   - stayed
+   - moved forward
+
+------------ 645 ------------
+   - stayed
+   - rotated to the right
+
+------------ 646 ------------
+   - stayed
+   - stayed
+
+------------ 647 ------------
+   - stayed
+   - rotated to the left
+
+------------ 648 ------------
+   - stayed
+   - rotated to the left
+
+------------ 649 ------------
+   - stayed
+   - stayed
+
+------------ 650 ------------
+   - stayed
+   - rotated to the left
+
+------------ 651 ------------
+   - stayed
+   - moved forward
+
+------------ 652 ------------
+   - stayed
+   - rotated to the right
+
+------------ 653 ------------
+   - stayed
+   - stayed
+
+------------ 654 ------------
+   - stayed
+   - rotated to the right
+
+------------ 655 ------------
+   - stayed
+   - stayed
+
+------------ 656 ------------
+   - stayed
+   - rotated to the left
+
+------------ 657 ------------
+   - stayed
+   - stayed
+
+------------ 658 ------------
+   - stayed
+   - moved forward
+
+------------ 659 ------------
+   - stayed
+   - moved forward
+
+------------ 660 ------------
+   - stayed
+   - stayed
+
+------------ 661 ------------
+   - stayed
+   - stayed
+
+------------ 662 ------------
+   - stayed
+   - stayed
+
+------------ 663 ------------
+   - stayed
+   - stayed
+
+------------ 664 ------------
+   - stayed
+   - moved forward
+
+------------ 665 ------------
+   - stayed
+   - rotated to the right
+
+------------ 666 ------------
+   - stayed
+   - moved forward
+
+------------ 667 ------------
+   - stayed
+   - rotated to the right
+
+------------ 668 ------------
+   - stayed
+   - rotated to the right
+
+------------ 669 ------------
+   - stayed
+   - stayed
+
+------------ 670 ------------
+   - stayed
+   - stayed
+
+------------ 671 ------------
+   - stayed
+   - stayed
+
+------------ 672 ------------
+   - stayed
+   - stayed
+
+------------ 673 ------------
+   - stayed
+   - moved forward
+
+------------ 674 ------------
+   - stayed
+   - rotated to the left
+
+------------ 675 ------------
+   - stayed
+   - stayed
+
+------------ 676 ------------
+   - stayed
+   - stayed
+
+------------ 677 ------------
+   - stayed
+   - stayed
+
+------------ 678 ------------
+   - stayed
+   - stayed
+
+------------ 679 ------------
+   - stayed
+   - stayed
+
+------------ 680 ------------
+   - stayed
+   - rotated to the right
+
+------------ 681 ------------
+   - stayed
+   - rotated to the right
+
+------------ 682 ------------
+   - stayed
+   - moved forward
