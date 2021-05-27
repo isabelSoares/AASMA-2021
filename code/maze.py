@@ -88,29 +88,4 @@ def update():
             print()
             exit()
 
-
-def input(key):
-    # Just checking agent functions
-    if key == 'd': # rotate right
-        map_info['agents']['BLUE'].rotate_right(world)
-    elif key == 'a': # rotate left
-        map_info['agents']['BLUE'].rotate_left(world)
-    elif key == 's': # rotate randomly
-        map_info['agents']['BLUE'].rotate_randomly(world)
-    elif key == 'w': # move forward
-        map_info['agents']['BLUE'].move(world)
-
-    # Just checking world functions
-    elif key == 'o':
-        block = map_info["world"].get_static_block(Vec3(3,0,0))
-        if block != None: block.color = color.rgba(38,213,147)
-    elif key == 'p':
-        positions = [Vec3(3,0,0), Vec3(3,1,-1)]
-        if map_info["world"].get_static_block(positions[0]) != None: map_info["world"].update_static_block(positions[0], positions[1])
-        else: map_info["world"].update_static_block(positions[1], positions[0])
-
-    elif key == 'space':
-        info_panel.enabled = not info_panel.enabled
-        message_panel.enabled = not message_panel.enabled
-
 app.run()
