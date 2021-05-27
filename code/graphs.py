@@ -51,7 +51,7 @@ for map_name in list_of_maps:
             if l_r == 0:
                 continue
             last_row += last_rows[l_r]
-        last_row /= number_of_tests
+        last_row /= number_of_true_tests
 
         i = 0
         for column in df.columns:
