@@ -1,0 +1,18 @@
+Timestep,Steps - BLUE,Steps - ORANGE,Pressure Plates Activated - BLUE,Pressure Plates Activated - ORANGE,Blocks Placed - BLUE,Blocks Placed - ORANGE,Blocks Removed - BLUE,Blocks Removed - ORANGE,Messages Sent - BLUE,Messages Sent - ORANGE
+0,0,0,0,0,0,0,0,0,0,0
+1,0,0,0,0,0,0,0,0,0,0
+2,0,1,0,0,0,0,0,0,0,0
+3,0,1,0,0,0,0,0,0,0,0
+4,1,1,0,0,0,0,0,0,0,0
+5,1,2,0,0,0,0,0,0,0,0
+6,1,2,0,0,0,0,0,0,0,0
+7,2,3,0,0,0,0,0,0,0,0
+8,2,3,0,0,0,0,0,0,0,0
+9,3,4,0,0,0,0,0,0,0,0
+10,3,4,0,0,0,0,0,0,0,0
+11,4,5,0,0,0,0,0,0,0,0
+12,4,5,0,0,0,0,0,0,0,0
+13,5,5,0,0,0,0,0,0,0,0
+14,5,6,0,0,0,0,0,0,0,0
+15,6,6,0,0,0,0,0,0,0,0
+16,6,7,0,0,0,0,0,0,0,0

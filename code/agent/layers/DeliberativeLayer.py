@@ -431,9 +431,9 @@ class DeliberativeMemory(LayerMemory):
         # Support must be free if known
         support_is_agent_block_not_is = False
         if support_position in self.beliefs:
-            support_is_agent_block_not_is = self.has_block_of_other_agent(support_position);
+            support_is_agent_block_not_is = self.has_block_of_other_agent(support_position)
         if (support_position in self.beliefs and
-            not self.gives_support_explorable_from_belief(support_position)): return False
+            not self.gives_support_from_belief(support_position)): return False
 
         # To position must be free if known
         if (to_position in self.beliefs and
@@ -450,6 +450,12 @@ class DeliberativeMemory(LayerMemory):
 
         return True
 
+    def check_block_break(self):
+        for belief_position in self.beliefs:
+            if self.has_block_of_other_agent(belief_position):
+                self.belief_block_to_break = belief_position
+                break
+    
     def movable_position_from_belief(self, position):
         belief = self.beliefs[position]
         if belief.block != None or belief.agent != None: return False
@@ -479,12 +485,6 @@ class DeliberativeMemory(LayerMemory):
         # Check if Agent Block placed has its name
         if type(belief.block).__name__ == "AgentBlock" and belief.block.color != self.belief_color:
             return False
-
-        return True
-
-    def gives_support_explorable_from_belief(self, position):
-        belief = self.beliefs[position]
-        if belief.block == None: return False
 
         return True
 
@@ -691,7 +691,10 @@ class DeliberativeLayer(Layer):
             if self.memory.wall_to_pass: return self.build_longest_path_plan(initial_position)
 
             return path_actions
-        
+
+        # Try to break own block
+        self.memory.check_block_break()
+
         # Doesn't have anything to explore or do
         intention = Intention(STAY_STILL, None)
         self.memory.intention = intention

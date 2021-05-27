@@ -1,0 +1,547 @@
+
+------------ 0 ------------
+Agent BLUE: @ (-2, 1, 0)
+   - Beliefs: 0
+   - Beliefs for Goal: 0
+   - Belief Stuck: False : 25
+   - Desires: []
+   - Intention: None
+   - Plan: []
+   - Plan Recalculated
+Agent ORANGE: @ (-2, 1, 1)
+   - Beliefs: 0
+   - Beliefs for Goal: 0
+   - Belief Stuck: False : 25
+   - Desires: []
+   - Intention: None
+   - Plan: []
+   - Plan Recalculated
+
+------------ 1 ------------
+Agent BLUE: @ (-2, 1, 0)
+   - Beliefs: 45
+   - Beliefs for Goal: 440
+   - Belief Stuck: False : 24
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (-2, 1, -1)
+   - Plan: ['ROTATE_RIGHT', 'ROTATE_RIGHT', 'MOVE_ONLY']
+   - rotated to the right
+Agent ORANGE: @ (-2, 1, 1)
+   - Beliefs: 45
+   - Beliefs for Goal: 440
+   - Belief Stuck: False : 24
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (-2, 1, 2)
+   - Plan: ['MOVE_ONLY']
+   - moved forward
+
+------------ 2 ------------
+Agent BLUE: @ (-2, 1, 0)
+   - Beliefs: 45
+   - Beliefs for Goal: 440
+   - Belief Stuck: False : 23
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (-2, 1, -1)
+   - Plan: ['ROTATE_RIGHT', 'MOVE_ONLY']
+   - rotated to the right
+   - Reconsidered
+Agent ORANGE: @ (-2, 1, 2)
+   - Beliefs: 45
+   - Beliefs for Goal: 440
+   - Belief Stuck: False : 25
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (-2, 1, 2)
+   - Plan: []
+   - Plan Recalculated
+
+------------ 3 ------------
+Agent BLUE: @ (-2, 1, 0)
+   - Beliefs: 46
+   - Beliefs for Goal: 440
+   - Belief Stuck: False : 22
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (0, 7, 1)
+   - Plan: ['MOVE_ONLY']
+   - Plan Recalculated
+Agent ORANGE: @ (-2, 1, 2)
+   - Beliefs: 60
+   - Beliefs for Goal: 258
+   - Belief Stuck: False : 24
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (-1, 1, 2)
+   - Plan: ['ROTATE_RIGHT', 'MOVE_ONLY']
+   - rotated to the right
+
+------------ 4 ------------
+Agent BLUE: @ (-2, 1, 0)
+   - Beliefs: 46
+   - Beliefs for Goal: 440
+   - Belief Stuck: False : 21
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (-2, 1, 1)
+   - Plan: ['ROTATE_RIGHT', 'ROTATE_RIGHT', 'MOVE_ONLY']
+   - rotated to the right
+   - Reconsidered
+Agent ORANGE: @ (-2, 1, 2)
+   - Beliefs: 60
+   - Beliefs for Goal: 258
+   - Belief Stuck: False : 23
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (-1, 1, 2)
+   - Plan: ['MOVE_ONLY']
+   - moved forward
+
+------------ 5 ------------
+Agent BLUE: @ (-2, 1, 0)
+   - Beliefs: 46
+   - Beliefs for Goal: 440
+   - Belief Stuck: False : 20
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (-6, -2, -2)
+   - Plan: ['ROTATE_RIGHT', 'MOVE_ONLY']
+   - Plan Recalculated
+Agent ORANGE: @ (-1, 1, 2)
+   - Beliefs: 60
+   - Beliefs for Goal: 258
+   - Belief Stuck: False : 25
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (-1, 1, 2)
+   - Plan: []
+   - Plan Recalculated
+
+------------ 6 ------------
+Agent BLUE: @ (-2, 1, 0)
+   - Beliefs: 46
+   - Beliefs for Goal: 440
+   - Belief Stuck: False : 19
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (-2, 1, 1)
+   - Plan: ['ROTATE_RIGHT', 'MOVE_ONLY']
+   - rotated to the right
+Agent ORANGE: @ (-1, 1, 2)
+   - Beliefs: 75
+   - Beliefs for Goal: 65
+   - Belief Stuck: False : 24
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (0, 1, 2)
+   - Plan: ['MOVE_ONLY']
+   - moved forward
+
+------------ 7 ------------
+Agent BLUE: @ (-2, 1, 0)
+   - Beliefs: 46
+   - Beliefs for Goal: 440
+   - Belief Stuck: False : 18
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (-2, 1, 1)
+   - Plan: ['MOVE_ONLY']
+   - moved forward
+Agent ORANGE: @ (0, 1, 2)
+   - Beliefs: 75
+   - Beliefs for Goal: 65
+   - Belief Stuck: False : 25
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (0, 1, 2)
+   - Plan: []
+   - Plan Recalculated
+
+------------ 8 ------------
+Agent BLUE: @ (-2, 1, 1)
+   - Beliefs: 46
+   - Beliefs for Goal: 440
+   - Belief Stuck: False : 25
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (-2, 1, 1)
+   - Plan: []
+   - Plan Recalculated
+Agent ORANGE: @ (0, 1, 2)
+   - Beliefs: 90
+   - Beliefs for Goal: 30
+   - Belief Stuck: False : 24
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (1, 1, 2)
+   - Plan: ['MOVE_ONLY']
+   - moved forward
+
+------------ 9 ------------
+Agent BLUE: @ (-2, 1, 1)
+   - Beliefs: 61
+   - Beliefs for Goal: 258
+   - Belief Stuck: False : 24
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (-1, 1, 1)
+   - Plan: ['ROTATE_RIGHT', 'MOVE_ONLY']
+   - rotated to the right
+Agent ORANGE: @ (1, 1, 2)
+   - Beliefs: 90
+   - Beliefs for Goal: 30
+   - Belief Stuck: False : 25
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (1, 1, 2)
+   - Plan: []
+   - Plan Recalculated
+
+------------ 10 ------------
+Agent BLUE: @ (-2, 1, 1)
+   - Beliefs: 61
+   - Beliefs for Goal: 258
+   - Belief Stuck: False : 23
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (-1, 1, 1)
+   - Plan: ['MOVE_ONLY']
+   - moved forward
+Agent ORANGE: @ (1, 1, 2)
+   - Beliefs: 105
+   - Beliefs for Goal: 21
+   - Belief Stuck: False : 24
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (2, 1, 2)
+   - Plan: ['MOVE_ONLY']
+   - moved forward
+
+------------ 11 ------------
+Agent BLUE: @ (-1, 1, 1)
+   - Beliefs: 61
+   - Beliefs for Goal: 258
+   - Belief Stuck: False : 25
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (-1, 1, 1)
+   - Plan: []
+   - Plan Recalculated
+Agent ORANGE: @ (2, 1, 2)
+   - Beliefs: 105
+   - Beliefs for Goal: 21
+   - Belief Stuck: False : 25
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (2, 1, 2)
+   - Plan: []
+   - Plan Recalculated
+
+------------ 12 ------------
+Agent BLUE: @ (-1, 1, 1)
+   - Beliefs: 76
+   - Beliefs for Goal: 65
+   - Belief Stuck: False : 24
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (0, 1, 1)
+   - Plan: ['MOVE_ONLY']
+   - moved forward
+Agent ORANGE: @ (2, 1, 2)
+   - Beliefs: 120
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 24
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, 1)
+   - Plan: ['ROTATE_RIGHT', 'MOVE_ONLY', 'ROTATE_LEFT', 'MOVE_ONLY']
+   - Plan Not Sound
+   - rotated to the right
+
+------------ 13 ------------
+Agent BLUE: @ (0, 1, 1)
+   - Beliefs: 76
+   - Beliefs for Goal: 65
+   - Belief Stuck: False : 25
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (0, 1, 1)
+   - Plan: []
+   - Plan Recalculated
+Agent ORANGE: @ (2, 1, 2)
+   - Beliefs: 120
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 23
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, 1)
+   - Plan: ['MOVE_ONLY', 'ROTATE_LEFT', 'MOVE_ONLY']
+   - Plan Not Sound
+   - moved forward
+
+------------ 14 ------------
+Agent BLUE: @ (0, 1, 1)
+   - Beliefs: 90
+   - Beliefs for Goal: 30
+   - Belief Stuck: False : 24
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (0, 1, 2)
+   - Plan: ['ROTATE_LEFT', 'MOVE_ONLY']
+   - rotated to the left
+Agent ORANGE: @ (2, 1, 1)
+   - Beliefs: 120
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 25
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, 1)
+   - Plan: ['ROTATE_LEFT', 'MOVE_ONLY']
+   - rotated to the left
+   - Reconsidered
+
+------------ 15 ------------
+Agent BLUE: @ (0, 1, 1)
+   - Beliefs: 90
+   - Beliefs for Goal: 30
+   - Belief Stuck: False : 23
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (0, 1, 2)
+   - Plan: ['MOVE_ONLY']
+   - moved forward
+Agent ORANGE: @ (2, 1, 1)
+   - Beliefs: 135
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 24
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, 1)
+   - Plan: ['MOVE_ONLY']
+   - moved forward
+
+------------ 16 ------------
+Agent BLUE: @ (0, 1, 2)
+   - Beliefs: 91
+   - Beliefs for Goal: 30
+   - Belief Stuck: False : 25
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (0, 1, 2)
+   - Plan: []
+   - Plan Recalculated
+Agent ORANGE: @ (3, 1, 1)
+   - Beliefs: 135
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 25
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, 1)
+   - Plan: []
+   - Plan Recalculated
+
+------------ 17 ------------
+Agent BLUE: @ (0, 1, 2)
+   - Beliefs: 106
+   - Beliefs for Goal: 7
+   - Belief Stuck: False : 24
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (1, 1, 2)
+   - Plan: ['ROTATE_RIGHT', 'MOVE_ONLY']
+   - rotated to the right
+Agent ORANGE: @ (3, 1, 1)
+   - Beliefs: 150
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 24
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, 1)
+   - Plan: []
+   - Plan Recalculated
+
+------------ 18 ------------
+Agent BLUE: @ (0, 1, 2)
+   - Beliefs: 106
+   - Beliefs for Goal: 7
+   - Belief Stuck: False : 23
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (1, 1, 2)
+   - Plan: ['MOVE_ONLY']
+   - moved forward
+   - Reconsidered
+Agent ORANGE: @ (3, 1, 1)
+   - Beliefs: 150
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 23
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, 1)
+   - Plan: []
+   - Plan Recalculated
+
+------------ 19 ------------
+Agent BLUE: @ (1, 1, 2)
+   - Beliefs: 106
+   - Beliefs for Goal: 7
+   - Belief Stuck: False : 25
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (2, -1, 0)
+   - Plan: []
+   - Plan Recalculated
+Agent ORANGE: @ (3, 1, 1)
+   - Beliefs: 150
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 22
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, 1)
+   - Plan: []
+   - Plan Recalculated
+
+------------ 20 ------------
+Agent BLUE: @ (1, 1, 2)
+   - Beliefs: 121
+   - Beliefs for Goal: 7
+   - Belief Stuck: False : 24
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (2, 1, 2)
+   - Plan: ['MOVE_ONLY']
+   - moved forward
+Agent ORANGE: @ (3, 1, 1)
+   - Beliefs: 150
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 21
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, 1)
+   - Plan: []
+   - Plan Recalculated
+
+------------ 21 ------------
+Agent BLUE: @ (2, 1, 2)
+   - Beliefs: 121
+   - Beliefs for Goal: 7
+   - Belief Stuck: False : 25
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (2, 1, 2)
+   - Plan: []
+   - Plan Recalculated
+Agent ORANGE: @ (3, 1, 1)
+   - Beliefs: 150
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 20
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, 1)
+   - Plan: []
+   - Plan Recalculated
+
+------------ 22 ------------
+Agent BLUE: @ (2, 1, 2)
+   - Beliefs: 136
+   - Beliefs for Goal: 7
+   - Belief Stuck: False : 24
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (2, 1, 1)
+   - Plan: ['ROTATE_RIGHT', 'MOVE_ONLY']
+   - rotated to the right
+Agent ORANGE: @ (3, 1, 1)
+   - Beliefs: 150
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 19
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, 1)
+   - Plan: []
+   - Plan Recalculated
+
+------------ 23 ------------
+Agent BLUE: @ (2, 1, 2)
+   - Beliefs: 136
+   - Beliefs for Goal: 7
+   - Belief Stuck: False : 23
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (2, 1, 1)
+   - Plan: ['MOVE_ONLY']
+   - moved forward
+Agent ORANGE: @ (3, 1, 1)
+   - Beliefs: 150
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 18
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, 1)
+   - Plan: []
+   - Plan Recalculated
+
+------------ 24 ------------
+Agent BLUE: @ (2, 1, 1)
+   - Beliefs: 136
+   - Beliefs for Goal: 7
+   - Belief Stuck: False : 25
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (2, 1, 1)
+   - Plan: []
+   - Plan Recalculated
+Agent ORANGE: @ (3, 1, 1)
+   - Beliefs: 150
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 17
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, 1)
+   - Plan: []
+   - Plan Recalculated
+
+------------ 25 ------------
+Agent BLUE: @ (2, 1, 1)
+   - Beliefs: 145
+   - Beliefs for Goal: 5
+   - Belief Stuck: False : 24
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (2, 1, 0)
+   - Plan: ['MOVE_ONLY']
+   - moved forward
+Agent ORANGE: @ (3, 1, 1)
+   - Beliefs: 150
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 16
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, 1)
+   - Plan: []
+   - Plan Recalculated
+
+------------ 26 ------------
+Agent BLUE: @ (2, 1, 0)
+   - Beliefs: 145
+   - Beliefs for Goal: 5
+   - Belief Stuck: False : 25
+   - Desires: ['REACH_GOAL']
+   - Intention: EXPLORE_UNKNOWN @ (2, 1, 0)
+   - Plan: []
+   - Plan Recalculated
+Agent ORANGE: @ (3, 1, 1)
+   - Beliefs: 150
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 15
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, 1)
+   - Plan: []
+   - Plan Recalculated
+
+------------ 27 ------------
+Agent BLUE: @ (2, 1, 0)
+   - Beliefs: 160
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 24
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, -1)
+   - Plan: ['MOVE_ONLY', 'ROTATE_LEFT', 'MOVE_ONLY']
+   - Plan Not Sound
+   - moved forward
+Agent ORANGE: @ (3, 1, 1)
+   - Beliefs: 150
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 14
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, 1)
+   - Plan: []
+   - Plan Recalculated
+
+------------ 28 ------------
+Agent BLUE: @ (2, 1, -1)
+   - Beliefs: 160
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 25
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, -1)
+   - Plan: ['ROTATE_LEFT', 'MOVE_ONLY']
+   - rotated to the left
+Agent ORANGE: @ (3, 1, 1)
+   - Beliefs: 151
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 13
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, 1)
+   - Plan: []
+   - Plan Recalculated
+
+------------ 29 ------------
+Agent BLUE: @ (2, 1, -1)
+   - Beliefs: 175
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 24
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, -1)
+   - Plan: ['MOVE_ONLY']
+   - moved forward
+Agent ORANGE: @ (3, 1, 1)
+   - Beliefs: 151
+   - Beliefs for Goal: 1
+   - Belief Stuck: False : 12
+   - Desires: ['REACH_GOAL']
+   - Intention: REACH_GOAL @ (3, 1, 1)
+   - Plan: []
+   - Plan Recalculated
