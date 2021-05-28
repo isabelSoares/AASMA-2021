@@ -33,7 +33,7 @@ agents = map_info['agents'].values()
 
 info_panel = InfoPanel()
 message_panel = MessagePanel()
-min_tick_time, tick_time, max_tick_time, step = 0.005, 0.02, 1.0, 0.005
+min_tick_time, tick_time, max_tick_time, step = 0.005, 0.5, 1.0, 0.005
 setup_panel_control(info_panel, min_tick_time, tick_time, max_tick_time, step, map_info['agents'].keys())
 setup_panel_messages(message_panel)
 
