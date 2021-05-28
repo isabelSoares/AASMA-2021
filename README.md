@@ -4,7 +4,7 @@ Autonomous Agents and Multi-Agent Systems
 ## Run the code
 - Go to the folder code/
 > cd code
-- You might need to install some packages (ursina, matplotlib, numpy, pandas, scipy, among others):
+- You might need to install some packages (ursina, matplotlib, numpy, pandas, scipy, among others)
 
 for example: 
 > pip install ursina 
