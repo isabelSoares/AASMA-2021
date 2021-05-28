@@ -16,3 +16,5 @@ for example:
 
 for instance:
 > python .\maze.py reactive map2
+
+Note: You should run the deliberative and hybrid architectures with a time tick of at least 0.5 per second.
